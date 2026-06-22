@@ -68,8 +68,8 @@
   --hero-single-heading-font-size-m: 32px;
   --hero-single-heading-font-size-desktop: 56px;
   --hero-single-body-font-size: 18px;
-  --hero-single-cta-bg: var(--brand-rose);
-  --hero-single-cta-bg-hover: var(--brand-rose-dark);
+  --hero-single-cta-bg: var(--brand-secondary);
+  --hero-single-cta-bg-hover: var(--brand-secondary-dark);
   --hero-single-cta-color: var(--background-color);
   --hero-single-cta-arrow: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="9" viewBox="0 0 22 9" fill="none"><path d="M0 4.5h20M16.5 1 20 4.5 16.5 8" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 
