@@ -77,6 +77,12 @@ header ul.nav-eyebrow-links {
 
 header .nav-eyebrow-links > li {
   border-right: 1px solid var(--header-divider-color);
+  transition: var(--header-eyebrow-hover-transition);
+}
+
+/* hover highlights the whole button area (matches source #nav-eyebrow li:hover) */
+header .nav-eyebrow-links > li:hover {
+  background-color: var(--header-eyebrow-hover-bg);
 }
 
 header .nav-eyebrow-links > li:last-child {
@@ -104,7 +110,7 @@ header .nav-eyebrow-links > li:nth-child(3) a { max-width: var(--header-eyebrow-
 header .nav-eyebrow-links > li:nth-child(4) a { max-width: var(--header-eyebrow-link-4-max-width); }
 
 header .nav-eyebrow-links a:hover {
-  color: var(--header-link-hover-color);
+  color: var(--header-link-color);
   text-decoration: none;
 }
 

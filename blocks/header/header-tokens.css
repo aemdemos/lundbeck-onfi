@@ -19,6 +19,8 @@
   --header-link-color: #a5dee1;
   --header-link-hover-color: #fff;
   --header-divider-color: #81c6cc;
+  --header-eyebrow-hover-bg: #007580;
+  --header-eyebrow-hover-transition: background-color 25ms linear;
   --header-logo-bg: #fff;
   --header-text-color: #333;
   --header-progress-track: #3cb2bd;
