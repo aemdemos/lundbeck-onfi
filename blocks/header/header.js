@@ -95,8 +95,9 @@ function buildHamburger(nav) {
 export default async function decorate(block) {
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  // local/aem-up serves content under /content; DA/EDS production serves at navPath
-  const fragment = (await loadFragment('/content/nav')) || (await loadFragment(navPath));
+  // production (DA/EDS) serves the nav at navPath; local aem-up serves it under
+  // /content. Try production first, then fall back to the local path.
+  const fragment = (await loadFragment(navPath)) || (await loadFragment('/content/nav'));
 
   block.textContent = '';
   const nav = document.createElement('nav');
