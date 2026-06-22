@@ -16,8 +16,8 @@
   --carousel-nav-arrow-size: 12px; /* @boilerplate */
   --carousel-nav-arrow-thickness: 2px; /* @boilerplate */
   --carousel-nav-arrow-offset: 2px; /* @boilerplate */
-  --carousel-nav-arrow-prev-color: var(--brand-rose);
-  --carousel-nav-arrow-next-color: var(--brand-rose);
+  --carousel-nav-arrow-prev-color: var(--brand-secondary);
+  --carousel-nav-arrow-next-color: var(--brand-secondary);
   --carousel-transition-duration: var(--transition-duration); /* @boilerplate */
 
   /* default carousel — clean card layout (image beside content on a light surface)
@@ -29,7 +29,7 @@
   --carousel-card-image-flex: 50%;
   --carousel-card-image-height: 260px;
   --carousel-card-image-height-desktop: 360px;
-  --carousel-card-heading-color: var(--brand-teal);
+  --carousel-card-heading-color: var(--brand-primary);
 
   /* testimonial variant — tokenized from poc-vyepti / vyepti.com; brand sites override via tokens.
      Icon URLs are intentionally empty (none): brand sites set them; absent = graceful CSS fallback.
@@ -42,7 +42,7 @@
   --carousel-testimonial-content-padding-desktop: 0 48px 0 56px;
 
   /* heading (quote) */
-  --carousel-testimonial-heading-color: var(--brand-teal);
+  --carousel-testimonial-heading-color: var(--brand-primary);
   --carousel-testimonial-heading-size: var(--heading-font-size-xl);
   --carousel-testimonial-heading-weight: 800;
   --carousel-testimonial-heading-line-height: 1.2;
@@ -70,7 +70,7 @@
 
   /* indicators (ring style) */
   --carousel-testimonial-indicator-size: 13px;
-  --carousel-testimonial-indicator-color: var(--brand-rose);
+  --carousel-testimonial-indicator-color: var(--brand-secondary);
 
   /* nav buttons */
   --carousel-testimonial-nav-button-size: 36px;
