@@ -1,36 +1,25 @@
 /* stylelint-disable max-line-length */
-@font-face { /* @boilerplate */
-  font-family: roboto-condensed; /* @boilerplate */
-  font-style: normal; /* @boilerplate */
-  font-weight: 700; /* @boilerplate */
-  font-display: swap; /* @boilerplate */
-  src: url('../fonts/roboto-condensed-bold.woff2') format('woff2'); /* @boilerplate */
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; /* @boilerplate */
-}
 
-@font-face { /* @boilerplate */
-  font-family: roboto; /* @boilerplate */
-  font-style: normal; /* @boilerplate */
-  font-weight: 700; /* @boilerplate */
-  font-display: swap; /* @boilerplate */
-  src: url('../fonts/roboto-bold.woff2') format('woff2'); /* @boilerplate */
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; /* @boilerplate */
-}
-
-@font-face { /* @boilerplate */
-  font-family: roboto; /* @boilerplate */
-  font-style: normal; /* @boilerplate */
-  font-weight: 500; /* @boilerplate */
-  font-display: swap; /* @boilerplate */
-  src: url('../fonts/roboto-medium.woff2') format('woff2'); /* @boilerplate */
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; /* @boilerplate */
-}
-
-@font-face { /* @boilerplate */
-  font-family: roboto; /* @boilerplate */
-  font-style: normal; /* @boilerplate */
-  font-weight: 400; /* @boilerplate */
-  font-display: swap; /* @boilerplate */
-  src: url('../fonts/roboto-regular.woff2') format('woff2'); /* @boilerplate */
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; /* @boilerplate */
-}
+/* Fonts extracted from: https://www.onfi.com/
+ *
+ * The source site uses Monotype-licensed "Avenir LT W01" webfonts (Light/Roman/
+ * Medium/Heavy/Black) self-hosted under the source domain's /clientlibs-onfi/fonts/
+ * directory (eot/woff2/woff/ttf/svg). These are domain-bound Monotype web licenses
+ * and CANNOT be lawfully self-hosted in this repo.
+ *
+ * NEEDS REVIEW: To match the source typography in production, obtain a portable
+ * Avenir web license (Monotype) or an approved visual substitute (e.g. Nunito Sans,
+ * Montserrat) and add the @font-face declarations here, then update
+ * --body-font-family / --heading-font-family in styles/styles.css to reference them.
+ *
+ * Until then, the font stack in styles/styles.css renders Avenir for users who have
+ * it installed (macOS ships Avenir Next) and falls back to a size-adjusted
+ * system humanist sans-serif (Segoe UI / Roboto / Arial) to minimise layout shift.
+ *
+ * Mapping (source family -> weight):
+ *   Avenir LT W01_35 Light  -> 200
+ *   Avenir LT W01_55 Roman  -> 400  (--body-font-family)
+ *   Avenir LT W01_65 Medium -> 500
+ *   Avenir LT W01_85 Heavy  -> 800  (--heading-font-family)
+ *   Avenir LT W01_95 Black  -> 900
+ */

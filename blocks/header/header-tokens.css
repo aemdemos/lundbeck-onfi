@@ -1,26 +1,118 @@
-/* header design tokens (layout only; colors/typography use global tokens) */
-:root { /* @boilerplate */
-  --nav-height: 200px;
-  --header-nav-max-width-mobile: 510px;
-  --header-nav-max-width-tablet: 690px;
-  --header-nav-max-width-desktop: 930px;
-  --header-nav-max-width-max: 1110px;
-  --header-white-text-color: #fff;
-  --header-text-color: #484848;
+/* header design tokens — onfi.com
+ * Only design VALUES live here (colors, sizes, fonts, spacing). All structural
+ * CSS rules stay in header.css and reference these via var(). To restyle the
+ * header, change values here — not header.css. */
+:root {
+  /* layout */
+  --nav-height: 159px;
+  --header-content-max-width: 1100px;
+  --header-z-index: 100;
+  --header-side-padding: 15px;
 
-  /* font */
-  --header-font-weight-xs: 500;
-  --header-font-weight-s: 600;
-  --header-font-weight-medium: 700;
-  --header-font-weight-bold: 800;
-  --header-font-size-xs: 14px;
-  --header-font-size-s: 16px;
-  --header-font-size-m: 18px;
-  --header-padding-container: 15px;
+  /* nav content starts just right of the logo tab; rows pack left from here */
+  --header-nav-indent: 165px;
 
-  /* line heights */
-  --header-line-height-xs: 14px;
-  --header-line-height-s: 18px;
-  --header-line-height-m: 22px;
-  --header-line-height-l: 24px;
+  /* colors */
+  --header-textbar-bg: #cce8eb;
+  --header-eyebrow-bg: #1e6a71;
+  --header-main-bg: #008c99;
+  --header-link-color: #a5dee1;
+  --header-link-hover-color: #fff;
+  --header-divider-color: #81c6cc;
+  --header-logo-bg: #fff;
+  --header-text-color: #333;
+  --header-progress-track: #3cb2bd;
+  --header-progress-bar: #1e6a71;
+
+  /* header font stack — plain system fallback (no forced-bold @font-face) so
+     numeric font-weight is honored and the nav weight hierarchy matches the
+     source (which uses real Avenir Heavy/Black/Medium faces) */
+  --header-font-family: "Avenir LT W01_85 Heavy", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+
+  /* row 0 — prescribing-context text bar */
+  --header-textbar-font-size: 14px;
+  --header-textbar-font-weight: 700;
+  --header-textbar-line-height: 1.07;
+  --header-textbar-padding: 8px 15px;
+  --header-textbar-indent: 130px;
+
+  /* brand / logo tab */
+  --header-logo-width: 150px;
+  --header-logo-top: 56px;
+  --header-logo-left-offset: 5px;
+  --header-logo-padding: 15px 15px 13.5px;
+  --header-logo-radius: 10px 10px 0 0;
+  --header-logo-img-width: 120px;
+  --header-logo-z-index: 3;
+
+  /* row 1 — eyebrow utility links */
+  --header-eyebrow-padding-y: 15px;
+  --header-eyebrow-link-padding-x: 38.5px;
+  --header-eyebrow-link-font-size: 14px;
+  --header-eyebrow-link-font-weight: 700;
+  --header-eyebrow-link-line-height: 1.15;
+  --header-eyebrow-link-1-max-width: 212px;
+  --header-eyebrow-link-2-max-width: 172px;
+  --header-eyebrow-link-3-max-width: 165px;
+  --header-eyebrow-link-4-max-width: 172px;
+
+  /* row 2 — main nav links */
+  --header-main-gap: 35px;
+  --header-main-row-height: 42px;
+  --header-main-link-font-size: 14px;
+  --header-main-link-font-weight: 400;
+  --header-main-link-line-height: 1.43;
+
+  /* scroll-progress bar */
+  --header-progress-height: 8px;
+  --header-progress-transition: width 0.6s;
+
+  /* search */
+  --header-search-icon-size: 27px;
+  --header-search-icon-url: url('/icons/search.svg');
+  --header-search-connector-width: 45px;
+  --header-search-connector-height: 15px;
+  --header-search-form-width: 246px;
+  --header-search-form-padding: 15px 9px;
+  --header-search-form-top: calc(100% + 26px);
+  --header-search-form-right: -34px;
+  --header-search-form-z-index: 1000;
+  --header-search-input-width: 192px;
+  --header-search-input-height: 32px;
+  --header-search-input-gap: 4px;
+  --header-search-input-padding: 1px 4px;
+  --header-search-input-font-size: 16px;
+  --header-search-input-border-color: #767676;
+  --header-search-submit-size: 32px;
+  --header-search-submit-padding: 1px 3px;
+  --header-search-submit-bg: var(--brand-green);
+  --header-search-submit-color: #fff;
+  --header-search-submit-font-size: 16px;
+  --header-search-submit-font-weight: 100;
+  --header-search-transition: 0.2s ease-in-out;
+
+  /* color transition shared by links/icon */
+  --header-color-transition: color 0.2s ease-in-out;
+
+  /* responsive breakpoint container widths (Bootstrap-derived) */
+  --header-tablet-container: 970px;
+  --header-tablet-gap: 16px;
+  --header-tablet-link-font-size: 12px;
+  --header-tablet-eyebrow-padding-x: 18px;
+  --header-small-gutter: 8px;
+  --header-small-link-font-size: 11px;
+  --header-small-logo-width: 120px;
+  --header-small-logo-img-width: 96px;
+  --header-small-nav-indent: 132px;
+
+  /* mobile (≤767px) */
+  --header-mobile-hamburger-bg: #66b9c1;
+  --header-mobile-hamburger-width: 85px;
+  --header-mobile-bar-width: 31px;
+  --header-mobile-bar-height: 5px;
+  --header-mobile-bar-gap: 7px;
+  --header-mobile-bar-transition: transform 0.125s ease-in-out, opacity 0.125s ease-in-out, top 0.125s ease-in-out;
+  --header-mobile-logo-img-width: 96px;
+  --header-mobile-link-font-size: 13px;
+  --header-mobile-eyebrow-link-font-size: 13px;
 }
