@@ -1,0 +1,132 @@
+@import url('./table-tokens.css');
+
+.table.block { /* @libs */
+  width: 100%; /* @libs */
+  overflow-x: auto; /* @libs */
+}
+
+.table.block table { /* @libs */
+  width: 100%; /* @libs */
+  max-width: 100%; /* @libs */
+  border-collapse: collapse; /* @libs */
+  font-family: var(--body-font-family); /* @libs */
+  font-size: var(--body-font-size-s); /* @libs */
+  line-height: 1.5; /* @libs */
+  color: var(--text-color); /* @libs */
+}
+
+.table.block table th,
+.table.block table td { /* @libs */
+  padding: var(--table-cell-padding-block) var(--table-cell-padding-inline); /* @libs */
+  text-align: left; /* @libs */
+  vertical-align: top; /* @libs */
+}
+
+/* header band — compact teal gradient strip with bold teal label */
+.table.block table thead tr { /* @libs */
+  background-image: var(--table-header-bg); /* @libs */
+}
+
+.table.block table th { /* @libs */
+  padding: var(--table-header-padding); /* @libs */
+  font-size: var(--table-header-font-size); /* @libs */
+  font-weight: var(--font-weight-bold); /* @libs */
+  line-height: var(--table-header-line-height); /* @libs */
+  color: var(--table-header-text-color); /* @libs */
+}
+
+.table.block table tbody tr { /* @libs */
+  border-bottom: var(--table-row-border-width) solid var(--table-border-color); /* @libs */
+}
+
+.table table th p,
+.table table td p { /* @libs */
+  margin: 0; /* @libs */
+}
+
+.table table td p + p { /* @libs */
+  margin-top: 0.25em; /* @libs */
+}
+
+/* column variant — author writes e.g. "Table (column 2)" to color column 2 */
+.table.block.column-1 table tbody td:nth-child(1),
+.table.block.column-2 table tbody td:nth-child(2),
+.table.block.column-3 table tbody td:nth-child(3),
+.table.block.column-4 table tbody td:nth-child(4),
+.table.block.column-5 table tbody td:nth-child(5),
+.table.block.column-6 table tbody td:nth-child(6) { /* @libs */
+  color: var(--table-accent-color); /* @libs */
+}
+
+/* heading-row variant — author writes e.g. "Table (heading 3)" to style body row 3 as a section header band */
+.table.block.heading-1 table tbody tr:nth-child(1),
+.table.block.heading-2 table tbody tr:nth-child(2),
+.table.block.heading-3 table tbody tr:nth-child(3),
+.table.block.heading-4 table tbody tr:nth-child(4),
+.table.block.heading-5 table tbody tr:nth-child(5),
+.table.block.heading-6 table tbody tr:nth-child(6),
+.table.block.heading-7 table tbody tr:nth-child(7),
+.table.block.heading-8 table tbody tr:nth-child(8),
+.table.block.heading-9 table tbody tr:nth-child(9),
+.table.block.heading-10 table tbody tr:nth-child(10),
+.table.block.heading-11 table tbody tr:nth-child(11),
+.table.block.heading-12 table tbody tr:nth-child(12) { /* @libs */
+  border-bottom: 0; /* @libs */
+  background-image: var(--table-header-bg); /* @libs */
+}
+
+/* remove the separator above a heading row (the preceding row's bottom border) */
+.table.block.heading-2 table tbody tr:nth-child(1),
+.table.block.heading-3 table tbody tr:nth-child(2),
+.table.block.heading-4 table tbody tr:nth-child(3),
+.table.block.heading-5 table tbody tr:nth-child(4),
+.table.block.heading-6 table tbody tr:nth-child(5),
+.table.block.heading-7 table tbody tr:nth-child(6),
+.table.block.heading-8 table tbody tr:nth-child(7),
+.table.block.heading-9 table tbody tr:nth-child(8),
+.table.block.heading-10 table tbody tr:nth-child(9),
+.table.block.heading-11 table tbody tr:nth-child(10),
+.table.block.heading-12 table tbody tr:nth-child(11) { /* @libs */
+  border-bottom: 0; /* @libs */
+}
+
+.table.block.heading-1 table tbody tr:nth-child(1) td,
+.table.block.heading-2 table tbody tr:nth-child(2) td,
+.table.block.heading-3 table tbody tr:nth-child(3) td,
+.table.block.heading-4 table tbody tr:nth-child(4) td,
+.table.block.heading-5 table tbody tr:nth-child(5) td,
+.table.block.heading-6 table tbody tr:nth-child(6) td,
+.table.block.heading-7 table tbody tr:nth-child(7) td,
+.table.block.heading-8 table tbody tr:nth-child(8) td,
+.table.block.heading-9 table tbody tr:nth-child(9) td,
+.table.block.heading-10 table tbody tr:nth-child(10) td,
+.table.block.heading-11 table tbody tr:nth-child(11) td,
+.table.block.heading-12 table tbody tr:nth-child(12) td { /* @libs */
+  padding: var(--table-header-padding); /* @libs */
+  font-size: var(--table-header-font-size); /* @libs */
+  font-weight: var(--font-weight-bold); /* @libs */
+  line-height: var(--table-header-line-height); /* @libs */
+  color: var(--table-header-text-color); /* @libs */
+}
+
+/* no header variant */
+.table.block.no-header table tbody tr:first-child { /* @libs */
+  border-top: var(--table-row-border-width) solid var(--table-border-color); /* @libs */
+}
+
+/* striped variant */
+.table.block.striped tbody tr:nth-child(odd) { /* @libs */
+  background-color: var(--overlay-background-color); /* @libs */
+}
+
+/* bordered variant */
+.table.block.bordered table th,
+.table.block.bordered table td { /* @libs */
+  border: var(--table-row-border-width) solid var(--table-border-color); /* @libs */
+}
+
+@media (width >= 768px) { /* @libs */
+  .table.block table td { /* @libs */
+    padding: var(--table-cell-padding-block-desktop) var(--table-cell-padding-inline); /* @libs */
+  }
+}

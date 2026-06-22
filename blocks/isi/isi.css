@@ -1,0 +1,216 @@
+@import url('./isi-tokens.css');
+
+/* ── In-page ISI section (matches vyepti.com full-width divider) ─ */
+main .section.isi-container { /* @boilerplate */
+  border-top: var(--isi-section-border-width) solid var(--isi-section-border-color); /* @boilerplate */
+}
+
+/* ── In-page inline content (Row 2) ───────────────────────────── */
+main .isi .isi-inline { /* @boilerplate */
+  display: block; /* @boilerplate */
+  padding-bottom: var(--isi-inline-padding-bottom); /* @boilerplate */
+}
+
+main .isi .isi-inline > div { /* @boilerplate */
+  padding: 0; /* @boilerplate */
+}
+
+main .isi p,
+main .isi li { /* @boilerplate */
+  font-size: var(--body-font-size-s); /* @boilerplate */
+  color: var(--isi-text-color); /* @boilerplate */
+  line-height: var(--isi-line-height); /* @boilerplate */
+}
+
+main .isi li { /* @boilerplate */
+  line-height: var(--isi-list-line-height); /* @boilerplate */
+  margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
+}
+
+main .isi h3 { /* @boilerplate */
+  color: var(--isi-heading-color); /* @boilerplate */
+  font-size: var(--isi-heading-font-size); /* @boilerplate */
+  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
+  line-height: var(--isi-heading-line-height); /* @boilerplate */
+  margin-bottom: var(--isi-heading-margin-bottom); /* @boilerplate */
+}
+
+main .isi a { /* @boilerplate */
+  text-decoration: underline; /* @boilerplate */
+}
+
+main .isi a:hover { /* @boilerplate */
+  text-decoration: underline; /* @boilerplate */
+}
+
+/* ── Fixed bottom bar (abbreviated content – Row 1) ──────────── */
+.isi-bar { /* @boilerplate */
+  position: fixed; /* @boilerplate */
+  bottom: 0; /* @boilerplate */
+  left: 0; /* @boilerplate */
+  right: 0; /* @boilerplate */
+  z-index: var(--isi-bar-z-index); /* @boilerplate */
+  background-color: var(--isi-bar-background); /* @boilerplate */
+  border-top: var(--isi-bar-border-width) solid var(--isi-bar-border-color); /* @boilerplate */
+  height: var(--isi-bar-height); /* @boilerplate */
+  overflow: hidden; /* @boilerplate */
+  padding: var(--isi-bar-padding); /* @boilerplate */
+  transition: height var(--isi-bar-height-transition-duration) var(--isi-bar-height-transition-easing); /* @boilerplate */
+  color: var(--isi-text-color); /* @boilerplate */
+  cursor: pointer; /* @boilerplate */
+}
+
+.isi-bar.isi-bar-hidden { /* @boilerplate */
+  display: none; /* @boilerplate */
+}
+
+/* Expanded state */
+.isi-bar.full { /* @boilerplate */
+  height: auto; /* @boilerplate */
+  max-height: var(--isi-bar-expanded-max-height); /* @boilerplate */
+  overflow-y: auto; /* @boilerplate */
+  z-index: var(--isi-bar-expanded-z-index); /* @boilerplate */
+  cursor: default; /* @boilerplate */
+}
+
+/* Inner content wrapper – two-column on desktop */
+.isi-bar-content { /* @boilerplate */
+  max-width: var(--isi-content-max-width); /* @boilerplate */
+  margin: 0 auto; /* @boilerplate */
+  display: flex; /* @boilerplate */
+  flex-wrap: wrap; /* @boilerplate */
+  gap: var(--isi-bar-content-gap); /* @boilerplate */
+}
+
+.isi-bar-col { /* @boilerplate */
+  flex: 1 1 var(--isi-bar-col-flex-basis); /* @boilerplate */
+  min-width: 0; /* @boilerplate */
+}
+
+.isi-bar-col h3 { /* @boilerplate */
+  color: var(--isi-bar-heading-color, var(--isi-heading-color)); /* @boilerplate */
+  font-size: var(--isi-heading-font-size); /* @boilerplate */
+  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
+  line-height: var(--isi-heading-line-height); /* @boilerplate */
+  padding-bottom: var(--isi-bar-heading-padding-bottom); /* @boilerplate */
+  margin: 0; /* @boilerplate */
+}
+
+.isi-bar-col p { /* @boilerplate */
+  font-size: var(--body-font-size-s); /* @boilerplate */
+  line-height: var(--isi-bar-paragraph-line-height); /* @boilerplate */
+  padding-bottom: var(--isi-bar-paragraph-padding-bottom); /* @boilerplate */
+  margin: 0; /* @boilerplate */
+}
+
+.isi-bar-col p b,
+.isi-bar-col p strong { /* @boilerplate */
+  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
+}
+
+.isi-bar-col ul { /* @boilerplate */
+  padding-left: var(--isi-bar-list-padding-left); /* @boilerplate */
+  margin: 0 0 var(--isi-bar-list-margin-bottom); /* @boilerplate */
+}
+
+.isi-bar-col li { /* @boilerplate */
+  font-size: var(--body-font-size-s); /* @boilerplate */
+  line-height: var(--isi-list-line-height); /* @boilerplate */
+  margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
+}
+
+.isi-bar-col a { /* @boilerplate */
+  color: var(--link-color); /* @boilerplate */
+  font-weight: var(--isi-bar-link-font-weight); /* @boilerplate */
+  font-size: var(--body-font-size-s); /* @boilerplate */
+  text-decoration: underline; /* @boilerplate */
+}
+
+.isi-bar-col a:hover { /* @boilerplate */
+  color: var(--link-hover-color); /* @boilerplate */
+  text-decoration: underline; /* @boilerplate */
+}
+
+/* ── Toggle button (+/−) ─────────────────────────────────────── */
+.isi-bar-toggle { /* @boilerplate */
+  position: absolute; /* @boilerplate */
+  right: var(--isi-toggle-right); /* @boilerplate */
+  top: var(--isi-toggle-top); /* @boilerplate */
+  background: none; /* @boilerplate */
+  border: var(--isi-toggle-border-width) solid var(--isi-toggle-color); /* @boilerplate */
+  border-radius: 50%; /* @boilerplate */
+  width: var(--isi-toggle-size); /* @boilerplate */
+  height: var(--isi-toggle-size); /* @boilerplate */
+  padding: 0; /* @boilerplate */
+  cursor: pointer; /* @boilerplate */
+  display: flex; /* @boilerplate */
+  align-items: center; /* @boilerplate */
+  justify-content: center; /* @boilerplate */
+  color: var(--isi-toggle-color); /* @boilerplate */
+  transition: color var(--isi-toggle-transition-duration), border-color var(--isi-toggle-transition-duration); /* @boilerplate */
+  z-index: var(--isi-toggle-z-index); /* @boilerplate */
+}
+
+.isi-bar-toggle:hover { /* @boilerplate */
+  color: var(--isi-toggle-hover-color); /* @boilerplate */
+  border-color: var(--isi-toggle-hover-color); /* @boilerplate */
+  background: none; /* @boilerplate */
+}
+
+/* Plus icon (collapsed) */
+.isi-bar-toggle-icon { /* @boilerplate */
+  display: block; /* @boilerplate */
+  width: var(--isi-toggle-icon-size); /* @boilerplate */
+  height: var(--isi-toggle-icon-size); /* @boilerplate */
+  position: relative; /* @boilerplate */
+}
+
+.isi-bar-toggle-icon::before,
+.isi-bar-toggle-icon::after { /* @boilerplate */
+  content: ''; /* @boilerplate */
+  position: absolute; /* @boilerplate */
+  background-color: currentcolor; /* @boilerplate */
+  border-radius: var(--isi-toggle-icon-bar-radius); /* @boilerplate */
+}
+
+/* Horizontal bar (always visible) */
+.isi-bar-toggle-icon::before { /* @boilerplate */
+  top: 50%; /* @boilerplate */
+  left: 0; /* @boilerplate */
+  width: 100%; /* @boilerplate */
+  height: var(--isi-toggle-icon-bar-thickness); /* @boilerplate */
+  transform: translateY(-50%); /* @boilerplate */
+}
+
+/* Vertical bar (hidden when expanded → becomes minus) */
+.isi-bar-toggle-icon::after { /* @boilerplate */
+  left: 50%; /* @boilerplate */
+  top: 0; /* @boilerplate */
+  width: var(--isi-toggle-icon-bar-thickness); /* @boilerplate */
+  height: 100%; /* @boilerplate */
+  transform: translateX(-50%); /* @boilerplate */
+  transition: opacity var(--isi-toggle-transition-duration); /* @boilerplate */
+}
+
+.isi-bar.full .isi-bar-toggle-icon::after { /* @boilerplate */
+  opacity: 0; /* @boilerplate */
+}
+
+/* ── Mobile ≤ 768px ──────────────────────────────────────────── */
+@media (width <= 768px) { /* @boilerplate */
+  .isi-bar-content { /* @boilerplate */
+    flex-direction: column; /* @boilerplate */
+    padding: 0 var(--isi-bar-content-padding-x-mobile); /* @boilerplate */
+  }
+
+  .isi-bar-col { /* @boilerplate */
+    flex: 1 1 100%; /* @boilerplate */
+  }
+}
+
+/* ── Desktop ≥ 900px ─────────────────────────────────────────── */
+@media (width >= 992px) { /* @boilerplate */
+  .isi-bar-content { /* @boilerplate */
+    padding: 0 var(--isi-bar-content-padding-x-desktop); /* @boilerplate */
+  }
+}

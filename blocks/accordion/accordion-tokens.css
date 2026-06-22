@@ -1,0 +1,45 @@
+/* accordion design tokens — mobile-first defaults; tablet+ overrides live in the
+   width >= 768px block of accordion.css */
+:root { /* @libs */
+  /* item card */
+  --accordion-item-bg: var(--card-bg-light); /* @libs */
+  --accordion-item-radius: 12px; /* @libs */
+  --accordion-item-gap: 16px; /* @libs */
+  --accordion-item-padding: 20px 16px; /* @libs */
+
+  /* label / title */
+  --accordion-label-color: var(--text-color); /* @libs */
+  --accordion-label-active-color: var(--brand-secondary); /* @libs */
+  --accordion-label-font-size: var(--heading-font-size-xl); /* @libs */
+  --accordion-label-font-weight: 400; /* @libs */
+  --accordion-label-strong-weight: 600; /* @libs */
+  --accordion-label-line-height: 1.1; /* @libs */
+  --accordion-label-padding-right: 34px; /* @libs */
+
+  /* expand/collapse chevron */
+  --accordion-icon-size: 15px; /* @libs */
+  --accordion-icon-thickness: 2px; /* @libs */
+  --accordion-icon-color: var(--brand-primary); /* @libs */
+  --accordion-icon-right: 4px; /* @libs */
+
+  /* body / panel */
+  --accordion-body-gap: 16px; /* @libs */
+  --accordion-body-color: var(--text-color); /* @libs */
+  --accordion-body-font-size: var(--body-font-size-s); /* @libs */
+  --accordion-body-line-height: 1.45; /* @libs */
+  --accordion-body-list-font-size: var(--body-font-size-ms); /* @libs */
+
+  /* motion */
+  --accordion-transition-duration: 0.3s; /* @libs */
+  --accordion-icon-transition-duration: 0.5s; /* @libs */
+}
+
+/* tablet+ scale-ups */
+@media (width >= 768px) { /* @libs */
+  :root { /* @libs */
+    --accordion-item-gap: 24px; /* @libs */
+    --accordion-item-padding: 32px 41px; /* @libs */
+    --accordion-label-line-height: 1.3; /* @libs */
+    --accordion-label-padding-right: 38px; /* @libs */
+  }
+}

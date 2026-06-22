@@ -1,0 +1,66 @@
+/* isi design tokens */
+:root { /* @boilerplate */
+  --isi-text-color: #484848; /* @boilerplate */
+  --isi-line-height: 1.5; /* @boilerplate */
+  --isi-list-line-height: 1.7; /* @boilerplate */
+  --isi-list-item-margin-bottom: 10px; /* @boilerplate */
+  --isi-inline-padding-bottom: 64px; /* @boilerplate */
+  --isi-heading-color: var(--brand-teal-muted); /* @boilerplate */
+  --isi-heading-font-size: 18px; /* @boilerplate */
+  --isi-heading-font-weight: 700; /* @boilerplate */
+  --isi-heading-line-height: 22px; /* @boilerplate */
+  --isi-heading-margin-bottom: 0; /* @boilerplate */
+  --isi-bar-z-index: 5; /* @boilerplate */
+  --isi-bar-expanded-z-index: 10; /* @boilerplate */
+  --isi-bar-background: var(--background-color); /* @boilerplate */
+  --isi-section-border-width: 1px; /* @boilerplate */
+  --isi-section-border-color: #d1d1d1; /* @boilerplate */
+  --isi-bar-border-width: var(--isi-section-border-width); /* @boilerplate */
+  --isi-bar-border-color: var(--isi-section-border-color); /* @boilerplate */
+  --isi-bar-height: 90px; /* @boilerplate */
+  --isi-bar-padding: 13px 13px 8px; /* @boilerplate */
+  --isi-bar-height-transition-duration: 0.3s; /* @boilerplate */
+  --isi-bar-height-transition-easing: ease-in-out; /* @boilerplate */
+  --isi-bar-expanded-max-height: 70vh; /* @boilerplate */
+  --isi-content-max-width: var(--max-width-site); /* @boilerplate */
+  --isi-bar-content-gap: 0 24px; /* @boilerplate */
+  --isi-bar-col-flex-basis: 45%; /* @boilerplate */
+  --isi-bar-heading-padding-bottom: 18px; /* @boilerplate */
+  --isi-bar-paragraph-line-height: 24px; /* @boilerplate */
+  --isi-bar-paragraph-padding-bottom: 8px; /* @boilerplate */
+  --isi-bar-list-padding-left: 20px; /* @boilerplate */
+  --isi-bar-list-margin-bottom: 8px; /* @boilerplate */
+  --isi-bar-link-font-weight: 600; /* @boilerplate */
+  --isi-toggle-right: 15px; /* @boilerplate */
+  --isi-toggle-top: 13px; /* @boilerplate */
+  --isi-toggle-border-width: 2px; /* @boilerplate */
+  --isi-toggle-size: 24px; /* @boilerplate */
+  --isi-toggle-color: var(--brand-teal-muted); /* @boilerplate */
+  --isi-toggle-hover-color: var(--link-hover-color); /* @boilerplate */
+  --isi-toggle-transition-duration: 0.2s; /* @boilerplate */
+  --isi-toggle-z-index: 2; /* @boilerplate */
+  --isi-toggle-icon-size: 12px; /* @boilerplate */
+  --isi-toggle-icon-bar-thickness: 2px; /* @boilerplate */
+  --isi-toggle-icon-bar-radius: 1px; /* @boilerplate */
+  --isi-bar-content-padding-x-mobile: 16px; /* @boilerplate */
+  --isi-bar-content-padding-x-desktop: 32px; /* @boilerplate */
+  --isi-toggle-right-mobile: 16px; /* @boilerplate */
+  --isi-toggle-right-desktop: 32px; /* @boilerplate */
+}
+
+@media (width <= 768px) { /* @boilerplate */
+  :root { /* @boilerplate */
+    --isi-bar-height: 109px; /* @boilerplate */
+    --isi-bar-padding: 0; /* @boilerplate */
+    --isi-bar-heading-color: var(--brand-teal); /* @boilerplate */
+    --isi-bar-heading-padding-bottom: 8px; /* @boilerplate */
+    --isi-bar-paragraph-padding-bottom: 16px; /* @boilerplate */
+    --isi-toggle-right: var(--isi-toggle-right-mobile); /* @boilerplate */
+  }
+}
+
+@media (width >= 992px) { /* @boilerplate */
+  :root { /* @boilerplate */
+    --isi-toggle-right: var(--isi-toggle-right-desktop); /* @boilerplate */
+  }
+}

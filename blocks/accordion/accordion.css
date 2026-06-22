@@ -1,0 +1,127 @@
+@import url('./accordion-tokens.css');
+
+.accordion > ul { /* @libs */
+  list-style: none; /* @libs */
+  margin: 0; /* @libs */
+  padding: 0; /* @libs */
+}
+
+/* each item is a filled, rounded card; the whole card is the toggle */
+.accordion > ul > li { /* @libs */
+  background-color: var(--accordion-item-bg); /* @libs */
+  border-radius: var(--accordion-item-radius); /* @libs */
+  padding: var(--accordion-item-padding); /* @libs */
+  cursor: pointer; /* @libs */
+}
+
+.accordion > ul > li + li { /* @libs */
+  margin-top: var(--accordion-item-gap); /* @libs */
+}
+
+.accordion p { /* @libs */
+  margin: 0; /* @libs */
+}
+
+/* clickable header row */
+.accordion .accordion-item-label { /* @libs */
+  position: relative; /* @libs */
+  align-items: flex-start; /* @libs */
+  justify-content: space-between; /* @libs */
+  gap: 10px; /* @libs */
+  padding-right: var(--accordion-label-padding-right); /* @libs */
+  color: var(--accordion-label-color); /* @libs */
+  font-family: var(--heading-font-family); /* @libs */
+  font-size: var(--accordion-label-font-size); /* @libs */
+  font-weight: var(--accordion-label-font-weight); /* @libs */
+  line-height: var(--accordion-label-line-height); /* @libs */
+  user-select: none; /* @libs */
+  transition: color var(--accordion-transition-duration); /* @libs */
+}
+
+/* lead phrase ("Commercial insurance:") is semibold */
+.accordion .accordion-item-label strong, /* @libs */
+.accordion .accordion-item-label b { /* @libs */
+  font-weight: var(--accordion-label-strong-weight); /* @libs */
+}
+
+/* trailing descriptive phrase — hidden on mobile when collapsed, but revealed
+   when the item is expanded; always shown from tablet up */
+.accordion .accordion-item-label-detail { /* @libs */
+  display: none; /* @libs */
+}
+
+.accordion li.active .accordion-item-label-detail { /* @libs */
+  display: inline; /* @libs */
+}
+
+/* active title turns rose */
+.accordion li.active .accordion-item-label { /* @libs */
+  color: var(--accordion-label-active-color); /* @libs */
+}
+
+.accordion li.active .accordion-item-label strong, /* @libs */
+.accordion li.active .accordion-item-label b { /* @libs */
+  color: var(--accordion-label-active-color); /* @libs */
+}
+
+/* chevron — vertically centred against the title row (rotation is around the
+   box centre, so top:50% + negative half-height keeps it centred when the title
+   wraps to multiple lines on mobile) */
+.accordion .accordion-item-label::after { /* @libs */
+  content: ''; /* @libs */
+  position: absolute; /* @libs */
+  top: 40%; /* @libs */
+  right: var(--accordion-icon-right); /* @libs */
+  width: var(--accordion-icon-size); /* @libs */
+  height: var(--accordion-icon-size); /* @libs */
+  margin-top: calc(var(--accordion-icon-size) / -2); /* @libs */
+  border: solid var(--accordion-icon-color); /* @libs */
+  border-width: 0 var(--accordion-icon-thickness) var(--accordion-icon-thickness) 0; /* @libs */
+  transform: rotate(45deg); /* @libs */
+  transform-origin: center; /* @libs */
+  transition: transform var(--accordion-icon-transition-duration) ease-in-out; /* @libs */
+}
+
+.accordion li.active .accordion-item-label::after { /* @libs */
+  border-color: var(--accordion-label-active-color); /* @libs */
+  transform: rotate(-135deg); /* @libs */
+}
+
+/* body / panel */
+.accordion .accordion-item-body { /* @libs */
+  display: none; /* @libs */
+}
+
+.accordion li.active .accordion-item-body { /* @libs */
+  display: flex; /* @libs */
+  flex-direction: column; /* @libs */
+  gap: var(--accordion-body-gap); /* @libs */
+  margin-top: var(--accordion-body-gap); /* @libs */
+  color: var(--accordion-body-color); /* @libs */
+  font-size: var(--accordion-body-font-size); /* @libs */
+  line-height: var(--accordion-body-line-height); /* @libs */
+  cursor: auto; /* @libs */
+}
+
+.accordion .accordion-item-body ul, /* @libs */
+.accordion .accordion-item-body ol { /* @libs */
+  margin: 0; /* @libs */
+  padding-left: 20px; /* @libs */
+  font-size: var(--accordion-body-list-font-size); /* @libs */
+}
+
+.accordion .accordion-item-body a { /* @libs */
+  color: var(--link-color); /* @libs */
+  font-weight: var(--font-weight-bold); /* @libs */
+}
+
+.accordion .accordion-item-body a:hover { /* @libs */
+  color: var(--link-hover-color); /* @libs */
+}
+
+/* tablet+: always reveal the descriptive phrase alongside the lead */
+@media (width >= 768px) { /* @libs */
+  .accordion .accordion-item-label-detail { /* @libs */
+    display: inline; /* @libs */
+  }
+}

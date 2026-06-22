@@ -1,0 +1,726 @@
+@import url('./hero-tokens.css');
+
+/* Hero Pharma - full-width hero with background image and text overlay */
+
+/* Supports single-panel (legacy) and dual-panel (two-slide split) modes */
+
+/* Remove section wrapper constraints so hero is full-bleed */
+main > .section.hero-container {
+  padding-bottom: 0;
+  margin: 0;
+}
+
+.hero-container .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   SINGLE-PANEL MODE (legacy — 1 image row + 1 text row)
+   ═══════════════════════════════════════════════════ */
+
+.hero.single {
+  position: relative;
+  min-height: var(--hero-single-min-height);
+  overflow: hidden;
+}
+
+/* Image row - positioned to fill entire hero as background */
+.hero.single > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: var(--hero-z-bg);
+}
+
+.hero.single > div:first-child > div,
+.hero.single > div:first-child p {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.hero.single img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* Content row - sits above the background image */
+.hero.single > div:last-of-type {
+  position: relative;
+  z-index: var(--hero-z-content);
+  max-width: var(--max-width-site);
+  margin: 0 auto;
+  width: 100%;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: var(--hero-single-min-height);
+  box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════
+   DUAL-PANEL MODE (two-slide split hero — vyepti.com split-banner parity)
+   ═══════════════════════════════════════════════════ */
+
+.hero-panels {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  min-height: var(--hero-panel-min-height);
+
+  p {
+    margin: 0;
+  }
+}
+
+/* Panel background image */
+.hero-panel-bg {
+  inset: 0;
+  z-index: var(--hero-z-bg);
+}
+
+.hero-panel-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+
+.hero .hero-panel-light .hero-panel-description > p:nth-child(2) {
+  font-size: var(--hero-light-hero-font-size) !important;
+  padding-bottom: var(--hero-body-gap);
+  font-family: var(--hero-font-family-display);
+  line-height: 36px;
+}
+
+/* ═══════════════════════════════════════════════════
+   SHARED STYLES (both modes)
+   ═══════════════════════════════════════════════════ */
+
+/* Eyebrow h3 - rose */
+.hero h3 {
+  color: var(--brand-rose);
+  font-size: var(--hero-eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--hero-eyebrow-line-height);
+  margin: 0 0 var(--hero-eyebrow-gap);
+}
+
+.hero h1 {
+  color: var(--brand-teal);
+  font-size: var(--heading-font-size-xxl);
+  font-weight: var(--heading-font-weight);
+  line-height: var(--hero-heading-line-height);
+  margin: 0 0 var(--hero-heading-gap);
+}
+
+/* Bold text in headings → accent color */
+.hero .accent-color {
+  color: var(--brand-rose);
+  font-weight: inherit;
+}
+
+.hero.single > div:last-of-type p {
+  color: var(--text-color);
+  font-size: var(--body-font-size-m);
+  font-weight: 400;
+  line-height: var(--hero-body-line-height);
+  margin: 0;
+}
+
+/* CTA link - teal outline pill button with arrow */
+.hero.single > div:last-of-type a,
+.hero .hero-panel-light a {
+  display: inline-block;
+  padding: var(--button-padding);
+  background-color: var(--background-color);
+  color: var(--brand-teal);
+  border-radius: var(--button-border-radius);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  text-decoration: none;
+  transition: var(--button-transition);
+  margin: var(--hero-body-gap) 0 0;
+}
+
+.hero .hero-panel-light .hero-panel-cta-wrap a {
+  margin: 0;
+  width: auto;
+  max-width: none;
+}
+
+
+/* Panel text overlay — matches #split-image-col-wrapper-* .cmp-teaser__content */
+.hero-panel-content {
+  position: absolute;
+  inset: 0;
+  z-index: var(--hero-z-content);
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Copy block — light column stays centered; dark stays left */
+.hero-panel-description {
+  width: 100%;
+  text-align: center;
+}
+
+.hero-panel-dark .hero-panel-description {
+  text-align: center;
+  max-width: 100%;
+}
+
+.hero .hero-panel-light .hero-panel-description > p:nth-child(1) {
+  padding-bottom: 0;
+}
+
+
+/* Dark panel — white Nunito-style stack (#split-image-col-wrapper-1) */
+.hero .hero-panel-dark .hero-panel-description > p {
+  color: var(--hero-text-color-light);
+  font-family: var(--hero-font-family-display);
+  font-size: var(--hero-dark-font-size);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  line-height: var(--hero-body-line-height-m);
+}
+
+.hero .hero-panel-dark .hero-panel-description > p:last-of-type {
+  font-size: var(--hero-dark-hero-font-size);
+  font-weight: var(--heading-font-weight);
+  line-height: 1;
+  margin-top: 0;
+}
+
+/* Light panel — teal headline + centered subcopy (#split-image-col-wrapper-2) */
+.hero .hero-panel-light .hero-panel-description > p {
+  color: var(--brand-teal);
+  font-size: var(--hero-light-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: 32px;
+  padding-bottom: var(--hero-eyebrow-gap);
+}
+
+.hero.single > div:last-of-type a::after,
+.hero .hero-panel-light a::after {
+  content: "";
+  display: inline-block;
+  width: var(--hero-cta-arrow-width);
+  height: var(--hero-cta-arrow-height);
+  margin-left: var(--hero-heading-gap);
+  vertical-align: middle;
+  background-image: url("https://www.assets.lundbeck-tools.com/content/dam/lundbeck/vyepti/overhaul/images/cta-button-arrow-20-global-blue.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.hero.single > div:last-of-type a:hover,
+.hero.single > div:last-of-type a:focus,
+.hero .hero-panel-light a:hover,
+.hero .hero-panel-light a:focus {
+  background-color: var(--brand-teal-light);
+}
+
+/* "Actor portrayal" caption */
+.hero .actor-portrayal {
+  position: absolute;
+  right: 20px;
+  bottom: 8px;
+  z-index: var(--hero-z-caption);
+  color: var(--background-color);
+  text-shadow: var(--hero-text-shadow);
+  font-style: normal;
+  font-weight: 400;
+  margin: 0;
+
+  sub {
+    font-size: var(--hero-caption-sub-font-size);
+  }
+}
+
+.hero .hero-panel-light .hero-panel-description > p:nth-child(3) {
+  color: var(--text-color) !important;
+  font-size: var(--hero-light-body-font-size);
+  font-weight: 400;
+  line-height: var(--hero-light-body-line-height);
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 0;
+}
+
+
+/* CTA band — absolute bottom, centered (vyepti #split-image-col-wrapper-2 .cmp-teaser__action-container) */
+.hero .hero-panel-cta-wrap {
+  position: absolute;
+  right: auto;
+  margin: 0;
+  padding: 0;
+   bottom: 35px;
+}
+
+  .hero-panel-dark .hero-panel-bg img {
+    object-position: 50% 50%;
+  }
+
+  .hero-panel-light .hero-panel-content {
+  padding: 20px;
+  padding-top:10px;
+}
+
+
+.hero-panel-light .hero-panel-bg img {
+  object-position: 55% bottom;
+  object-fit: cover;
+}
+  
+    .hero .hero-panel-light a {
+    padding: 19px 23px 19px 32px;
+  }
+
+/* ═══════════════════════════════════════════════════
+   SINGLE-LIGHT / SINGLE-DARK VARIANTS
+   Full-bleed background image with a left-aligned,
+   vertically-centered content overlay (H1 → body → CTA).
+   ═══════════════════════════════════════════════════ */
+
+.section.single-light .hero,
+.section.single-dark .hero {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+/* Image row flows in normal document flow — its rendered height drives the
+   hero height (matches source .cmp-teaser wrapping an img-fluid height:auto) */
+.section.single-light .hero > div:first-child,
+.section.single-dark .hero > div:first-child {
+  position: relative;
+  z-index: var(--hero-z-bg);
+}
+
+.section.single-light .hero > div:first-child > div,
+.section.single-dark .hero > div:first-child > div,
+.section.single-light .hero > div:first-child p,
+.section.single-dark .hero > div:first-child p {
+  width: 100%;
+  margin: 0;
+}
+
+/* Image drives height: width:100% + height:auto = intrinsic ratio per breakpoint */
+.section.single-light .hero img,
+.section.single-dark .hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Content overlay — left-aligned, vertically centered (overrides legacy bottom anchor) */
+.section.single-light .hero > div:last-of-type,
+.section.single-dark .hero > div:last-of-type {
+  position: absolute;
+  top: 5.5%;
+  z-index: var(--hero-z-content);
+  box-sizing: border-box;
+  max-width: var(--hero-single-content-max-width);
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: center;
+}
+
+/* Headline */
+.section.single-light .hero h1,
+.section.single-dark .hero h1 {
+  font-family: var(--hero-font-family-display);
+  font-size: var( --hero-single-heading-font-size-s);
+  font-weight: var(--heading-font-weight);
+  line-height: var(--hero-heading-line-height);
+  margin: 0 0 var(--hero-heading-gap);
+  max-width: 100%;
+}
+
+/* Body copy */
+.section.single-light .hero > div:last-of-type p,
+.section.single-dark .hero > div:last-of-type p {
+  font-size: var(--hero-single-body-font-size);
+  font-weight: 400;
+  line-height: var(--hero-body-line-height);
+}
+
+/* CTA — rose pill, white label, white arrow (shared) */
+.section.single-light .hero > div:last-of-type a,
+.section.single-dark .hero > div:last-of-type a {
+  display: inline-block;
+  margin: var(--hero-body-gap) 0 0;
+  padding: var(--button-padding);
+  background-color: var(--hero-single-cta-bg);
+  color: var(--hero-single-cta-color);
+  border-radius: var(--button-border-radius);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  text-decoration: none;
+  transition: var(--button-transition);
+}
+
+.section.single-light .hero > div:last-of-type a::after,
+.section.single-dark .hero > div:last-of-type a::after {
+  content: "";
+  display: inline-block;
+  width: var(--hero-cta-arrow-width);
+  height: var(--hero-cta-arrow-height);
+  margin-left: var(--hero-heading-gap);
+  vertical-align: middle;
+  background-image: var(--hero-single-cta-arrow);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.section.single-light .hero > div:last-of-type a:hover,
+.section.single-light .hero > div:last-of-type a:focus,
+.section.single-dark .hero > div:last-of-type a:hover,
+.section.single-dark .hero > div:last-of-type a:focus {
+  background-color: var(--hero-single-cta-bg-hover);
+  color: var(--hero-single-cta-color);
+}
+
+/* "Actor portrayal" caption — italic, bottom-right */
+.section.single-light .hero .actor-portrayal,
+.section.single-dark .hero .actor-portrayal {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: var(--hero-z-caption);
+  margin: 0;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── single-dark: white text over imagery ── */
+.section.single-dark .hero h1
+ {
+ color: var(--brand-teal);
+ padding: 0 25px 24px; 
+ margin: 0;
+}
+
+.section.single-dark .hero .actor-portrayal {
+  color: var(--hero-text-color-light);
+  text-shadow: var(--hero-text-shadow);
+}
+
+/* ── single-light: teal headline, dark body ── */
+.section.single-light .hero h1 {
+  color: var(--hero-text-color-light);
+}
+
+.section.single-light .hero > div:last-of-type p {
+  color: var(--hero-text-color-light);
+}
+
+.section.single-light .hero .actor-portrayal {
+  color: var(--hero-text-color-light);
+}
+
+
+
+@media (width >= 600px) {
+  .hero.single {
+    min-height: var(--hero-single-min-height-tablet);
+  }
+
+  .hero.single > div:last-of-type {
+    min-height: var(--hero-single-min-height-tablet);
+  }
+
+  .section.single-light .hero > div:last-of-type, .section.single-dark .hero > div:last-of-type
+  { justify-content: center;
+ }
+ 
+ .section.single-light .hero h1, .section.single-dark .hero h1
+ {
+   padding-bottom: 24px;
+ }
+}
+
+
+@media (width >= 768px) {
+  /* Single-panel desktop */
+  .hero.single {
+    min-height: unset;
+    aspect-ratio: var(--hero-aspect-ratio);
+  }
+
+  .hero.single > div:last-of-type {
+    min-height: unset;
+    padding: 60px 32px;
+  }
+
+  .hero.single h3,
+  .hero.single h1,
+  .hero.single > div:last-of-type p {
+    width: 55%;
+  }
+
+  .hero h3 {
+    font-size: var(--hero-eyebrow-font-size-desktop);
+  }
+
+  .hero h1 {
+    font-size: var(--heading-font-size-xxl);
+    line-height: var(--hero-heading-line-height);
+  }
+
+  .hero-panel-light .hero-panel-content {
+    padding: 20px;
+  }
+
+  .hero .hero-panel-cta-wrap {
+    bottom: 50px;
+  }
+
+  .hero .hero-panel-dark .hero-panel-description > p {
+    font-size: var(--hero-dark-font-size-desktop);
+    line-height: var(--hero-body-line-height);
+  }
+
+  .hero .hero-panel-light .hero-panel-description > p {
+    font-size: var(--hero-light-font-size-desktop);
+  }
+
+  .hero .hero-panel-dark .hero-panel-description > p:last-of-type {
+    font-size: var(--hero-dark-hero-font-size-desktop);
+    line-height: 32px;
+  }
+
+  .hero.single .actor-portrayal {
+    bottom: 34px;
+    right: 67px;
+  }
+
+  /* Dual-panel desktop — height = vyepti banner 2880×1116 (explicit + aspect fallback) */
+  .hero-panels {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .hero-panel {
+    flex: 1 1 50%;
+    min-height: 0;
+    height: 100%;
+    align-self: stretch;
+  }
+
+  /* Cancel legacy .hero.single fixed aspect-ratio — section variant is image-driven */
+  .section.single-light .hero,
+  .section.single-dark .hero {
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+
+  .section.single-light .hero > div:last-of-type,
+  .section.single-dark .hero > div:last-of-type {
+    max-width: 720px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    padding-right:15px;
+    padding-left:15px;
+  }
+
+  .section.single-light .hero h1,
+  .section.single-dark .hero h1 {
+  font-size: var(--hero-single-heading-font-size-m);
+    margin:0;
+  }
+
+  .section.single-dark .hero h1 {
+    padding: 0 0 16px;
+  }
+
+
+  .section.single-light .hero h1,
+  .section.single-dark .hero h1,
+  .section.single-light .hero > div:last-of-type p,
+  .section.single-dark .hero > div:last-of-type p {
+    width: 60%;
+    text-align: left;
+  }
+
+  .section.single-light .hero .actor-portrayal,
+  .section.single-dark .hero .actor-portrayal {
+    right: 40px;
+    bottom: 20px;
+  }
+
+.section.single-light .hero > div:last-of-type a, .section.single-dark .hero > div:last-of-type a {
+  margin-top:24px;
+}
+}
+
+@media (width >= 992px) {
+  .hero-panel-dark .hero-panel-description {
+    max-width: 100%;
+  }
+
+  .hero-panel-content {
+    padding-top: 30px;
+  }
+
+  .hero .actor-portrayal {
+    bottom: 20px;
+    right: 60px;
+  }
+
+  .hero .hero-panel-cta-wrap {
+    bottom: 60px;
+  }
+
+  .hero .hero-panel-light .hero-panel-description > p:nth-child(3) {
+    width: 60%;
+  }
+
+  .section.single-light .hero h1, .section.single-dark .hero h1  {
+    font-size: 42px;
+    line-height: 48px;
+}
+
+ .section.single-light .hero > div:last-of-type,
+.section.single-dark .hero > div:last-of-type {
+ max-width: 960px;
+}
+
+.section.single-light .hero h1,  .section.single-light .hero > div:last-of-type p {
+ max-width:55%;
+}
+
+.section.single-dark .hero h1,  .section.single-dark .hero > div:last-of-type p {
+ width:70%;
+}
+}
+
+@media (width >= 1200px) {
+  .hero-panel-content {
+    padding-top: 40px;
+  }
+
+  .hero-panel-light .hero-panel-bg img {
+    object-position: 58% center;
+  }
+
+      .hero-panel-light .hero-panel-content {
+        padding:40px;
+      }
+
+  .hero .hero-panel-light .hero-panel-description > p {
+    font-size: var(--hero-light-font-size-wide);
+  }
+
+  .section.single-light .hero > div:last-of-type,
+  .section.single-dark .hero > div:last-of-type {
+     max-width: 1140px;
+  }
+
+  .section.single-light .hero h1, .section.single-dark .hero h1 {
+    font-size: var(--hero-single-heading-font-size-desktop);
+    line-height: 60px;
+  }
+
+    .section.single-dark .hero h1,  .section.single-dark .hero > div:last-of-type p {
+    width:60%;
+    padding-left: 0;
+  }
+}
+
+@media (width >= 1400px) {
+  .hero .hero-panel-dark .hero-panel-description > p {
+   line-height: var(--hero-body-line-height-l);
+  }
+}
+  
+
+@media (width >= 1440px) {
+  .hero-panel-content {
+    padding-top: 38px;
+  }
+
+  .hero .hero-panel-dark .hero-panel-description > p {
+    font-size: var(--hero-dark-font-size-wide);
+    line-height: 1.5;
+  }
+
+  .hero .hero-panel-light .hero-panel-description > p:nth-child(1) {
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  .hero .hero-panel-light .hero-panel-description > p:nth-child(2) {
+    font-size: var(--hero-light-hero-font-size-xl) !important;
+    line-height: .9;
+  }
+
+  .hero .hero-panel-dark .hero-panel-description > p:last-of-type {
+    font-size: var(--hero-dark-hero-font-size-xl);
+    line-height: 1;
+  }
+
+  .hero .hero-panel-light .hero-panel-description > p:nth-child(3) {
+    line-height: 24px;
+    font-size: 18px;
+  }
+
+    .hero .hero-panel .actor-portrayal sub {
+    font-size: var(--hero-caption-sub-font-size-xl);
+  }
+}
+
+@media (width >= 1600px) {
+  .hero-panel-light .hero-panel-description {
+    width: 75%;
+    margin-right: 25%;
+    margin-left: 0;
+  }
+
+  .hero .hero-panel-dark .hero-panel-description > p {
+    margin-left:25%;
+  }
+
+    .hero .hero-panel-light .hero-panel-description > p:nth-child(2) {
+    line-height: 60px !important;
+  }
+
+  .hero .hero-panel-light .hero-panel-description > p:nth-child(3) {
+    width: 100%;
+  }
+
+ .hero .hero-panel-cta-wrap  {
+    margin-right: 25%;
+}
+}

@@ -1,0 +1,48 @@
+@import url('./back-to-top-tokens.css');
+
+.back-to-top.block {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+
+.back-to-top.block button {
+  position: fixed;
+  right: var(--back-to-top-offset-right);
+  top: var(--back-to-top-top);
+  z-index: var(--back-to-top-z-index);
+  width: var(--back-to-top-width);
+  height: var(--back-to-top-height);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background-color: transparent;
+  background-image: url('/icons/toptobottom.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.back-to-top.block button.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top.block button:hover,
+.back-to-top.block button:focus {
+  cursor: default;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+@media (width >= 768px) {
+  .back-to-top.block button {
+    top: auto;
+    bottom: var(--back-to-top-bottom);
+  }
+}

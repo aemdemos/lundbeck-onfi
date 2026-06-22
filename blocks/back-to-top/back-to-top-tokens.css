@@ -1,0 +1,9 @@
+/* back-to-top design tokens */
+:root {
+  --back-to-top-width: 35px;
+  --back-to-top-height: 55px;
+  --back-to-top-offset-right: 0;
+  --back-to-top-top: 300px;
+  --back-to-top-bottom: 140px;
+  --back-to-top-z-index: 100;
+}

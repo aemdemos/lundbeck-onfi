@@ -1,0 +1,374 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/*
+ * Design tokens — two tiers:
+ *   Tier 1 (this :root) = global semantic tokens; the surface a theme/customer overrides.
+ *   Tier 2 = component tokens in blocks/{name}/{name}-tokens.css, which reference these.
+ *
+ * Migration marker — a trailing  @boilerplate  comment marks a line that is still untouched
+ *   boilerplate, NOT yet reviewed against the customer. EVERY rule line across the boilerplate's
+ *   CSS carries it (declarations and selector/at-rule opening lines alike). It is TRANSIENT
+ *   scaffolding, not permanent metadata:
+ *     - As the customer's styling is applied, each line is either rewritten or consciously kept,
+ *       and EITHER WAY its marker is DELETED. Never "flip" it — just remove it.
+ *     - When no markers remain, migration is complete and this is plain CSS again.
+ *   A Claude Code hook (.claude/hooks/check-boilerplate-markers.mjs) flags any line you edit but
+ *   leave marked — but only in a customer migration; it stays silent in the aemdemos/ise-boilerplate
+ *   source repo, where keeping markers on edits is correct. Audit remaining work (anchored on the
+ *   marker token, so prose is not counted):
+ *     grep -rn  '/\* @boilerplate' styles/ blocks/   (every untouched line)
+ *     grep -rc  '/\* @boilerplate' styles/ blocks/   (remaining count per file)
+ */
+:root { /* @boilerplate */
+  /* colors */
+  --background-color: white; /* @boilerplate */
+  --light-color: #f8f8f8; /* @boilerplate */
+  --dark-color: #505050; /* @boilerplate */
+  --text-color: #131313; /* @boilerplate */
+  --link-color: #3b63fb; /* @boilerplate */
+  --link-hover-color: #1d3ecf; /* @boilerplate */
+  --overlay-background-color: lightgrey; /* @boilerplate */
+  --error-color: firebrick; /* @boilerplate */
+
+  /* fonts */
+  --body-font-family: roboto, roboto-fallback, sans-serif; /* @boilerplate */
+  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif; /* @boilerplate */
+
+  /* body sizes */
+  --body-font-size-m: 22px; /* @boilerplate */
+  --body-font-size-s: 19px; /* @boilerplate */
+  --body-font-size-xs: 17px; /* @boilerplate */
+
+  /* heading sizes */
+  --heading-font-size-xxl: 55px; /* @boilerplate */
+  --heading-font-size-xl: 44px; /* @boilerplate */
+  --heading-font-size-l: 34px; /* @boilerplate */
+  --heading-font-size-m: 27px; /* @boilerplate */
+  --heading-font-size-s: 24px; /* @boilerplate */
+  --heading-font-size-xs: 22px; /* @boilerplate */
+
+  /* line heights & weights */
+  --body-line-height: 1.6; /* @boilerplate */
+  --heading-line-height: 1.25; /* @boilerplate */
+  --heading-font-weight: 600; /* @boilerplate */
+
+  /* block flow rhythm (space above/below text blocks) */
+  --block-margin-top: 0.8em; /* @boilerplate */
+  --block-margin-bottom: 0.25em; /* @boilerplate */
+
+  /* spacing scale */
+  --spacing-xs: 8px; /* @boilerplate */
+  --spacing-s: 16px; /* @boilerplate */
+  --spacing-m: 24px; /* @boilerplate */
+  --spacing-l: 32px; /* @boilerplate */
+  --spacing-xl: 40px; /* @boilerplate */
+
+  /* borders */
+  --border-width-s: 1px; /* @boilerplate */
+  --border-color: #dadada; /* @boilerplate */
+  --border-radius-s: 4px; /* @boilerplate */
+  --border-radius-m: 8px; /* @boilerplate */
+
+  /* motion */
+  --transition-duration: 0.2s; /* @boilerplate */
+
+  /* focus ring */
+  --focus-ring-width: 2px; /* @boilerplate */
+  --focus-ring-offset: 2px; /* @boilerplate */
+  --focus-ring-color: var(--link-color); /* @boilerplate */
+
+  /* semantic color aliases — map intent onto the palette above (no marker: provenance follows the target) */
+  --color-surface: var(--background-color); /* @boilerplate */
+  --color-on-surface: var(--text-color); /* @boilerplate */
+  --color-action: var(--link-color); /* @boilerplate */
+  --color-action-hover: var(--link-hover-color); /* @boilerplate */
+
+  /* layout */
+  --max-width-site: 1200px; /* @boilerplate */
+  --icon-size: 24px; /* @boilerplate */
+
+  /* buttons (primary CTA = action color; secondary = outline) */
+  --button-margin: 12px 0; /* @boilerplate */
+  --button-padding: 0.5em 1.2em; /* @boilerplate */
+  --button-border-width: 2px; /* @boilerplate */
+  --button-border-radius: 2.4em; /* @boilerplate */
+  --button-font-weight: 500; /* @boilerplate */
+  --button-line-height: 1.25; /* @boilerplate */
+  --button-background: var(--color-action); /* @boilerplate */
+  --button-hover-background: var(--color-action-hover); /* @boilerplate */
+  --button-text-color: var(--background-color); /* @boilerplate */
+  --button-disabled-background: var(--light-color); /* @boilerplate */
+
+  /* nav heights */
+  --nav-height: 64px; /* @boilerplate */
+  --breadcrumbs-height: 34px; /* @boilerplate */
+  --header-height: var(--nav-height); /* @boilerplate */
+
+  /* fixed-width / code */
+  --fixed-font-family: 'Roboto Mono', menlo, consolas, monospace; /* @boilerplate */
+}
+
+/* fallback fonts */
+@font-face { /* @boilerplate */
+  font-family: roboto-condensed-fallback; /* @boilerplate */
+  size-adjust: 88.82%; /* @boilerplate */
+  src: local('Arial'); /* @boilerplate */
+}
+
+@font-face { /* @boilerplate */
+  font-family: roboto-fallback; /* @boilerplate */
+  size-adjust: 99.529%; /* @boilerplate */
+  src: local('Arial'); /* @boilerplate */
+}
+
+@media (width >= 900px) { /* @boilerplate */
+  :root { /* @boilerplate */
+    /* desktop overrides of the type scale above — resolve alongside the base values */
+
+    /* body sizes */
+    --body-font-size-m: 18px; /* @boilerplate */
+    --body-font-size-s: 16px; /* @boilerplate */
+    --body-font-size-xs: 14px; /* @boilerplate */
+
+    /* heading sizes */
+    --heading-font-size-xxl: 45px; /* @boilerplate */
+    --heading-font-size-xl: 36px; /* @boilerplate */
+    --heading-font-size-l: 28px; /* @boilerplate */
+    --heading-font-size-m: 22px; /* @boilerplate */
+    --heading-font-size-s: 20px; /* @boilerplate */
+    --heading-font-size-xs: 18px; /* @boilerplate */
+  }
+}
+
+body { /* @boilerplate */
+  display: none; /* @boilerplate */
+  margin: 0; /* @boilerplate */
+  background-color: var(--background-color); /* @boilerplate */
+  color: var(--text-color); /* @boilerplate */
+  font-family: var(--body-font-family); /* @boilerplate */
+  font-size: var(--body-font-size-m); /* @boilerplate */
+  line-height: var(--body-line-height); /* @boilerplate */
+}
+
+body.appear { /* @boilerplate */
+  display: block; /* @boilerplate */
+}
+
+header { /* @boilerplate */
+  height: var(--header-height); /* @boilerplate */
+}
+
+header .header,
+footer .footer { /* @boilerplate */
+  visibility: hidden; /* @boilerplate */
+}
+
+header .header[data-block-status="loaded"],
+footer .footer[data-block-status="loaded"] { /* @boilerplate */
+  visibility: visible; /* @boilerplate */
+}
+
+@media (width >= 900px) { /* @boilerplate */
+  body[data-breadcrumbs] { /* @boilerplate */
+    --header-height: calc(var(--nav-height) + var(--breadcrumbs-height)); /* @boilerplate */
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 { /* @boilerplate */
+  margin-top: var(--block-margin-top); /* @boilerplate */
+  margin-bottom: var(--block-margin-bottom); /* @boilerplate */
+  font-family: var(--heading-font-family); /* @boilerplate */
+  font-weight: var(--heading-font-weight); /* @boilerplate */
+  line-height: var(--heading-line-height); /* @boilerplate */
+  scroll-margin: var(--spacing-xl); /* @boilerplate */
+}
+
+h1 { font-size: var(--heading-font-size-xxl); } /* @boilerplate */
+h2 { font-size: var(--heading-font-size-xl); } /* @boilerplate */
+h3 { font-size: var(--heading-font-size-l); } /* @boilerplate */
+h4 { font-size: var(--heading-font-size-m); } /* @boilerplate */
+h5 { font-size: var(--heading-font-size-s); } /* @boilerplate */
+h6 { font-size: var(--heading-font-size-xs); } /* @boilerplate */
+
+p,
+dl,
+ol,
+ul,
+pre,
+blockquote { /* @boilerplate */
+  margin-top: var(--block-margin-top); /* @boilerplate */
+  margin-bottom: var(--block-margin-bottom); /* @boilerplate */
+}
+
+code,
+pre { /* @boilerplate */
+  font-family: var(--fixed-font-family); /* @boilerplate */
+  font-size: var(--body-font-size-s); /* @boilerplate */
+}
+
+pre { /* @boilerplate */
+  padding: var(--spacing-s); /* @boilerplate */
+  border-radius: var(--border-radius-m); /* @boilerplate */
+  background-color: var(--light-color); /* @boilerplate */
+  overflow-x: auto; /* @boilerplate */
+  white-space: pre; /* @boilerplate */
+}
+
+main > div { /* @boilerplate */
+  margin: var(--spacing-xl) var(--spacing-s); /* @boilerplate */
+}
+
+input,
+textarea,
+select,
+button { /* @boilerplate */
+  font: inherit; /* @boilerplate */
+}
+
+/* links */
+a { /* @boilerplate */
+  color: var(--link-color); /* @boilerplate */
+  text-decoration: none; /* @boilerplate */
+  overflow-wrap: break-word; /* @boilerplate */
+}
+
+a:hover { /* @boilerplate */
+  color: var(--link-hover-color); /* @boilerplate */
+  text-decoration: underline; /* @boilerplate */
+}
+
+/* buttons */
+a.button,
+button { /* @boilerplate */
+  box-sizing: border-box; /* @boilerplate */
+  display: inline-block; /* @boilerplate */
+  max-width: 100%; /* @boilerplate */
+  margin: var(--button-margin); /* @boilerplate */
+  border: var(--button-border-width) solid transparent; /* @boilerplate */
+  border-radius: var(--button-border-radius); /* @boilerplate */
+  padding: var(--button-padding); /* @boilerplate */
+  font-family: var(--body-font-family); /* @boilerplate */
+  font-style: normal; /* @boilerplate */
+  font-weight: var(--button-font-weight); /* @boilerplate */
+  line-height: var(--button-line-height); /* @boilerplate */
+  text-align: center; /* @boilerplate */
+  text-decoration: none; /* @boilerplate */
+  background-color: var(--button-background); /* @boilerplate */
+  color: var(--button-text-color); /* @boilerplate */
+  cursor: pointer; /* @boilerplate */
+  overflow: hidden; /* @boilerplate */
+  text-overflow: ellipsis; /* @boilerplate */
+  white-space: nowrap; /* @boilerplate */
+}
+
+a.button:hover,
+a.button:focus,
+button:hover,
+button:focus { /* @boilerplate */
+  background-color: var(--button-hover-background); /* @boilerplate */
+  cursor: pointer; /* @boilerplate */
+}
+
+button:disabled,
+button:disabled:hover { /* @boilerplate */
+  background-color: var(--button-disabled-background); /* @boilerplate */
+  cursor: unset; /* @boilerplate */
+}
+
+a.button.secondary,
+button.secondary { /* @boilerplate */
+  background-color: unset; /* @boilerplate */
+  border: var(--button-border-width) solid currentcolor; /* @boilerplate */
+  color: var(--text-color); /* @boilerplate */
+}
+
+main img { /* @boilerplate */
+  max-width: 100%; /* @boilerplate */
+  width: auto; /* @boilerplate */
+  height: auto; /* @boilerplate */
+}
+
+.icon { /* @boilerplate */
+  display: inline-block; /* @boilerplate */
+  height: var(--icon-size); /* @boilerplate */
+  width: var(--icon-size); /* @boilerplate */
+}
+
+.icon img { /* @boilerplate */
+  height: 100%; /* @boilerplate */
+  width: 100%; /* @boilerplate */
+}
+
+/* sections */
+main > .section { /* @boilerplate */
+  padding: var(--spacing-xl) 0; /* @boilerplate */
+  margin: 0; /* @boilerplate */
+}
+
+main > .section > div:not(.bg-image) { /* @boilerplate */
+  max-width: var(--max-width-site); /* @boilerplate */
+  margin: auto; /* @boilerplate */
+  padding: 0 var(--spacing-m); /* @boilerplate */
+}
+
+/* Section metadata: background image sits behind content */
+main > .section:has(> .bg-image) { /* @boilerplate */
+  position: relative; /* @boilerplate */
+  overflow: hidden; /* @boilerplate */
+}
+
+main > .section:has(> .bg-image) > div:not(.bg-image) { /* @boilerplate */
+  position: relative; /* @boilerplate */
+  z-index: 1; /* @boilerplate */
+}
+
+main > .section > .bg-image { /* @boilerplate */
+  position: absolute; /* @boilerplate */
+  inset: 0; /* @boilerplate */
+  z-index: 0; /* @boilerplate */
+  pointer-events: none; /* @boilerplate */
+}
+
+main > .section > .bg-image picture,
+main > .section > .bg-image img { /* @boilerplate */
+  display: block; /* @boilerplate */
+  width: 100%; /* @boilerplate */
+  height: 100%; /* @boilerplate */
+}
+
+main > .section > .bg-image img { /* @boilerplate */
+  object-fit: cover; /* @boilerplate */
+}
+
+main > .section:first-of-type { /* @boilerplate */
+  margin-top: 0; /* @boilerplate */
+}
+
+@media (width >= 900px) { /* @boilerplate */
+  main > .section > div:not(.bg-image) { /* @boilerplate */
+    padding: 0 var(--spacing-l); /* @boilerplate */
+  }
+}
+
+/* section metadata */
+main .section.light,
+main .section.highlight { /* @boilerplate */
+  background-color: var(--light-color); /* @boilerplate */
+  margin: 0; /* @boilerplate */
+  padding: var(--spacing-xl) 0; /* @boilerplate */
+}

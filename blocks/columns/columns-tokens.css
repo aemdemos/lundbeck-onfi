@@ -1,0 +1,7 @@
+/* columns design tokens */
+:root { /* @boilerplate */
+  --columns-gap: var(--spacing-m, 24px); /* @boilerplate */
+  --columns-divider-width: 1px;
+  --columns-divider-spacing: var(--spacing-l, 32px);
+  --columns-divider-color: #7ebcc6;
+}

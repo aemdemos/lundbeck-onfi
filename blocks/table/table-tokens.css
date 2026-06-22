@@ -1,0 +1,14 @@
+/* table design tokens */
+:root { /* @libs */
+  --table-border-color: #d1d1d1; /* @libs */
+  --table-header-bg: linear-gradient(270deg, var(--brand-teal-light) 0%, var(--light-color) 30%); /* @libs */
+  --table-header-text-color: var(--brand-teal); /* @libs */
+  --table-header-font-size: 20px; /* @libs */
+  --table-header-line-height: 24px; /* @libs */
+  --table-header-padding: 6px 16px; /* @libs */
+  --table-accent-color: var(--brand-secondary); /* @libs */
+  --table-row-border-width: 1px; /* @libs */
+  --table-cell-padding-block: 16px; /* @libs */
+  --table-cell-padding-inline: 16px; /* @libs */
+  --table-cell-padding-block-desktop: 21px; /* @libs */
+}

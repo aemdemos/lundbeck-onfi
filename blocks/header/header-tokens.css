@@ -1,0 +1,26 @@
+/* header design tokens (layout only; colors/typography use global tokens) */
+:root { /* @boilerplate */
+  --nav-height: 200px;
+  --header-nav-max-width-mobile: 510px;
+  --header-nav-max-width-tablet: 690px;
+  --header-nav-max-width-desktop: 930px;
+  --header-nav-max-width-max: 1110px;
+  --header-white-text-color: #fff;
+  --header-text-color: #484848;
+
+  /* font */
+  --header-font-weight-xs: 500;
+  --header-font-weight-s: 600;
+  --header-font-weight-medium: 700;
+  --header-font-weight-bold: 800;
+  --header-font-size-xs: 14px;
+  --header-font-size-s: 16px;
+  --header-font-size-m: 18px;
+  --header-padding-container: 15px;
+
+  /* line heights */
+  --header-line-height-xs: 14px;
+  --header-line-height-s: 18px;
+  --header-line-height-m: 22px;
+  --header-line-height-l: 24px;
+}

@@ -1,0 +1,84 @@
+/* carousel design tokens */
+:root { /* @boilerplate */
+  --carousel-content-margin: 68px; /* @boilerplate */
+  --carousel-content-margin-desktop: 92px; /* @boilerplate */
+  --carousel-content-padding: 16px;
+  --carousel-content-color: white; /* @boilerplate */
+  --carousel-content-background: rgb(19 19 19 / 75%); /* @boilerplate */
+  --carousel-indicators-gap: 6px 12px; /* @boilerplate */
+  --carousel-indicators-padding: 12px; /* @boilerplate */
+  --carousel-indicator-size: 24px; /* @boilerplate */
+  --carousel-indicator-background: #dadada; /* @boilerplate */
+  --carousel-indicator-active-background: var(--text-color); /* @boilerplate */
+  --carousel-nav-inset: 12px; /* @boilerplate */
+  --carousel-nav-inset-desktop: 24px;
+  --carousel-nav-button-size: 44px; /* @boilerplate */
+  --carousel-nav-arrow-size: 12px; /* @boilerplate */
+  --carousel-nav-arrow-thickness: 2px; /* @boilerplate */
+  --carousel-nav-arrow-offset: 2px; /* @boilerplate */
+  --carousel-nav-arrow-prev-color: var(--brand-rose);
+  --carousel-nav-arrow-next-color: var(--brand-rose);
+  --carousel-transition-duration: var(--transition-duration); /* @boilerplate */
+
+  /* default carousel — clean card layout (image beside content on a light surface)
+     instead of the boilerplate dark-overlay hero. */
+  --carousel-radius: 6px;
+  --carousel-surface: var(--card-bg-light);
+  --carousel-card-text-color: var(--text-color);
+  --carousel-card-content-padding: 24px 32px;
+  --carousel-card-image-flex: 50%;
+  --carousel-card-image-height: 260px;
+  --carousel-card-image-height-desktop: 360px;
+  --carousel-card-heading-color: var(--brand-teal);
+
+  /* testimonial variant — tokenized from poc-vyepti / vyepti.com; brand sites override via tokens.
+     Icon URLs are intentionally empty (none): brand sites set them; absent = graceful CSS fallback.
+     Layout: light card with the quote on one side and the patient photo on the other,
+     the photo filling the full card height. */
+  --carousel-testimonial-radius: 6px;
+  --carousel-testimonial-gap-section: 40px;
+  --carousel-testimonial-surface: var(--card-bg-light);
+  --carousel-testimonial-content-padding: 24px 24px 32px;
+  --carousel-testimonial-content-padding-desktop: 0 48px 0 56px;
+
+  /* heading (quote) */
+  --carousel-testimonial-heading-color: var(--brand-teal);
+  --carousel-testimonial-heading-size: var(--heading-font-size-xl);
+  --carousel-testimonial-heading-weight: 800;
+  --carousel-testimonial-heading-line-height: 1.2;
+  --carousel-testimonial-heading-margin: 0 0 16px;
+
+  /* coral divider after the quote (vyepti.com computed: #f16464, 50x4) */
+  --carousel-testimonial-divider-color: #f16464;
+  --carousel-testimonial-divider-width: 50px;
+  --carousel-testimonial-divider-height: 4px;
+  --carousel-testimonial-divider-gap: 16px;
+
+  /* attribution / disclaimer */
+  --carousel-testimonial-attribution-size: var(--body-font-size-s);
+  --carousel-testimonial-disclaimer-size: var(--body-font-size-xs);
+  --carousel-testimonial-text-color: var(--text-color);
+
+  /* link */
+  --carousel-testimonial-link-color: var(--link-color);
+  --carousel-testimonial-link-hover-color: var(--link-hover-color);
+  --carousel-testimonial-link-weight: 700;
+
+  /* quote icon above heading — deferred asset (none until a brand supplies it) */
+  --carousel-testimonial-quote-icon: none;
+  --carousel-testimonial-icon-size: 44px;
+
+  /* indicators (ring style) */
+  --carousel-testimonial-indicator-size: 13px;
+  --carousel-testimonial-indicator-color: var(--brand-rose);
+
+  /* nav buttons */
+  --carousel-testimonial-nav-button-size: 36px;
+  --carousel-testimonial-nav-inset: 16px;
+  --carousel-testimonial-nav-arrow-next-color: #fff;
+
+  /* image — photo fills its side at full card height; on mobile it's a fixed-height band. */
+  --carousel-testimonial-image-flex: 40%;
+  --carousel-testimonial-image-height: 280px;
+  --carousel-testimonial-slide-height-desktop: 400px;
+}

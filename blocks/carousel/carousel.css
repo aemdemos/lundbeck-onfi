@@ -1,0 +1,358 @@
+@import url('./carousel-tokens.css');
+
+.carousel .carousel-slides-container { /* @boilerplate */
+  position: relative; /* @boilerplate */
+}
+
+.carousel .carousel-slides,
+.carousel .carousel-slide-indicators { /* @boilerplate */
+  list-style: none; /* @boilerplate */
+  margin: 0; /* @boilerplate */
+  padding: 0; /* @boilerplate */
+}
+
+.carousel .carousel-slides { /* @boilerplate */
+  display: flex; /* @boilerplate */
+  scroll-behavior: smooth; /* @boilerplate */
+  scroll-snap-type: x mandatory; /* @boilerplate */
+  overflow: scroll clip; /* @boilerplate */
+}
+
+.carousel .carousel-slides::-webkit-scrollbar { /* @boilerplate */
+  display: none; /* @boilerplate */
+}
+
+/* Clean card layout: image beside content on a light surface (not a dark-overlay hero). */
+.carousel .carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
+  border-radius: var(--carousel-radius);
+  overflow: hidden;
+}
+
+.carousel .carousel-slide > div {
+  background-color: var(--carousel-surface);
+}
+
+.carousel .carousel-slide .carousel-slide-image {
+  width: 100%;
+  height: var(--carousel-card-image-height);
+  line-height: 0;
+}
+
+.carousel .carousel-slide .carousel-slide-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel .carousel-slide .carousel-slide-image picture > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.carousel .carousel-slide .carousel-slide-content {
+  z-index: 1;
+  margin: 0;
+  padding: var(--carousel-card-content-padding);
+  color: var(--carousel-card-text-color);
+  background-color: transparent;
+  position: relative;
+  width: auto;
+}
+
+.carousel .carousel-slide-content h2,
+.carousel .carousel-slide-content h3 {
+  margin-top: 0;
+  color: var(--carousel-card-heading-color);
+}
+
+.carousel .carousel-slide-indicators { /* @boilerplate */
+  display: flex; /* @boilerplate */
+  flex-wrap: wrap; /* @boilerplate */
+  justify-content: center; /* @boilerplate */
+  gap: var(--carousel-indicators-gap); /* @boilerplate */
+  padding: var(--carousel-indicators-padding); /* @boilerplate */
+  background-color: var(--light-color); /* @boilerplate */
+  line-height: 0; /* @boilerplate */
+}
+
+.carousel .carousel-slide-indicator button { /* @boilerplate */
+  width: var(--carousel-indicator-size); /* @boilerplate */
+  height: var(--carousel-indicator-size); /* @boilerplate */
+  margin: 0; /* @boilerplate */
+  padding: 0; /* @boilerplate */
+  border-radius: 50%; /* @boilerplate */
+  background-color: var(--carousel-indicator-background); /* @boilerplate */
+  transition: background-color var(--carousel-transition-duration); /* @boilerplate */
+}
+
+.carousel .carousel-slide-indicator button:disabled,
+.carousel .carousel-slide-indicator button:hover,
+.carousel .carousel-slide-indicator button:focus-visible { /* @boilerplate */
+  background-color: var(--carousel-indicator-active-background); /* @boilerplate */
+}
+
+.carousel .carousel-navigation-buttons { /* @boilerplate */
+  position: absolute; /* @boilerplate */
+  top: 50%; /* @boilerplate */
+  transform: translateY(-50%); /* @boilerplate */
+  left: var(--carousel-nav-inset); /* @boilerplate */
+  right: var(--carousel-nav-inset); /* @boilerplate */
+  display: flex; /* @boilerplate */
+  align-items: center; /* @boilerplate */
+  justify-content: space-between; /* @boilerplate */
+  z-index: 2; /* above .carousel-slide-content (z-index: 1) so arrows stay clickable */
+}
+
+/* Bare angle arrows — no circle/background. Color comes from currentColor:
+   prev = brand red, next = white. */
+/* stylelint-disable-next-line no-descending-specificity */
+.carousel .carousel-navigation-buttons button {
+  position: relative;
+  width: var(--carousel-nav-button-size);
+  height: var(--carousel-nav-button-size);
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background-color: transparent;
+  transition: opacity var(--carousel-transition-duration);
+}
+
+.carousel .carousel-navigation-buttons button.slide-prev {
+  color: var(--carousel-nav-arrow-prev-color);
+}
+
+.carousel .carousel-navigation-buttons button.slide-next {
+  color: var(--carousel-nav-arrow-next-color);
+}
+
+.carousel .carousel-navigation-buttons button:hover,
+.carousel .carousel-navigation-buttons button:focus-visible {
+  background-color: transparent;
+  opacity: 0.7;
+}
+
+.carousel .carousel-navigation-buttons button::after {
+  display: block;
+  content: '';
+  border: var(--carousel-nav-arrow-thickness) solid;
+  border-bottom: 0;
+  border-left: 0;
+  height: var(--carousel-nav-arrow-size);
+  width: var(--carousel-nav-arrow-size);
+  position: absolute;
+  top: 50%;
+  left: calc(50% + var(--carousel-nav-arrow-offset));
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.carousel .carousel-navigation-buttons button.slide-next::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+  left: calc(50% - var(--carousel-nav-arrow-offset));
+}
+
+/* Testimonial variant — light card: quote on one side, patient photo on the other
+   filling the full card height. Token-driven; brand sites refine via --carousel-testimonial-* tokens. */
+.carousel.testimonial .carousel-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 0;
+  background-color: var(--carousel-testimonial-surface);
+  border-radius: var(--carousel-testimonial-radius);
+  overflow: hidden;
+}
+
+/* Image fills its area full-height (its colored backdrop is baked into the photo). */
+.carousel.testimonial .carousel-slide .carousel-slide-image {
+  width: 100%;
+  height: var(--carousel-testimonial-image-height);
+  line-height: 0;
+}
+
+.carousel.testimonial .carousel-slide .carousel-slide-image p {
+  margin: 0;
+  height: 100%;
+}
+
+.carousel.testimonial .carousel-slide .carousel-slide-image picture {
+  position: static;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel.testimonial .carousel-slide .carousel-slide-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Quote panel — solid (no overlay), so text is fully legible. */
+.carousel.testimonial .carousel-slide .carousel-slide-content {
+  position: relative;
+  width: auto;
+  margin: 0;
+  padding: var(--carousel-testimonial-content-padding);
+  color: var(--text-color);
+  background-color: var(--carousel-testimonial-surface);
+}
+
+/* Optional decorative quote icon above the heading. Deferred asset: hidden by default,
+   so the box never shows a broken/empty image. A brand site opts in by setting both
+   --carousel-testimonial-quote-icon (a url()) and --carousel-testimonial-quote-icon-display: block. */
+.carousel.testimonial .carousel-slide-content h2::before {
+  content: '';
+  display: var(--carousel-testimonial-quote-icon-display, none);
+  width: var(--carousel-testimonial-icon-size);
+  height: var(--carousel-testimonial-icon-size);
+  margin-bottom: var(--spacing-xs, 8px);
+  background-image: var(--carousel-testimonial-quote-icon);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.carousel.testimonial .carousel-slide-content h2 {
+  color: var(--carousel-testimonial-heading-color);
+  font-size: var(--carousel-testimonial-heading-size);
+  font-weight: var(--carousel-testimonial-heading-weight);
+  line-height: var(--carousel-testimonial-heading-line-height);
+  margin: var(--carousel-testimonial-heading-margin);
+}
+
+/* Coral divider after the quote. CSS-drawn (no asset needed). */
+.carousel.testimonial .carousel-slide-content h2::after {
+  content: '';
+  display: block;
+  width: var(--carousel-testimonial-divider-width);
+  height: var(--carousel-testimonial-divider-height);
+  margin-top: var(--carousel-testimonial-divider-gap);
+  background-color: var(--carousel-testimonial-divider-color);
+}
+
+/* Attribution paragraph (name + role) directly after the divider */
+.carousel.testimonial .carousel-slide-content h2 + p {
+  font-size: var(--carousel-testimonial-attribution-size);
+  color: var(--carousel-testimonial-text-color);
+}
+
+/* Disclaimer (emphasised small print) */
+.carousel.testimonial .carousel-slide-content p em {
+  font-size: var(--carousel-testimonial-disclaimer-size);
+  color: var(--carousel-testimonial-text-color);
+  font-style: normal;
+}
+
+/* Link / call-to-action */
+.carousel.testimonial .carousel-slide-content a {
+  color: var(--carousel-testimonial-link-color);
+  font-weight: var(--carousel-testimonial-link-weight);
+  transition: color var(--carousel-transition-duration);
+}
+
+.carousel.testimonial .carousel-slide-content a:hover,
+.carousel.testimonial .carousel-slide-content a:focus-visible {
+  color: var(--carousel-testimonial-link-hover-color);
+}
+
+/* Author-supplied per-slide icon image, if present in content */
+.carousel.testimonial .carousel-slide-content .icon img,
+.carousel.testimonial .carousel-slide-content p > img {
+  width: var(--carousel-testimonial-icon-size);
+  height: var(--carousel-testimonial-icon-size);
+  object-fit: contain;
+}
+
+.carousel.testimonial .carousel-slide-indicators {
+  background-color: transparent;
+}
+
+.carousel.testimonial .carousel-slide-indicator button {
+  width: var(--carousel-testimonial-indicator-size);
+  height: var(--carousel-testimonial-indicator-size);
+  background-color: transparent;
+  border: 2px solid var(--carousel-testimonial-indicator-color);
+}
+
+.carousel.testimonial .carousel-slide-indicator button:disabled,
+.carousel.testimonial .carousel-slide-indicator button:hover,
+.carousel.testimonial .carousel-slide-indicator button:focus-visible {
+  background-color: var(--carousel-testimonial-indicator-color);
+}
+
+/* Keep the arrows at the outer edges of the card so they don't sit over the text. */
+.carousel.testimonial .carousel-navigation-buttons {
+  left: var(--carousel-testimonial-nav-inset);
+  right: var(--carousel-testimonial-nav-inset);
+}
+
+.carousel.testimonial .carousel-navigation-buttons button {
+  width: var(--carousel-testimonial-nav-button-size);
+  height: var(--carousel-testimonial-nav-button-size);
+}
+
+/* Testimonial's next arrow sits over the image, where white reads better. */
+.carousel.testimonial .carousel-navigation-buttons button.slide-next {
+  color: var(--carousel-testimonial-nav-arrow-next-color);
+}
+
+@media (width >= 600px) {
+  .carousel .carousel-navigation-buttons {
+    left: var(--carousel-nav-inset-desktop);
+    right: var(--carousel-nav-inset-desktop);
+  }
+}
+
+@media (width >= 768px) {
+  .carousel .carousel-slide {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .carousel .carousel-slide .carousel-slide-image {
+    flex: 0 0 var(--carousel-card-image-flex);
+    max-width: var(--carousel-card-image-flex);
+    height: var(--carousel-card-image-height-desktop);
+  }
+
+  .carousel .carousel-slide .carousel-slide-content {
+    flex: 1 1 0;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Side-by-side: quote left, photo right at full card height. */
+  .carousel.testimonial .carousel-slide {
+    flex-direction: row;
+    align-items: stretch;
+    height: var(--carousel-testimonial-slide-height-desktop);
+  }
+
+  .carousel.testimonial .carousel-slide .carousel-slide-image {
+    flex: 0 0 var(--carousel-testimonial-image-flex);
+    max-width: var(--carousel-testimonial-image-flex);
+    height: 100%;
+    order: 2;
+  }
+
+  .carousel.testimonial .carousel-slide .carousel-slide-content {
+    flex: 1 1 0;
+    order: 1;
+    padding: var(--carousel-testimonial-content-padding-desktop);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
