@@ -113,7 +113,7 @@ main > .section.hero-container {
 
 /* Eyebrow h3 - rose */
 .hero h3 {
-  color: var(--brand-rose);
+  color: var(--brand-secondary);
   font-size: var(--hero-eyebrow-font-size);
   font-weight: var(--font-weight-bold);
   line-height: var(--hero-eyebrow-line-height);
@@ -121,7 +121,7 @@ main > .section.hero-container {
 }
 
 .hero h1 {
-  color: var(--brand-teal);
+  color: var(--brand-primary);
   font-size: var(--heading-font-size-xxl);
   font-weight: var(--heading-font-weight);
   line-height: var(--hero-heading-line-height);
@@ -130,7 +130,7 @@ main > .section.hero-container {
 
 /* Bold text in headings → accent color */
 .hero .accent-color {
-  color: var(--brand-rose);
+  color: var(--brand-secondary);
   font-weight: inherit;
 }
 
@@ -148,7 +148,7 @@ main > .section.hero-container {
   display: inline-block;
   padding: var(--button-padding);
   background-color: var(--background-color);
-  color: var(--brand-teal);
+  color: var(--brand-primary);
   border-radius: var(--button-border-radius);
   font-size: var(--button-font-size);
   font-weight: var(--button-font-weight);
@@ -213,7 +213,7 @@ main > .section.hero-container {
 
 /* Light panel — teal headline + centered subcopy (#split-image-col-wrapper-2) */
 .hero .hero-panel-light .hero-panel-description > p {
-  color: var(--brand-teal);
+  color: var(--brand-primary);
   font-size: var(--hero-light-font-size);
   font-weight: var(--font-weight-bold);
   line-height: 32px;
@@ -238,7 +238,7 @@ main > .section.hero-container {
 .hero.single > div:last-of-type a:focus,
 .hero .hero-panel-light a:hover,
 .hero .hero-panel-light a:focus {
-  background-color: var(--brand-teal-light);
+  background-color: var(--brand-primary-light);
 }
 
 /* "Actor portrayal" caption */
@@ -426,7 +426,7 @@ main > .section.hero-container {
 /* ── single-dark: white text over imagery ── */
 .section.single-dark .hero h1
  {
- color: var(--brand-teal);
+ color: var(--brand-primary);
  padding: 0 25px 24px; 
  margin: 0;
 }

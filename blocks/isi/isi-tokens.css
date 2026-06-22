@@ -5,7 +5,7 @@
   --isi-list-line-height: 1.7; /* @boilerplate */
   --isi-list-item-margin-bottom: 10px; /* @boilerplate */
   --isi-inline-padding-bottom: 64px; /* @boilerplate */
-  --isi-heading-color: var(--brand-teal-muted); /* @boilerplate */
+  --isi-heading-color: var(--brand-primary-dark); /* @boilerplate */
   --isi-heading-font-size: 18px; /* @boilerplate */
   --isi-heading-font-weight: 700; /* @boilerplate */
   --isi-heading-line-height: 22px; /* @boilerplate */
@@ -35,7 +35,7 @@
   --isi-toggle-top: 13px; /* @boilerplate */
   --isi-toggle-border-width: 2px; /* @boilerplate */
   --isi-toggle-size: 24px; /* @boilerplate */
-  --isi-toggle-color: var(--brand-teal-muted); /* @boilerplate */
+  --isi-toggle-color: var(--brand-primary-dark); /* @boilerplate */
   --isi-toggle-hover-color: var(--link-hover-color); /* @boilerplate */
   --isi-toggle-transition-duration: 0.2s; /* @boilerplate */
   --isi-toggle-z-index: 2; /* @boilerplate */
@@ -52,7 +52,7 @@
   :root { /* @boilerplate */
     --isi-bar-height: 109px; /* @boilerplate */
     --isi-bar-padding: 0; /* @boilerplate */
-    --isi-bar-heading-color: var(--brand-teal); /* @boilerplate */
+    --isi-bar-heading-color: var(--brand-primary); /* @boilerplate */
     --isi-bar-heading-padding-bottom: 8px; /* @boilerplate */
     --isi-bar-paragraph-padding-bottom: 16px; /* @boilerplate */
     --isi-toggle-right: var(--isi-toggle-right-mobile); /* @boilerplate */

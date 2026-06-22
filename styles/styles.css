@@ -227,7 +227,7 @@ h6 { /* @libs */
 h1 { /* @libs */
   font-size: var(--heading-font-size-xxl); /* @libs */
   line-height: 1.125; /* @libs */
-  color: var(--brand-teal); /* @libs */
+  color: var(--brand-primary); /* @libs */
   margin-top: 0; /* @libs */
   max-width: var(--h1-max-width); /* @libs */
 }
@@ -235,7 +235,7 @@ h1 { /* @libs */
 h2 { /* @libs */
   font-size: var(--heading-font-size-xl); /* @libs */
   line-height: var(--heading-line-height); /* @libs */
-  color: var(--brand-teal); /* @libs */
+  color: var(--brand-primary); /* @libs */
 }
 
 h3 { /* @libs */
@@ -256,7 +256,7 @@ h5 { /* @libs */
   font-size: var(--heading-font-size-s); /* @libs */
   font-weight: var(--font-weight-bold); /* @libs */
   line-height: 1.22; /* @libs */
-  color: var(--brand-teal-muted); /* @libs */
+  color: var(--brand-primary-dark); /* @libs */
 }
 
 h6 { /* @libs */
@@ -550,7 +550,7 @@ main .section.highlight { /* @libs */
 
 /* section metadata - dark (teal) */
 main .section.dark { /* @libs */
-  background-color: var(--brand-teal); /* @libs */
+  background-color: var(--brand-primary); /* @libs */
   color: var(--background-color); /* @libs */
   margin: 0; /* @libs */
   padding: var(--section-padding-vertical) 0; /* @libs */
@@ -570,7 +570,7 @@ main .section.dark a { /* @libs */
 }
 
 main .section.dark a:hover { /* @libs */
-  color: var(--brand-teal-light); /* @libs */
+  color: var(--brand-primary-light); /* @libs */
 }
 
 main .section.dark a.button.primary,
