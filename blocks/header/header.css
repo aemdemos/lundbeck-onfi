@@ -1,5 +1,17 @@
 @import url('./header-tokens.css');
 
+/* Nunito Sans — open-licensed (SIL OFL) humanist sans used as the portable
+ * stand-in for the source's licensed Avenir LT. Its cap/x-height proportions
+ * track Avenir closely, so 14px nav text matches the source visual size.
+ * Single variable woff2 covers the nav weight hierarchy (medium 500 / heavy 800). */
+@font-face {
+  font-family: "nunito sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/nunitosans-latin.woff2') format('woff2');
+}
+
 /* ===== Header (sticky — pins to top on scroll, matching source) ===== */
 header.header-wrapper {
   position: sticky;

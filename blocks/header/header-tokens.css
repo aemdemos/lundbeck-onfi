@@ -29,7 +29,7 @@
   /* header font stack — plain system fallback (no forced-bold @font-face) so
      numeric font-weight is honored and the nav weight hierarchy matches the
      source (which uses real Avenir Heavy/Black/Medium faces) */
-  --header-font-family: "Avenir LT W01_85 Heavy", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  --header-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
 
   /* row 0 — prescribing-context text bar */
   --header-textbar-font-size: 14px;
@@ -49,20 +49,20 @@
 
   /* row 1 — eyebrow utility links */
   --header-eyebrow-padding-y: 15px;
-  --header-eyebrow-link-padding-x: 38.5px;
+  --header-eyebrow-link-padding-x: 28px;
   --header-eyebrow-link-font-size: 14px;
-  --header-eyebrow-link-font-weight: 700;
+  --header-eyebrow-link-font-weight: 800;
   --header-eyebrow-link-line-height: 1.15;
-  --header-eyebrow-link-1-max-width: 212px;
-  --header-eyebrow-link-2-max-width: 172px;
-  --header-eyebrow-link-3-max-width: 165px;
-  --header-eyebrow-link-4-max-width: 172px;
+  --header-eyebrow-link-1-max-width: 188px;
+  --header-eyebrow-link-2-max-width: 153px;
+  --header-eyebrow-link-3-max-width: 150px;
+  --header-eyebrow-link-4-max-width: 153px;
 
   /* row 2 — main nav links */
   --header-main-gap: 35px;
   --header-main-row-height: 42px;
   --header-main-link-font-size: 14px;
-  --header-main-link-font-weight: 400;
+  --header-main-link-font-weight: 500;
   --header-main-link-line-height: 1.43;
 
   /* scroll-progress bar */
