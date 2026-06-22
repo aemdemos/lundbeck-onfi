@@ -1,412 +1,91 @@
-import { getMetadata, decorateBlock, loadBlock } from '../../scripts/aem.js';
+import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-function toggleAllNavSections(sections, expanded = false) {
-  if (!sections) return;
-  sections.querySelectorAll(':scope > ul > li').forEach((section) => {
-    section.setAttribute('aria-expanded', expanded);
+const MOBILE_QUERY = '(max-width: 767px)';
+
+function isMobile() {
+  return window.matchMedia(MOBILE_QUERY).matches;
+}
+
+/**
+ * Builds an inline expandable site-search form. The search icon comes from the
+ * nav fragment (authored as :search:); clicking it toggles the form.
+ * @param {Element} icon The decorated search icon span from the fragment
+ * @returns {HTMLElement} the search wrapper
+ */
+function buildSearch(icon) {
+  const search = document.createElement('div');
+  search.className = 'nav-search';
+
+  const toggle = document.createElement('button');
+  toggle.className = 'nav-search-toggle';
+  toggle.type = 'button';
+  toggle.setAttribute('aria-label', 'Search');
+  toggle.setAttribute('aria-expanded', 'false');
+  if (icon) toggle.append(icon);
+
+  const form = document.createElement('form');
+  form.className = 'nav-search-form';
+  form.action = '/search';
+  form.method = 'GET';
+
+  const input = document.createElement('input');
+  input.className = 'nav-search-input';
+  input.type = 'text';
+  input.name = 'q';
+  input.setAttribute('aria-label', 'Search');
+
+  const submit = document.createElement('button');
+  submit.className = 'nav-search-submit';
+  submit.type = 'submit';
+  submit.textContent = 'GO';
+
+  form.append(input, submit);
+
+  toggle.addEventListener('click', () => {
+    const open = search.classList.toggle('nav-search-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) input.focus();
   });
-}
 
-function closeAllDropdowns(nav) {
-  nav.querySelectorAll('[aria-expanded="true"]').forEach((el) => {
-    el.setAttribute('aria-expanded', 'false');
-  });
-}
-
-function closeOnEscape(e) {
-  if (e.code === 'Escape') {
-    const nav = document.getElementById('nav');
-    closeAllDropdowns(nav);
-  }
-}
-
-function closeOnClickOutside(e) {
-  const nav = document.getElementById('nav');
-  if (nav && !nav.contains(e.target)) {
-    closeAllDropdowns(nav);
-  }
+  search.append(toggle, form);
+  return search;
 }
 
 /**
- * Builds a search block instance (uses the shared blocks/search block) and
- * loads its CSS + JS. Wrapped in a .nav-search container for header layout.
- * @returns {HTMLElement} wrapper containing the (async-decorated) search block
+ * Builds a hamburger toggle button for mobile. Toggles the nav open class.
+ * @param {HTMLElement} nav The nav element
+ * @returns {HTMLElement} the hamburger button
  */
-function buildSearchBlock() {
-  const searchWrapper = document.createElement('div');
-  searchWrapper.className = 'nav-search';
-
-  const searchBlock = document.createElement('div');
-  searchBlock.className = 'search block';
-  searchBlock.dataset.blockName = 'search';
-  searchWrapper.append(searchBlock);
-
-  decorateBlock(searchBlock);
-  loadBlock(searchBlock);
-
-  return searchWrapper;
-}
-
-/**
- * Decorates the utility bar section (top teal bar)
- * @param {Element} utilSection The utility bar section from nav fragment
- * @returns {HTMLElement} decorated utility bar
- */
-function decorateUtilityBar(utilSection) {
-  const utilBar = document.createElement('div');
-  utilBar.className = 'nav-utility';
-
-  const container = document.createElement('div');
-  container.className = 'nav-utility-container';
-
-  // Tagline
-  const tagline = utilSection.querySelector('p');
-  if (tagline) {
-    const taglineEl = document.createElement('span');
-    taglineEl.className = 'nav-utility-tagline';
-    taglineEl.textContent = tagline.textContent.trim();
-    container.append(taglineEl);
-  }
-
-  // Utility links (PI dropdowns, HCP link)
-  const utilLinks = document.createElement('div');
-  utilLinks.className = 'nav-utility-links';
-
-  const ul = utilSection.querySelector('ul');
-  if (ul) {
-    [...ul.children].forEach((li) => {
-      const subUl = li.querySelector('ul');
-      const link = li.querySelector(':scope > a');
-
-      if (subUl) {
-        // Dropdown item (Patient Info, Prescribing Info)
-        const dropdown = document.createElement('div');
-        dropdown.className = 'nav-utility-dropdown';
-
-        const trigger = document.createElement('button');
-        trigger.className = 'nav-utility-dropdown-trigger';
-        trigger.setAttribute('aria-expanded', 'false');
-        // EDS wraps text in <p>; check <p> first, then fall back to direct text nodes
-        const labelP = li.querySelector(':scope > p');
-        const directText = Array.from(li.childNodes)
-          .filter((n) => n.nodeType === Node.TEXT_NODE)
-          .map((n) => n.textContent.trim())
-          .join('');
-        trigger.textContent = (labelP ? labelP.textContent.trim() : '') || directText;
-
-        const menu = document.createElement('div');
-        menu.className = 'nav-utility-dropdown-menu';
-        [...subUl.children].forEach((subLi) => {
-          const a = subLi.querySelector('a');
-          if (a) menu.append(a.cloneNode(true));
-        });
-
-        trigger.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const expanded = trigger.getAttribute('aria-expanded') === 'true';
-          // Close other utility dropdowns
-          dropdown.closest('.nav-utility-links')
-            .querySelectorAll('.nav-utility-dropdown-trigger[aria-expanded="true"]')
-            .forEach((t) => t.setAttribute('aria-expanded', 'false'));
-          trigger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-
-          // Toggle overlay on mobile
-          const isMobile = window.matchMedia('(max-width: 899px)').matches;
-          if (isMobile) {
-            let overlay = document.querySelector('.nav-utility-overlay');
-            if (!expanded) {
-              if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.className = 'nav-utility-overlay';
-                overlay.addEventListener('click', () => {
-                  trigger.setAttribute('aria-expanded', 'false');
-                  overlay.remove();
-                });
-                document.body.append(overlay);
-              }
-              requestAnimationFrame(() => {
-                const menuEl = dropdown.querySelector('.nav-utility-dropdown-menu');
-                if (menuEl && overlay.parentElement) {
-                  const menuBottom = menuEl.getBoundingClientRect().bottom;
-                  overlay.style.top = `${menuBottom}px`;
-                }
-              });
-            } else if (overlay) {
-              overlay.remove();
-            }
-          }
-        });
-
-        dropdown.addEventListener('mouseenter', () => {
-          if (window.matchMedia('(min-width: 900px)').matches) {
-            dropdown.closest('.nav-utility-links')
-              .querySelectorAll('.nav-utility-dropdown-trigger[aria-expanded="true"]')
-              .forEach((t) => t.setAttribute('aria-expanded', 'false'));
-            trigger.setAttribute('aria-expanded', 'true');
-          }
-        });
-        dropdown.addEventListener('mouseleave', () => {
-          if (window.matchMedia('(min-width: 900px)').matches) {
-            trigger.setAttribute('aria-expanded', 'false');
-          }
-        });
-
-        dropdown.append(trigger, menu);
-        utilLinks.append(dropdown);
-      } else {
-        // Simple link (HCP) — may be direct child or wrapped in <p> by EDS
-        const a = link || li.querySelector('a');
-        if (a) {
-          const clone = a.cloneNode(true);
-          clone.className = 'nav-utility-link';
-          utilLinks.append(clone);
-        }
-      }
-    });
-  }
-
-  // Social icons — EDS may put each social link in its own <p>
-  const socialParagraphs = [...utilSection.querySelectorAll('p')]
-    .filter((p) => p.querySelector('a picture, a img'));
-  if (socialParagraphs.length) {
-    const socialLinks = document.createElement('div');
-    socialLinks.className = 'nav-utility-social';
-    socialParagraphs.forEach((p) => {
-      const a = p.querySelector('a');
-      if (a) {
-        const clone = a.cloneNode(true);
-        clone.className = 'nav-utility-social-link';
-        socialLinks.append(clone);
-      }
-    });
-    utilLinks.append(socialLinks);
-  }
-
-  container.append(utilLinks);
-  utilBar.append(container);
-  return utilBar;
-}
-
-/**
- * Decorates the brand row with logo and tool links
- * @param {Element} brandSection The brand section (logo)
- * @param {Element} toolsSection The tools section (icon links)
- * @returns {HTMLElement} decorated brand row
- */
-function decorateBrandRow(brandSection, toolsSection) {
-  const brandRow = document.createElement('div');
-  brandRow.className = 'nav-brand-row';
-
-  const container = document.createElement('div');
-  container.className = 'nav-brand-container';
-
-  // Logo
-  const logoWrapper = document.createElement('div');
-  logoWrapper.className = 'nav-brand';
-  const logoLink = brandSection.querySelector('a');
-  if (logoLink) {
-    const clone = logoLink.cloneNode(true);
-    clone.className = 'nav-brand-link';
-    logoWrapper.append(clone);
-  }
-  // Brand tagline (visible on mobile next to logo)
-  const brandTagline = document.createElement('span');
-  brandTagline.className = 'nav-brand-tagline';
-  brandTagline.textContent = 'For the preventive treatment of migraine in adults.';
-  logoWrapper.append(brandTagline);
-
-  container.append(logoWrapper);
-
-  // Hamburger menu button (mobile)
+function buildHamburger(nav) {
   const hamburger = document.createElement('button');
   hamburger.className = 'nav-hamburger';
-  hamburger.setAttribute('aria-label', 'Toggle Menu');
+  hamburger.type = 'button';
+  hamburger.setAttribute('aria-label', 'Open menu');
   hamburger.setAttribute('aria-expanded', 'false');
-  const hamburgerIcon = document.createElement('span');
-  hamburgerIcon.className = 'nav-hamburger-icon';
-  const hamburgerText = document.createElement('span');
-  hamburgerText.className = 'nav-hamburger-text';
-  hamburgerText.textContent = 'Menu';
-  hamburger.append(hamburgerIcon, hamburgerText);
+
+  const label = document.createElement('span');
+  label.className = 'nav-hamburger-label';
+  label.textContent = 'MENU';
+
+  const bars = document.createElement('span');
+  bars.className = 'nav-hamburger-bars';
+  bars.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 3; i += 1) {
+    const bar = document.createElement('span');
+    bar.className = 'nav-hamburger-bar';
+    bars.append(bar);
+  }
+
+  hamburger.append(label, bars);
+
   hamburger.addEventListener('click', () => {
-    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    const nav = hamburger.closest('nav');
-    if (nav) nav.classList.toggle('nav-mobile-open', !expanded);
+    const open = nav.classList.toggle('nav-open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   });
 
-  container.append(hamburger);
-
-  // Tools (icon links)
-  const toolsWrapper = document.createElement('div');
-  toolsWrapper.className = 'nav-tools';
-
-  if (toolsSection) {
-    toolsSection.querySelectorAll('p').forEach((p) => {
-      const a = p.querySelector('a');
-      if (a) {
-        const toolLink = a.cloneNode(true);
-        toolLink.className = 'nav-tool-link';
-        const img = toolLink.querySelector('img, picture');
-        if (img) img.className = 'nav-tool-icon';
-        // EDS may place label text outside <a> as a sibling in <p>
-        if (!toolLink.textContent.trim() || toolLink.textContent.trim() === (img ? img.alt : '')) {
-          const pText = Array.from(p.childNodes)
-            .filter((n) => n.nodeType === Node.TEXT_NODE)
-            .map((n) => n.textContent.trim())
-            .filter(Boolean)
-            .join(' ');
-          if (pText) toolLink.append(document.createTextNode(pText));
-        }
-        toolsWrapper.append(toolLink);
-      }
-    });
-  }
-
-  // Search (shared blocks/search block)
-  toolsWrapper.append(buildSearchBlock());
-  container.append(toolsWrapper);
-  brandRow.append(container);
-  return brandRow;
-}
-
-/**
- * Decorates the navigation links row
- * @param {Element} sectionsEl The sections element (nav links with dropdowns)
- * @returns {HTMLElement} decorated nav links row
- */
-function decorateNavLinks(sectionsEl) {
-  const navRow = document.createElement('div');
-  navRow.className = 'nav-links-row';
-
-  // Mobile menu header (search + close button)
-  const mobileHeader = document.createElement('div');
-  mobileHeader.className = 'nav-mobile-header';
-
-  const mobileSearch = buildSearchBlock();
-  mobileSearch.className = 'nav-mobile-search';
-  mobileHeader.append(mobileSearch);
-
-  const closeBtn = document.createElement('button');
-  closeBtn.className = 'nav-mobile-close';
-  closeBtn.setAttribute('aria-label', 'Close Menu');
-  const closeIcon = document.createElement('span');
-  closeIcon.className = 'nav-mobile-close-icon';
-  closeIcon.setAttribute('aria-hidden', 'true');
-  closeBtn.append(closeIcon);
-  closeBtn.addEventListener('click', () => {
-    const nav = navRow.closest('nav');
-    if (nav) {
-      nav.classList.remove('nav-mobile-open');
-      const hamburger = nav.querySelector('.nav-hamburger');
-      if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-    }
-  });
-  mobileHeader.append(closeBtn);
-
-  navRow.append(mobileHeader);
-
-  // Mobile tool links (pill buttons below search) — populated after nav is in DOM
-  const mobileTools = document.createElement('div');
-  mobileTools.className = 'nav-mobile-tools';
-  navRow.append(mobileTools);
-
-  requestAnimationFrame(() => {
-    const nav = navRow.closest('nav');
-    if (!nav) return;
-    nav.querySelectorAll('.nav-tool-link').forEach((link) => {
-      const pill = document.createElement('a');
-      pill.className = 'nav-mobile-tool-pill';
-      pill.href = link.href;
-      pill.textContent = link.textContent.trim();
-      mobileTools.append(pill);
-    });
-  });
-
-  const container = document.createElement('div');
-  container.className = 'nav-links-container';
-
-  const ul = sectionsEl.querySelector('ul');
-  if (ul) {
-    const navList = ul.cloneNode(true);
-    navList.className = 'nav-links-list';
-
-    const isDesktop = () => window.matchMedia('(min-width: 900px)').matches;
-
-    // Add dropdown behavior to items with sub-menus
-    navList.querySelectorAll(':scope > li').forEach((li) => {
-      const subUl = li.querySelector('ul');
-      if (subUl) {
-        li.classList.add('nav-drop');
-        li.setAttribute('aria-expanded', 'false');
-        li.setAttribute('tabindex', '0');
-        subUl.className = 'nav-dropdown-menu';
-
-        // Hover open/close (desktop only)
-        li.addEventListener('mouseenter', () => {
-          if (!isDesktop()) return;
-          toggleAllNavSections(navList);
-          li.setAttribute('aria-expanded', 'true');
-        });
-        li.addEventListener('mouseleave', () => {
-          if (!isDesktop()) return;
-          li.setAttribute('aria-expanded', 'false');
-        });
-
-        // Click toggle
-        li.addEventListener('click', (e) => {
-          if (e.target.closest('a')) return;
-          e.stopPropagation();
-          const expanded = li.getAttribute('aria-expanded') === 'true';
-          if (isDesktop()) toggleAllNavSections(navList);
-          li.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        });
-
-        // Keyboard
-        li.addEventListener('keydown', (e) => {
-          if (e.code === 'Enter' || e.code === 'Space') {
-            e.preventDefault();
-            const expanded = li.getAttribute('aria-expanded') === 'true';
-            if (isDesktop()) toggleAllNavSections(navList);
-            li.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-          }
-        });
-      }
-    });
-
-    container.append(navList);
-  }
-
-  navRow.append(container);
-
-  // Mobile nav footer (HCP link + social icons) — populated after nav is in DOM
-  const mobileFooter = document.createElement('div');
-  mobileFooter.className = 'nav-mobile-footer';
-  navRow.append(mobileFooter);
-
-  requestAnimationFrame(() => {
-    const nav = navRow.closest('nav');
-    if (!nav) return;
-
-    // Clone HCP link
-    const hcpLink = nav.querySelector('.nav-utility-link');
-    if (hcpLink) {
-      const hcpClone = hcpLink.cloneNode(true);
-      hcpClone.className = 'nav-mobile-hcp-link';
-      mobileFooter.append(hcpClone);
-    }
-
-    // Clone social icons
-    const socialSection = nav.querySelector('.nav-utility-social');
-    if (socialSection) {
-      const socialClone = socialSection.cloneNode(true);
-      socialClone.className = 'nav-mobile-social';
-      mobileFooter.append(socialClone);
-    }
-  });
-
-  return navRow;
+  return hamburger;
 }
 
 /**
@@ -416,49 +95,136 @@ function decorateNavLinks(sectionsEl) {
 export default async function decorate(block) {
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  // production (DA/EDS) serves the nav at navPath; local aem-up serves it under
+  // /content. Try production first, then fall back to the local path.
+  const fragment = (await loadFragment(navPath)) || (await loadFragment('/content/nav'));
 
   block.textContent = '';
   const nav = document.createElement('nav');
   nav.id = 'nav';
   nav.setAttribute('aria-label', 'Main navigation');
 
-  // Collect sections from fragment: brand, sections, tools, utility
-  const sections = [...fragment.children];
+  // Fragment sections in natural reading order:
+  // 0 = prescribing-context text bar, 1 = logo + eyebrow links, 2 = main nav + search
+  const [textSection, eyebrowSection, mainSection] = [...fragment.children];
 
-  const [brandSection, sectionsEl, toolsSection, utilitySection] = sections;
+  // Row 0 — prescribing-context text bar
+  if (textSection) {
+    const textBar = document.createElement('div');
+    textBar.className = 'nav-textbar';
+    const p = textSection.querySelector('p');
+    if (p) textBar.append(p);
+    nav.append(textBar);
+  }
 
-  // Build 3-row header: utility (top), brand+tools (middle), nav links (bottom)
-  if (utilitySection) nav.append(decorateUtilityBar(utilitySection));
-  if (brandSection) nav.append(decorateBrandRow(brandSection, toolsSection));
-  if (sectionsEl) nav.append(decorateNavLinks(sectionsEl));
+  // Build the single search element (relocated by viewport: desktop = main row,
+  // mobile = brand controls — matching the source).
+  const searchIcon = mainSection ? mainSection.querySelector('.icon-search, span.icon') : null;
+  const search = buildSearch(searchIcon);
+  const searchItem = document.createElement('li');
+  searchItem.className = 'nav-search-item';
+  searchItem.append(search);
 
-  // Keyboard and click-outside handlers
-  window.addEventListener('keydown', closeOnEscape);
-  document.addEventListener('click', closeOnClickOutside);
+  let brandControls = null;
+  let mainList = null;
+
+  // Brand: logo + (mobile) search + hamburger. Logo overlaps the bands.
+  if (eyebrowSection) {
+    const brand = document.createElement('div');
+    brand.className = 'nav-brand';
+    const logoLink = eyebrowSection.querySelector('p a');
+    if (logoLink) brand.append(logoLink);
+
+    brandControls = document.createElement('div');
+    brandControls.className = 'nav-brand-controls';
+    brandControls.append(buildHamburger(nav));
+    brand.append(brandControls);
+
+    nav.append(brand);
+  }
+
+  // Row 1 — eyebrow utility links (direct nav > ul for faithful nav landmark)
+  if (eyebrowSection) {
+    const ul = eyebrowSection.querySelector('ul');
+    if (ul) {
+      ul.className = 'nav-eyebrow-links';
+      nav.append(ul);
+    }
+  }
+
+  // Row 2 — main nav links (search appended on desktop)
+  if (mainSection) {
+    const ul = mainSection.querySelector('ul');
+    if (ul) {
+      ul.className = 'nav-main-list';
+      mainList = ul;
+      nav.append(ul);
+    }
+  }
+
+  // Place search: brand controls on mobile, main row on desktop
+  const placeSearch = () => {
+    if (isMobile()) {
+      if (brandControls && search.parentElement !== brandControls) {
+        brandControls.insertBefore(search, brandControls.firstChild);
+      }
+    } else if (mainList && searchItem.parentElement !== mainList) {
+      searchItem.append(search);
+      mainList.append(searchItem);
+    }
+  };
+  placeSearch();
+
+  // Close mobile menu / collapse search and relocate search when crossing breakpoint
+  window.matchMedia(MOBILE_QUERY).addEventListener('change', (e) => {
+    placeSearch();
+    nav.querySelectorAll('.nav-search-open').forEach((s) => s.classList.remove('nav-search-open'));
+    if (!e.matches) {
+      nav.classList.remove('nav-open');
+      const hamburger = nav.querySelector('.nav-hamburger');
+      if (hamburger) {
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'Open menu');
+      }
+    }
+  });
+
+  // Close expanded search when clicking outside
+  document.addEventListener('click', (e) => {
+    if (isMobile()) return;
+    nav.querySelectorAll('.nav-search-open').forEach((s) => {
+      if (!s.contains(e.target)) {
+        s.classList.remove('nav-search-open');
+        const t = s.querySelector('.nav-search-toggle');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Scroll-progress bar below the nav (matches source .progress-container)
+  const progress = document.createElement('div');
+  progress.className = 'nav-progress';
+  const progressBar = document.createElement('div');
+  progressBar.className = 'nav-progress-bar';
+  progress.append(progressBar);
+  nav.append(progress);
+
+  let progressTicking = false;
+  const updateProgress = () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+    progressBar.style.width = `${pct}%`;
+    progressTicking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!progressTicking) {
+      window.requestAnimationFrame(updateProgress);
+      progressTicking = true;
+    }
+  });
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
-
-  // Hide header on scroll down, show on scroll up
-  let lastScrollY = window.scrollY;
-  let ticking = false;
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-          navWrapper.classList.add('nav-hidden');
-        } else {
-          navWrapper.classList.remove('nav-hidden');
-        }
-        lastScrollY = currentScrollY;
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
 }
