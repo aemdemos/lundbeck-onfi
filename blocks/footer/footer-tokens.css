@@ -8,8 +8,15 @@
   /* portable Avenir substitute (Nunito Sans) — matches the source glyph widths;
      the local()-only avenir-* fallbacks otherwise drop to Arial off-Mac */
   --footer-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
-  --footer-padding: 30px 15px;
+  --footer-padding: 20px 15px;
   --footer-padding-desktop: 30px 15px;
+
+  /* mobile (<768px): links stack vertically (no pipes), legal copy is smaller
+     and centered, logo sits above the legal text */
+  --footer-link-mobile-gap: 10px;
+  --footer-legal-mobile-font-size: 14px;
+  --footer-legal-mobile-line-height: 20px;
+  --footer-legal-mobile-margin-bottom: 14px;
 
   /* link row: centered, teal, pipe-separated */
   --footer-link-color: var(--dark-color);
@@ -37,6 +44,9 @@
   /* body-weight Avenir substitute (Nunito Sans) for the legal copy; the
      local()-only avenir-* fallbacks otherwise drop to Arial off-Mac */
   --footer-legal-font-family: "Avenir LT W01_55 Roman", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+
+  /* desktop legal copy size (mobile uses --footer-legal-mobile-font-size) */
+  --footer-legal-font-size: 16px;
 
   /* explicit px (not unitless) so Nunito's tall intrinsic metrics can't push the
      line box toward `normal` (~28px); matches the source's 22.857px exactly */

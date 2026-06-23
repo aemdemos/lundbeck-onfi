@@ -16,12 +16,10 @@ footer .footer p {
   margin: 0;
 }
 
-/* ===== Link row: centered, teal, bold, pipe-separated, with an underline
-   divider. The authored content delivers five stacked <p><a> in a single
-   wrapper; the rules below lay them on one centered line with 2px teal
-   separators between, and a thin rule below the row. */
+/* ===== Link row (mobile-first): links stack vertically, centered, teal & bold,
+   no pipe separators, with a thin white rule below. The desktop @media block
+   below lays them on one pipe-separated line. */
 footer .footer .default-content-wrapper {
-  margin-top: var(--footer-link-row-margin-top);
   margin-bottom: var(--footer-divider-margin-bottom);
   padding-bottom: var(--footer-divider-padding-bottom);
   border-bottom: 1px solid var(--footer-divider-color);
@@ -29,13 +27,7 @@ footer .footer .default-content-wrapper {
 }
 
 footer .footer .default-content-wrapper p {
-  display: inline-block;
-  line-height: var(--footer-link-row-line-height);
-}
-
-footer .footer .default-content-wrapper p + p {
-  margin-left: var(--footer-link-separator-gap);
-  border-left: var(--footer-link-separator);
+  margin-top: var(--footer-link-mobile-gap);
 }
 
 footer .footer .default-content-wrapper a {
@@ -53,30 +45,61 @@ footer .footer .default-content-wrapper a:hover {
   text-decoration: underline;
 }
 
-/* ===== Legal text + logo: legal copy left (wider column), Lundbeck logo right
-   (narrower column) with a white vertical divider between — drawn by the columns
-   `divider` variant. Recolour that divider white to match the source. */
+/* ===== Legal text + logo. Mobile-first: single column (logo above legal text
+   via the columns variant's image-first order), centered, smaller legal copy.
+   The desktop @media block restores the 2-column layout with vertical divider. */
 footer .footer .columns.divider {
   --columns-divider-color: var(--footer-divider-color);
 }
 
 footer .footer .columns p {
   font-family: var(--footer-legal-font-family);
-  line-height: var(--footer-legal-line-height);
+  font-size: var(--footer-legal-mobile-font-size);
+  line-height: var(--footer-legal-mobile-line-height);
+  text-align: center;
 }
 
 footer .footer .columns p:not(:last-child) {
-  margin-bottom: var(--footer-legal-margin-bottom);
+  margin-bottom: var(--footer-legal-mobile-margin-bottom);
 }
 
 footer .footer .columns img {
   width: var(--footer-logo-width);
   height: auto;
+  margin: 0 auto;
 }
 
 @media (width >= 768px) {
   footer .footer > div {
     padding: var(--footer-padding-desktop);
+  }
+
+  /* desktop: links on one pipe-separated line */
+  footer .footer .default-content-wrapper {
+    margin-top: var(--footer-link-row-margin-top);
+    padding-bottom: var(--footer-divider-padding-bottom);
+  }
+
+  footer .footer .default-content-wrapper p {
+    display: inline-block;
+    margin-top: 0;
+    line-height: var(--footer-link-row-line-height);
+  }
+
+  footer .footer .default-content-wrapper p + p {
+    margin-left: var(--footer-link-separator-gap);
+    border-left: var(--footer-link-separator);
+  }
+
+  /* desktop: legal copy left-aligned at 16px (overrides mobile centered 14px) */
+  footer .footer .columns p {
+    font-size: var(--footer-legal-font-size);
+    line-height: var(--footer-legal-line-height);
+    text-align: left;
+  }
+
+  footer .footer .columns p:not(:last-child) {
+    margin-bottom: var(--footer-legal-margin-bottom);
   }
 
   /* columns top-aligned (not stretched): the vertical divider then spans only
