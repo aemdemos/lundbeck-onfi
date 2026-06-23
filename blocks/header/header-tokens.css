@@ -110,14 +110,63 @@
   --header-small-logo-img-width: 96px;
   --header-small-nav-indent: 132px;
 
-  /* mobile (≤767px) */
-  --header-mobile-hamburger-bg: #66b9c1;
-  --header-mobile-hamburger-width: 85px;
-  --header-mobile-bar-width: 31px;
-  --header-mobile-bar-height: 5px;
-  --header-mobile-bar-gap: 7px;
-  --header-mobile-bar-transition: transform 0.125s ease-in-out, opacity 0.125s ease-in-out, top 0.125s ease-in-out;
-  --header-mobile-logo-img-width: 96px;
-  --header-mobile-link-font-size: 13px;
+  /* mobile (<768px) — matches source onfi mobile header */
+
+  /* textbar: centered, small, light weight on the light-teal band */
+  --header-mobile-textbar-font-size: 10px;
+  --header-mobile-textbar-font-weight: 800;
+  --header-mobile-textbar-line-height: 15px;
+  --header-mobile-textbar-padding: 8px 15px;
+
+  /* eyebrow links band */
   --header-mobile-eyebrow-link-font-size: 13px;
+  --header-mobile-eyebrow-padding: 12px 10px;
+  --header-mobile-eyebrow-link-padding: 6.5px 19.5px;
+
+  /* cap link text width so each label wraps to two lines (source uses a <br>;
+     our content is clean text, so the max-width forces the same wrap) */
+  --header-mobile-eyebrow-link-max-width: 116px;
+
+  /* brand band: main-teal, holds overlapping white logo tab + search + MENU */
+  --header-mobile-brand-bg: var(--header-main-bg);
+  --header-mobile-brand-min-height: 127px;
+  --header-mobile-brand-border-bottom: 5px solid var(--header-progress-track);
+  --header-mobile-logo-tab-width: 150px;
+  --header-mobile-logo-tab-padding: 15px 15px 13.5px;
+  --header-mobile-logo-tab-radius: 10px 10px 0 0;
+  --header-mobile-logo-img-width: 120px;
+
+  /* search icon + the form that opens to its left. The top-gap drops the icon
+     to the hamburger BARS row (menu top-gap + the MENU label band above bars). */
+  --header-mobile-search-icon-size: 32px;
+  --header-mobile-search-input-width: 150px;
+  --header-mobile-search-top-gap: 75px;
+
+  /* MENU button: white label stacked over light-teal bars (transparent box).
+     On open the box fills with a lighter teal and the bars cross into a smaller
+     white X (narrower than the closed bars) — matching the source. */
+  --header-mobile-menu-padding: 12px 20px;
+
+  /* gap above the open overlay so it doesn't reach the band top (source) */
+  --header-mobile-menu-top-gap: 40px;
+  --header-mobile-menu-label-font-size: 15px;
+  --header-mobile-menu-label-font-weight: 500;
+  --header-mobile-menu-label-gap: 1px;
+  --header-mobile-menu-open-bg: #66b9c1;
+  --header-mobile-bar-width: 45px;
+  --header-mobile-bar-open-width: 31px;
+  --header-mobile-bar-height: 7px;
+  --header-mobile-bar-color: var(--header-link-color);
+  --header-mobile-bar-open-color: #fff;
+  --header-mobile-bar-gap: 5px;
+  --header-mobile-bar-transition: transform 0.125s ease-in-out, opacity 0.125s ease-in-out, top 0.125s ease-in-out;
+
+  /* open menu: stacked nav links — white, small, centered (matches source) */
+  --header-mobile-link-font-size: 10px;
+  --header-mobile-link-font-weight: 500;
+  --header-mobile-link-color: #fff;
+  --header-mobile-link-padding: 9.5px 0;
+
+  /* divider line between stacked items (lighter teal, matches source) */
+  --header-mobile-link-divider: 1px solid #66b9c1;
 }

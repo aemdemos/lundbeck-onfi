@@ -43,16 +43,16 @@ header .nav-textbar {
   background-color: var(--header-textbar-bg);
 }
 
+/* mobile: centered, small, light weight (matches source) */
 header .nav-textbar p {
-  max-width: var(--header-content-max-width);
-  margin: 0 auto;
-  padding: var(--header-textbar-padding);
-  padding-left: var(--header-textbar-indent);
+  margin: 0;
+  padding: var(--header-mobile-textbar-padding);
   color: var(--header-text-color);
   font-family: var(--header-font-family);
-  font-size: var(--header-textbar-font-size);
-  font-weight: var(--header-textbar-font-weight);
-  line-height: var(--header-textbar-line-height);
+  font-size: var(--header-mobile-textbar-font-size);
+  font-weight: var(--header-mobile-textbar-font-weight);
+  line-height: var(--header-mobile-textbar-line-height);
+  text-align: center;
 }
 
 /* ===== Scroll-progress bar (hidden on mobile; shown ≥768px) ===== */
@@ -70,24 +70,31 @@ header .nav-progress-bar {
   transition: var(--header-progress-transition);
 }
 
-/* ===== Brand (mobile): logo tab (left) + search + MENU (right) on dark-teal band ===== */
+/* ===== Brand (mobile): white logo tab (left) + search + MENU (right) on the
+   main-teal band. The logo tab overlaps and sits flush to the band bottom,
+   matching the source. ===== */
 header .nav-brand {
   order: 2;
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   width: 100%;
-  padding: 10px 0 10px 12px;
-  background-color: var(--header-eyebrow-bg);
+  min-height: var(--header-mobile-brand-min-height);
+  padding: 0 15px;
+  background-color: var(--header-mobile-brand-bg);
+  border-bottom: var(--header-mobile-brand-border-bottom);
   line-height: normal;
 }
 
+/* white rounded logo tab (radius on top only). Sits flush on the band's 5px
+   bottom border; the taller band leaves the gap above it — matching the source. */
 header .nav-brand > a {
   display: block;
-  padding: 10px 12px;
-  background-color: #fff;
-  border-radius: 8px;
+  width: var(--header-mobile-logo-tab-width);
+  padding: var(--header-mobile-logo-tab-padding);
+  background-color: var(--header-logo-bg);
+  border-radius: var(--header-mobile-logo-tab-radius);
   line-height: 0;
 }
 
@@ -98,42 +105,53 @@ header .nav-brand img {
 
 header .nav-brand-controls {
   display: flex;
-  align-items: center;
-  gap: 0;
+  align-items: stretch;
+  gap: 14px;
   align-self: stretch;
 }
 
-/* search in brand row on mobile */
+/* the whole search aligns to the hamburger BARS row (the MENU label sits above
+   the bars, so the icon needs the menu top-gap plus the label height). It only
+   takes its icon's height so the dropdown form can center on the icon. */
 header .nav-brand-controls .nav-search {
-  padding: 0 14px;
+  align-self: flex-start;
+  margin-top: var(--header-mobile-search-top-gap);
 }
 
+header .nav-brand-controls .nav-search-toggle .icon {
+  width: var(--header-mobile-search-icon-size);
+  height: var(--header-mobile-search-icon-size);
+}
+
+/* search form opens to the LEFT of the icon, on the same horizontal line */
 header .nav-brand-controls .nav-search-form {
   position: absolute;
-  top: 100%;
-  right: 0;
-  left: 0;
+  top: 50%;
+  right: 100%;
+  left: auto;
   z-index: 20;
-  margin: 0;
-  padding: 8px 12px;
-  background: var(--header-main-bg);
+  width: auto;
+  margin-right: 10px;
+  padding: 0;
+  background: none;
+  transform: translateY(-50%);
 }
 
 header .nav-brand-controls .nav-search-input {
-  flex: 1;
+  width: var(--header-mobile-search-input-width);
 }
 
-/* MENU button: text + hamburger bars, lighter-teal box, morphs to X */
+/* MENU button: white label stacked ON TOP of 3 light-teal bars; transparent
+   box (matches source #nav-main-mobile-toggle). Bars morph to an X when open. */
 header .nav-hamburger {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  align-self: stretch;
-  width: var(--header-mobile-hamburger-width);
-  padding: 0;
-  background: var(--header-mobile-hamburger-bg);
+  gap: var(--header-mobile-menu-label-gap);
+  margin-top: var(--header-mobile-menu-top-gap);
+  padding: var(--header-mobile-menu-padding);
+  background: none;
   border: 0;
   color: #fff;
   cursor: pointer;
@@ -141,16 +159,15 @@ header .nav-hamburger {
 
 header .nav-hamburger-label {
   color: #fff;
-  font-size: var(--header-mobile-link-font-size);
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-size: var(--header-mobile-menu-label-font-size);
+  font-weight: var(--header-mobile-menu-label-font-weight);
 }
 
 header .nav-hamburger-bars {
   position: relative;
   display: block;
   width: var(--header-mobile-bar-width);
-  height: 19px;
+  height: calc(var(--header-mobile-bar-height) * 3 + var(--header-mobile-bar-gap) * 2);
 }
 
 header .nav-hamburger-bar {
@@ -158,18 +175,29 @@ header .nav-hamburger-bar {
   left: 0;
   width: var(--header-mobile-bar-width);
   height: var(--header-mobile-bar-height);
-  background: #fff;
-  border-radius: 1px;
+  background: var(--header-mobile-bar-color);
   transition: var(--header-mobile-bar-transition);
 }
 
 header .nav-hamburger-bar:nth-child(1) { top: 0; }
-header .nav-hamburger-bar:nth-child(2) { top: var(--header-mobile-bar-gap); }
-header .nav-hamburger-bar:nth-child(3) { top: calc(var(--header-mobile-bar-gap) * 2); }
+header .nav-hamburger-bar:nth-child(2) { top: calc(var(--header-mobile-bar-height) + var(--header-mobile-bar-gap)); }
+header .nav-hamburger-bar:nth-child(3) { top: calc((var(--header-mobile-bar-height) + var(--header-mobile-bar-gap)) * 2); }
 
-/* morph to X when open */
+/* open: lighter-teal overlay fills the button (matches source) */
+header nav.nav-open .nav-hamburger {
+  background: var(--header-mobile-menu-open-bg);
+}
+
+/* morph to a smaller white X when open (bars narrow from 45px to 31px and
+   re-center horizontally within the 45px bars box) */
+header nav.nav-open .nav-hamburger-bar {
+  left: calc((var(--header-mobile-bar-width) - var(--header-mobile-bar-open-width)) / 2);
+  width: var(--header-mobile-bar-open-width);
+  background: var(--header-mobile-bar-open-color);
+}
+
 header nav.nav-open .nav-hamburger-bar:nth-child(1) {
-  top: var(--header-mobile-bar-gap);
+  top: calc(var(--header-mobile-bar-height) + var(--header-mobile-bar-gap));
   transform: rotate(45deg);
 }
 
@@ -178,7 +206,7 @@ header nav.nav-open .nav-hamburger-bar:nth-child(2) {
 }
 
 header nav.nav-open .nav-hamburger-bar:nth-child(3) {
-  top: var(--header-mobile-bar-gap);
+  top: calc(var(--header-mobile-bar-height) + var(--header-mobile-bar-gap));
   transform: rotate(-45deg);
 }
 
@@ -213,8 +241,8 @@ header .nav-eyebrow-links > li:last-child {
 
 header .nav-eyebrow-links a {
   display: block;
-  max-width: none;
-  padding: 0 14px;
+  max-width: var(--header-mobile-eyebrow-link-max-width);
+  padding: var(--header-mobile-eyebrow-link-padding);
   color: var(--header-link-color);
   font-family: var(--header-font-family);
   font-size: var(--header-mobile-eyebrow-link-font-size);
@@ -250,7 +278,7 @@ header .nav-main-list > li {
   align-items: center;
   justify-content: center;
   padding: 0;
-  border-top: 1px solid var(--header-divider-color);
+  border-bottom: var(--header-mobile-link-divider);
 }
 
 /* search pushes to the far right of the main row (tablet/desktop only — on
@@ -260,14 +288,15 @@ header .nav-main-list .nav-search-item {
   margin-left: auto;
 }
 
+/* open menu: white, small, centered uppercase links (matches source) */
 header .nav-main-list a {
   display: block;
   width: 100%;
-  padding: 12px 15px;
-  color: var(--header-link-color);
+  padding: var(--header-mobile-link-padding);
+  color: var(--header-mobile-link-color);
   font-family: var(--header-font-family);
   font-size: var(--header-mobile-link-font-size);
-  font-weight: var(--header-main-link-font-weight);
+  font-weight: var(--header-mobile-link-font-weight);
   line-height: var(--header-main-link-line-height);
   text-align: center;
   text-transform: uppercase;
@@ -396,6 +425,19 @@ header .nav-search-submit {
     display: block;
   }
 
+  /* textbar: desktop treatment — wide container, left-indented past the logo,
+     14px heavy weight, left-aligned (overrides the mobile centered/10px base) */
+  header .nav-textbar p {
+    max-width: var(--header-content-max-width);
+    margin: 0 auto;
+    padding: var(--header-textbar-padding);
+    padding-left: var(--header-textbar-indent);
+    font-size: var(--header-textbar-font-size);
+    font-weight: var(--header-textbar-font-weight);
+    line-height: var(--header-textbar-line-height);
+    text-align: left;
+  }
+
   /* progress bar visible again */
   header .nav-progress {
     display: block;
@@ -414,6 +456,7 @@ header .nav-search-submit {
     width: var(--header-logo-width);
     padding: var(--header-logo-padding);
     background-color: var(--header-logo-bg);
+    border-bottom: 0;
     border-radius: var(--header-logo-radius);
     line-height: 0;
   }
@@ -477,13 +520,17 @@ header .nav-search-submit {
 
   header .nav-main-list > li {
     justify-content: flex-start;
-    border-top: 0;
+    border-bottom: 0;
   }
 
+  /* restore the desktop link treatment (light-teal, heavy weight, left-aligned)
+     over the mobile open-menu base (white / small / centered) */
   header .nav-main-list a {
     width: auto;
     padding: 0;
+    color: var(--header-link-color);
     font-size: var(--header-tablet-link-font-size);
+    font-weight: var(--header-main-link-font-weight);
     text-align: left;
     white-space: nowrap;
   }
