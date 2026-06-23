@@ -1,6 +1,69 @@
-/* footer design tokens */
-:root { /* @boilerplate */
-  --footer-max-width: var(--max-width-site); /* @boilerplate */
-  --footer-padding: var(--spacing-xl) var(--spacing-m) var(--spacing-m); /* @boilerplate */
-  --footer-padding-desktop: var(--spacing-xl) var(--spacing-l) var(--spacing-m); /* @boilerplate */
+/* footer design tokens — onfi.com footer */
+:root {
+  --footer-max-width: var(--max-width-site);
+  --footer-background: var(--footer-background-color);
+  --footer-text-color: var(--text-color-light);
+  --footer-font-size: var(--body-font-size-m);
+
+  /* portable Avenir substitute (Nunito Sans) — matches the source glyph widths;
+     the local()-only avenir-* fallbacks otherwise drop to Arial off-Mac */
+  --footer-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  --footer-padding: 30px 15px;
+  --footer-padding-desktop: 30px 15px;
+
+  /* link row: centered, teal, pipe-separated */
+  --footer-link-color: var(--dark-color);
+  --footer-link-font-size: 20px;
+  --footer-link-font-weight: 700;
+  --footer-link-padding: 0 20px;
+  --footer-link-separator: 2px solid var(--dark-color);
+
+  /* word-space the source gets from whitespace between its inline-block <li>s;
+     restores the 6.5px edge-to-edge gap (4.5px space + 2px pipe) between links */
+  --footer-link-separator-gap: 4.5px;
+  --footer-link-row-line-height: 16px;
+
+  /* link row: top space above the links (source <li> margin-top: 15px) */
+  --footer-link-row-margin-top: 15px;
+
+  /* divider under the link row (source: 20px ul padding-bottom + 5px li
+     margin-bottom, netting a 24px gap below the link text to the rule) */
+  --footer-divider-color: #fff;
+  --footer-divider-padding-bottom: 23px;
+  --footer-divider-margin-bottom: 11px;
+
+  /* legal text + logo */
+
+  /* body-weight Avenir substitute (Nunito Sans) for the legal copy; the
+     local()-only avenir-* fallbacks otherwise drop to Arial off-Mac */
+  --footer-legal-font-family: "Avenir LT W01_55 Roman", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+
+  /* explicit px (not unitless) so Nunito's tall intrinsic metrics can't push the
+     line box toward `normal` (~28px); matches the source's 22.857px exactly */
+  --footer-legal-line-height: 22.86px;
+
+  /* the legal/logo row matches the source's content height (184px) so the whole
+     gray footer box totals the source's 314px */
+  --footer-columns-row-min-height: 184px;
+
+  /* divider gutters (source Bootstrap columns: 15px on the legal side, 40px on
+     the logo side — asymmetric, so the rule sits at the 2/3 column split) */
+  --footer-divider-gap-outer: 15px;
+  --footer-divider-gap-legal: 15px;
+  --footer-divider-gap-logo: 40px;
+  --footer-legal-margin-bottom: 16px;
+
+  /* logo keeps its natural aspect (undistorted); width only */
+  --footer-logo-width: 140px;
+
+  /* logo left offset within its column (source: ~71px from the column content
+     edge, i.e. left-aligned with an extra indent rather than centred) */
+  --footer-logo-offset: 71px;
+
+  /* the logo column (which draws the vertical divider) is pushed down 30px and
+     sized to 88px tall via the logo's top margin + the column's bottom padding,
+     matching the source's 88px divider; the logo lands 40px below the text top. */
+  --footer-logo-col-margin-top: 30px;
+  --footer-logo-col-padding-bottom: 20px;
+  --footer-logo-margin-top: 10px;
 }

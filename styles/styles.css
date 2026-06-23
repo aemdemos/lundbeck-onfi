@@ -160,20 +160,7 @@
   --button-on-dark-secondary-hover-color: var(--brand-primary);
 }
 
-/* size-adjusted system fallbacks for the Avenir webfonts (reduce CLS) */
-@font-face {
-  font-family: avenir-fallback;
-  font-weight: 400;
-  size-adjust: 100%;
-  src: local("Avenir Next"), local("Avenir"), local("Arial");
-}
-
-@font-face {
-  font-family: avenir-heavy-fallback;
-  font-weight: 800;
-  size-adjust: 100%;
-  src: local("Avenir Next Heavy"), local("Avenir Heavy"), local("Arial Bold"), local("Arial");
-}
+/* Avenir webfont substitute + size-adjusted system fallbacks live in styles/fonts.css */
 
 body {
   display: none;

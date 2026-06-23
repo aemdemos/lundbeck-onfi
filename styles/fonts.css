@@ -7,14 +7,15 @@
  * directory (eot/woff2/woff/ttf/svg). These are domain-bound Monotype web licenses
  * and CANNOT be lawfully self-hosted in this repo.
  *
- * NEEDS REVIEW: To match the source typography in production, obtain a portable
- * Avenir web license (Monotype) or an approved visual substitute (e.g. Nunito Sans,
- * Montserrat) and add the @font-face declarations here, then update
- * --body-font-family / --heading-font-family in styles/styles.css to reference them.
+ * Portable substitute: Nunito Sans (SIL OFL, open-licensed). Its cap/x-height
+ * proportions track Avenir closely, so the rendered glyph widths match the
+ * source's Avenir at the same px size. A single variable woff2 covers the full
+ * weight range (light 200 → heavy/black 800/900). Used wherever the source uses
+ * a real Avenir face — the header nav and the footer.
  *
- * Until then, the font stack in styles/styles.css renders Avenir for users who have
- * it installed (macOS ships Avenir Next) and falls back to a size-adjusted
- * system humanist sans-serif (Segoe UI / Roboto / Arial) to minimise layout shift.
+ * NEEDS REVIEW: To match the source typography pixel-for-pixel in production,
+ * obtain a portable Avenir web license (Monotype) and add its @font-face here,
+ * then point --body-font-family / --heading-font-family (styles/styles.css) at it.
  *
  * Mapping (source family -> weight):
  *   Avenir LT W01_35 Light  -> 200
@@ -23,3 +24,29 @@
  *   Avenir LT W01_85 Heavy  -> 800  (--heading-font-family)
  *   Avenir LT W01_95 Black  -> 900
  */
+
+/* Nunito Sans — open-licensed (SIL OFL) humanist sans, portable stand-in for the
+ * source's licensed Avenir LT. Single variable woff2 covers the full weight range. */
+@font-face {
+  font-family: "nunito sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/nunitosans-latin.woff2') format('woff2');
+}
+
+/* size-adjusted system fallbacks for the Avenir webfonts (reduce CLS for users
+ * who have a local Avenir installed; otherwise the stack falls through to Nunito) */
+@font-face {
+  font-family: avenir-fallback;
+  font-weight: 400;
+  size-adjust: 100%;
+  src: local("Avenir Next"), local("Avenir"), local("Arial");
+}
+
+@font-face {
+  font-family: avenir-heavy-fallback;
+  font-weight: 800;
+  size-adjust: 100%;
+  src: local("Avenir Next Heavy"), local("Avenir Heavy"), local("Arial Bold"), local("Arial");
+}

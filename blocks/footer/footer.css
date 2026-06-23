@@ -1,22 +1,113 @@
 @import url('./footer-tokens.css');
 
-footer { /* @boilerplate */
-  background-color: var(--light-color); /* @boilerplate */
-  font-size: var(--body-font-size-xs); /* @boilerplate */
+footer {
+  background-color: var(--footer-background);
+  color: var(--footer-text-color);
+  font-size: var(--footer-font-size);
 }
 
-footer .footer > div { /* @boilerplate */
-  margin: auto; /* @boilerplate */
-  max-width: var(--footer-max-width); /* @boilerplate */
-  padding: var(--footer-padding); /* @boilerplate */
+footer .footer > div {
+  margin: auto;
+  max-width: var(--footer-max-width);
+  padding: var(--footer-padding);
 }
 
-footer .footer p { /* @boilerplate */
-  margin: 0; /* @boilerplate */
+footer .footer p {
+  margin: 0;
 }
 
-@media (width >= 768px) { /* @boilerplate */
-  footer .footer > div { /* @boilerplate */
-    padding: var(--footer-padding-desktop); /* @boilerplate */
+/* ===== Link row: centered, teal, bold, pipe-separated, with an underline
+   divider. The authored content delivers five stacked <p><a> in a single
+   wrapper; the rules below lay them on one centered line with 2px teal
+   separators between, and a thin rule below the row. */
+footer .footer .default-content-wrapper {
+  margin-top: var(--footer-link-row-margin-top);
+  margin-bottom: var(--footer-divider-margin-bottom);
+  padding-bottom: var(--footer-divider-padding-bottom);
+  border-bottom: 1px solid var(--footer-divider-color);
+  text-align: center;
+}
+
+footer .footer .default-content-wrapper p {
+  display: inline-block;
+  line-height: var(--footer-link-row-line-height);
+}
+
+footer .footer .default-content-wrapper p + p {
+  margin-left: var(--footer-link-separator-gap);
+  border-left: var(--footer-link-separator);
+}
+
+footer .footer .default-content-wrapper a {
+  display: inline-block;
+  padding: var(--footer-link-padding);
+  color: var(--footer-link-color);
+  font-family: var(--footer-font-family);
+  font-size: var(--footer-link-font-size);
+  font-weight: var(--footer-link-font-weight);
+  line-height: var(--footer-link-row-line-height);
+  text-decoration: none;
+}
+
+footer .footer .default-content-wrapper a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Legal text + logo: legal copy left (wider column), Lundbeck logo right
+   (narrower column) with a white vertical divider between — drawn by the columns
+   `divider` variant. Recolour that divider white to match the source. */
+footer .footer .columns.divider {
+  --columns-divider-color: var(--footer-divider-color);
+}
+
+footer .footer .columns p {
+  font-family: var(--footer-legal-font-family);
+  line-height: var(--footer-legal-line-height);
+}
+
+footer .footer .columns p:not(:last-child) {
+  margin-bottom: var(--footer-legal-margin-bottom);
+}
+
+footer .footer .columns img {
+  width: var(--footer-logo-width);
+  height: auto;
+}
+
+@media (width >= 768px) {
+  footer .footer > div {
+    padding: var(--footer-padding-desktop);
+  }
+
+  /* columns top-aligned (not stretched): the vertical divider then spans only
+     the shorter logo column's content height, matching the source (~88px) rather
+     than the full legal-column height. min-height matches the source row so the
+     whole gray footer box totals the source's 314px. */
+  footer .footer .columns.divider.columns-2-cols > div {
+    align-items: flex-start;
+    min-height: var(--footer-columns-row-min-height);
+  }
+
+  /* source proportions: legal 2/3 (col-sm-8), logo column 1/3 (col-sm-4). Each
+     column carries a 15px outer gutter (Bootstrap row) plus an asymmetric inner
+     gutter at the divider (15px legal side / 40px logo side) so the rule sits at
+     the 2/3 column split, exactly as the source. */
+  footer .footer .columns.divider.columns-2-cols > div > :first-child {
+    flex: 0 0 66.6667%;
+    padding-inline: var(--footer-divider-gap-outer) var(--footer-divider-gap-legal);
+  }
+
+  footer .footer .columns.divider.columns-2-cols > div > :nth-child(2) {
+    flex: 0 0 33.3333%;
+    margin-block-start: var(--footer-logo-col-margin-top);
+    padding-block-end: var(--footer-logo-col-padding-bottom);
+    padding-inline: var(--footer-divider-gap-logo) var(--footer-divider-gap-outer);
+  }
+
+  /* logo: natural aspect (undistorted), left-aligned within its column with the
+     source indent, dropped 10px below the column top */
+  footer .footer .columns.divider img {
+    margin-block-start: var(--footer-logo-margin-top);
+    margin-inline: var(--footer-logo-offset) 0;
   }
 }
