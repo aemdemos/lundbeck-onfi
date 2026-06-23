@@ -454,6 +454,7 @@ header .nav-search-submit {
     z-index: var(--header-logo-z-index);
     display: block;
     width: var(--header-logo-width);
+    min-height: 0;
     padding: var(--header-logo-padding);
     background-color: var(--header-logo-bg);
     border-bottom: 0;
