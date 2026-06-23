@@ -485,8 +485,11 @@ header .nav-search-submit {
     flex-wrap: wrap;
     justify-content: flex-start;
     row-gap: 2px;
-    padding-right: max(var(--header-side-padding), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)));
-    padding-left: max(var(--header-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
+    padding:
+      var(--header-eyebrow-padding-y)
+      max(var(--header-side-padding), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)))
+      var(--header-eyebrow-padding-y)
+      max(var(--header-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
   }
 
   header .nav-eyebrow-links > li:nth-child(1) {
