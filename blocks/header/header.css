@@ -418,8 +418,9 @@ header .nav-search-submit {
 }
 
 /* ===== Tablet / intermediate (≥768px) — horizontal nav restored.
-   Single block holding all tablet styles. Uses the Bootstrap 970px container
-   and 12px main-nav text (matches source's small-desktop band). ===== */
+   Single block holding all tablet styles. The main-nav font/gap and the
+   logo-clearance indent shrink fluidly so the row stays on one line and clears
+   the logo down to 768px, where the mobile hamburger takes over. ===== */
 @media (width >= 768px) {
   header nav {
     display: block;
@@ -489,7 +490,7 @@ header .nav-search-submit {
       var(--header-eyebrow-padding-y)
       max(var(--header-side-padding), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)))
       var(--header-eyebrow-padding-y)
-      max(var(--header-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
+      max(var(--header-tablet-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
   }
 
   header .nav-eyebrow-links > li:nth-child(1) {
@@ -508,18 +509,17 @@ header .nav-search-submit {
   header .nav-eyebrow-links > li:nth-child(3) a { max-width: var(--header-eyebrow-link-3-max-width); }
   header .nav-eyebrow-links > li:nth-child(4) a { max-width: var(--header-eyebrow-link-4-max-width); }
 
-  /* main nav: horizontal row packed left after the logo. Same clamped side
-     terms as the eyebrow row; wraps to a second line on the narrow side of the
-     band rather than overflowing the viewport. */
+  /* main nav: horizontal row packed left after the logo. Tighter gap so the
+     links stay on a single line as the viewport narrows (matches source, which
+     shrinks the spacing rather than wrapping). */
   header ul.nav-main-list {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     align-items: center;
-    gap: var(--header-main-gap);
-    row-gap: 2px;
+    gap: var(--header-tablet-gap);
     min-height: var(--header-main-row-height);
-    padding-right: max(var(--header-side-padding), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)));
-    padding-left: max(var(--header-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
+    padding-right: max(var(--header-tablet-gutter), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)));
+    padding-left: max(var(--header-tablet-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
   }
 
   header .nav-main-list > li {
@@ -561,6 +561,7 @@ header .nav-search-submit {
 
   header ul.nav-main-list {
     flex-wrap: nowrap;
+    gap: var(--header-main-gap);
     padding-right: calc((100% - var(--header-content-max-width)) / 2 + var(--header-side-padding));
     padding-left: calc((100% - var(--header-content-max-width)) / 2 + var(--header-nav-indent));
   }

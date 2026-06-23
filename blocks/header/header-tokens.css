@@ -80,7 +80,7 @@
   --header-search-form-width: 246px;
   --header-search-form-padding: 15px 9px;
   --header-search-form-top: calc(100% + 26px);
-  --header-search-form-right: -34px;
+  --header-search-form-right: -11px;
   --header-search-form-z-index: 1000;
   --header-search-input-width: 192px;
   --header-search-input-height: 32px;
@@ -101,9 +101,19 @@
 
   /* responsive breakpoint container widths (Bootstrap-derived) */
   --header-tablet-container: 970px;
-  --header-tablet-gap: 16px;
-  --header-tablet-link-font-size: 12px;
-  --header-tablet-eyebrow-padding-x: 18px;
+
+  /* fluid gap + font so the main nav stays on one line as the tablet band
+     narrows (shrinks toward the source's ~10px/tight-gap at 768) */
+  --header-tablet-gap: clamp(4px, 0.55vw, 16px);
+  --header-tablet-link-font-size: clamp(10px, 1.25vw, 12px);
+
+  /* logo-clearance indent: never less than the logo tab width (150px) so the
+     nav rows always start to the right of the logo, never under it */
+  --header-tablet-nav-indent: clamp(152px, 17vw, 165px);
+
+  /* right gutter shrinks at the narrow end to keep the row on one line */
+  --header-tablet-gutter: clamp(4px, 0.8vw, 15px);
+  --header-tablet-eyebrow-padding-x: clamp(6px, 1.2vw, 18px);
   --header-small-gutter: 8px;
   --header-small-link-font-size: 11px;
   --header-small-logo-width: 120px;
