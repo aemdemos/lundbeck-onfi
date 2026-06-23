@@ -66,7 +66,11 @@ footer .footer .columns p:not(:last-child) {
 footer .footer .columns img {
   width: var(--footer-logo-width);
   height: auto;
-  margin: 0 auto;
+
+  /* mobile: symmetric gap above and below the logo. The 30px top adds to the
+     divider's 11px margin (~41px from the rule to the logo); the matching 30px
+     bottom restores the space the source gets from its taller (88px) logo box. */
+  margin: var(--footer-logo-col-margin-top) auto;
 }
 
 @media (width >= 768px) {
