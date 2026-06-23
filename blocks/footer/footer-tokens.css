@@ -8,7 +8,9 @@
   /* portable Avenir substitute (Nunito Sans) — matches the source glyph widths;
      the local()-only avenir-* fallbacks otherwise drop to Arial off-Mac */
   --footer-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
-  --footer-padding: 20px 15px;
+
+  /* mobile: large bottom padding matches the source (clears the fixed mobile UI) */
+  --footer-padding: 20px 15px 160px;
   --footer-padding-desktop: 30px 15px;
 
   /* mobile (<768px): links stack vertically (no pipes), legal copy is smaller
