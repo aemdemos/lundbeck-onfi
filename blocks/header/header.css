@@ -12,7 +12,7 @@
   src: url('/fonts/nunitosans-latin.woff2') format('woff2');
 }
 
-/* ===== Header (sticky — pins to top on scroll, matching source) ===== */
+/* ===== Header shell (shared across all viewports) ===== */
 header.header-wrapper {
   position: sticky;
   top: 0;
@@ -23,8 +23,12 @@ header .nav-wrapper {
   width: 100%;
 }
 
+/* Mobile-first: the base styles below target mobile (<768px). Tablet and
+   desktop layer on top via min-width media queries at the bottom of the file. */
 header nav {
   position: relative;
+  display: flex;
+  flex-direction: column;
   font-family: var(--body-font-family);
 }
 
@@ -34,7 +38,7 @@ header nav ul {
   padding: 0;
 }
 
-/* ===== Row 0: prescribing-context text bar ===== */
+/* ===== Row 0: prescribing-context text bar (shared) ===== */
 header .nav-textbar {
   background-color: var(--header-textbar-bg);
 }
@@ -51,125 +55,9 @@ header .nav-textbar p {
   line-height: var(--header-textbar-line-height);
 }
 
-/* ===== Brand: white rounded logo tab overlapping eyebrow + main bands ===== */
-header .nav-brand {
-  position: absolute;
-  top: var(--header-logo-top);
-  left: calc((100% - var(--header-content-max-width)) / 2 + var(--header-logo-left-offset));
-  z-index: var(--header-logo-z-index);
-  width: var(--header-logo-width);
-  padding: var(--header-logo-padding);
-  background-color: var(--header-logo-bg);
-  border-radius: var(--header-logo-radius);
-  line-height: 0;
-}
-
-header .nav-brand a {
-  display: block;
-}
-
-header .nav-brand img {
-  width: var(--header-logo-img-width);
-  height: auto;
-}
-
-header .nav-brand-controls {
-  display: none;
-}
-
-/* ===== Row 1: eyebrow utility links band (full-width bg, content packs left after logo) ===== */
-header ul.nav-eyebrow-links {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: var(--header-eyebrow-padding-y) calc((100% - var(--header-content-max-width)) / 2 + var(--header-side-padding));
-  padding-left: calc((100% - var(--header-content-max-width)) / 2 + var(--header-nav-indent));
-  background-color: var(--header-eyebrow-bg);
-}
-
-header .nav-eyebrow-links > li {
-  border-right: 1px solid var(--header-divider-color);
-  transition: var(--header-eyebrow-hover-transition);
-}
-
-/* hover highlights the whole button area (matches source #nav-eyebrow li:hover) */
-header .nav-eyebrow-links > li:hover {
-  background-color: var(--header-eyebrow-hover-bg);
-}
-
-header .nav-eyebrow-links > li:last-child {
-  border-right: 0;
-}
-
-/* eyebrow labels wrap to two lines as on source ("Important Safety" / "Information") */
-header .nav-eyebrow-links a {
-  display: block;
-  padding: 0 var(--header-eyebrow-link-padding-x);
-  color: var(--header-link-color);
-  font-family: var(--header-font-family);
-  font-size: var(--header-eyebrow-link-font-size);
-  font-weight: var(--header-eyebrow-link-font-weight);
-  line-height: var(--header-eyebrow-link-line-height);
-  text-align: center;
-  text-decoration: none;
-  transition: var(--header-color-transition);
-}
-
-/* per-label width so each wraps to exactly two lines in the fallback font */
-header .nav-eyebrow-links > li:nth-child(1) a { max-width: var(--header-eyebrow-link-1-max-width); }
-header .nav-eyebrow-links > li:nth-child(2) a { max-width: var(--header-eyebrow-link-2-max-width); }
-header .nav-eyebrow-links > li:nth-child(3) a { max-width: var(--header-eyebrow-link-3-max-width); }
-header .nav-eyebrow-links > li:nth-child(4) a { max-width: var(--header-eyebrow-link-4-max-width); }
-
-header .nav-eyebrow-links a:hover {
-  color: var(--header-link-color);
-  text-decoration: none;
-}
-
-/* ===== Row 2: main nav links band + search (full-width bg, content packs left after logo) ===== */
-header ul.nav-main-list {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--header-main-gap);
-  min-height: var(--header-main-row-height);
-  padding: 0 calc((100% - var(--header-content-max-width)) / 2 + var(--header-side-padding));
-  padding-left: calc((100% - var(--header-content-max-width)) / 2 + var(--header-nav-indent));
-  background-color: var(--header-main-bg);
-}
-
-/* search pushes to the far right of the main row */
-header .nav-main-list .nav-search-item {
-  margin-left: auto;
-  transform: translateX(var(--header-search-item-offset));
-}
-
-header .nav-main-list > li {
-  display: flex;
-  align-items: center;
-}
-
-header .nav-main-list a {
-  display: block;
-  padding: 0;
-  color: var(--header-link-color);
-  font-family: var(--header-font-family);
-  font-size: var(--header-main-link-font-size);
-  font-weight: var(--header-main-link-font-weight);
-  line-height: var(--header-main-link-line-height);
-  white-space: nowrap;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: var(--header-color-transition);
-}
-
-header .nav-main-list a:hover {
-  color: var(--header-link-hover-color);
-  text-decoration: none;
-}
-
-/* ===== Scroll-progress bar (below the nav) ===== */
+/* ===== Scroll-progress bar (hidden on mobile; shown ≥768px) ===== */
 header .nav-progress {
+  display: none;
   width: 100%;
   height: var(--header-progress-height);
   background-color: var(--header-progress-track);
@@ -182,7 +70,217 @@ header .nav-progress-bar {
   transition: var(--header-progress-transition);
 }
 
-/* ===== Search (expandable icon) ===== */
+/* ===== Brand (mobile): logo tab (left) + search + MENU (right) on dark-teal band ===== */
+header .nav-brand {
+  order: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0 10px 12px;
+  background-color: var(--header-eyebrow-bg);
+  line-height: normal;
+}
+
+header .nav-brand > a {
+  display: block;
+  padding: 10px 12px;
+  background-color: #fff;
+  border-radius: 8px;
+  line-height: 0;
+}
+
+header .nav-brand img {
+  width: var(--header-mobile-logo-img-width);
+  height: auto;
+}
+
+header .nav-brand-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  align-self: stretch;
+}
+
+/* search in brand row on mobile */
+header .nav-brand-controls .nav-search {
+  padding: 0 14px;
+}
+
+header .nav-brand-controls .nav-search-form {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 8px 12px;
+  background: var(--header-main-bg);
+}
+
+header .nav-brand-controls .nav-search-input {
+  flex: 1;
+}
+
+/* MENU button: text + hamburger bars, lighter-teal box, morphs to X */
+header .nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  align-self: stretch;
+  width: var(--header-mobile-hamburger-width);
+  padding: 0;
+  background: var(--header-mobile-hamburger-bg);
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+header .nav-hamburger-label {
+  color: #fff;
+  font-size: var(--header-mobile-link-font-size);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+header .nav-hamburger-bars {
+  position: relative;
+  display: block;
+  width: var(--header-mobile-bar-width);
+  height: 19px;
+}
+
+header .nav-hamburger-bar {
+  position: absolute;
+  left: 0;
+  width: var(--header-mobile-bar-width);
+  height: var(--header-mobile-bar-height);
+  background: #fff;
+  border-radius: 1px;
+  transition: var(--header-mobile-bar-transition);
+}
+
+header .nav-hamburger-bar:nth-child(1) { top: 0; }
+header .nav-hamburger-bar:nth-child(2) { top: var(--header-mobile-bar-gap); }
+header .nav-hamburger-bar:nth-child(3) { top: calc(var(--header-mobile-bar-gap) * 2); }
+
+/* morph to X when open */
+header nav.nav-open .nav-hamburger-bar:nth-child(1) {
+  top: var(--header-mobile-bar-gap);
+  transform: rotate(45deg);
+}
+
+header nav.nav-open .nav-hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+
+header nav.nav-open .nav-hamburger-bar:nth-child(3) {
+  top: var(--header-mobile-bar-gap);
+  transform: rotate(-45deg);
+}
+
+/* ===== Row 1: eyebrow utility links band ===== */
+header ul.nav-eyebrow-links {
+  order: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 10px;
+  background-color: var(--header-eyebrow-bg);
+}
+
+header .nav-eyebrow-links > li {
+  border-right: 1px solid var(--header-divider-color);
+  transition: var(--header-eyebrow-hover-transition);
+}
+
+/* ISI link hidden on mobile (hidden-xs on source); shown ≥768px */
+header .nav-eyebrow-links > li:nth-child(1) {
+  display: none;
+}
+
+/* hover highlights the whole button area (matches source #nav-eyebrow li:hover) */
+header .nav-eyebrow-links > li:hover {
+  background-color: var(--header-eyebrow-hover-bg);
+}
+
+header .nav-eyebrow-links > li:last-child {
+  border-right: 0;
+}
+
+header .nav-eyebrow-links a {
+  display: block;
+  max-width: none;
+  padding: 0 14px;
+  color: var(--header-link-color);
+  font-family: var(--header-font-family);
+  font-size: var(--header-mobile-eyebrow-link-font-size);
+  font-weight: var(--header-eyebrow-link-font-weight);
+  line-height: var(--header-eyebrow-link-line-height);
+  text-align: center;
+  text-decoration: underline;
+  transition: var(--header-color-transition);
+}
+
+header .nav-eyebrow-links a:hover {
+  color: var(--header-link-color);
+  text-decoration: none;
+}
+
+/* ===== Row 2: main nav links (mobile: hidden until MENU open, stacked) ===== */
+header ul.nav-main-list {
+  order: 3;
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  background-color: var(--header-main-bg);
+}
+
+header nav.nav-open ul.nav-main-list {
+  display: flex;
+}
+
+header .nav-main-list > li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-top: 1px solid var(--header-divider-color);
+}
+
+/* search pushes to the far right of the main row (tablet/desktop only — on
+   mobile the search lives in the brand controls, so this selector won't match).
+   The icon nudge is applied only at desktop (≥1200px) where there's room. */
+header .nav-main-list .nav-search-item {
+  margin-left: auto;
+}
+
+header .nav-main-list a {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  color: var(--header-link-color);
+  font-family: var(--header-font-family);
+  font-size: var(--header-mobile-link-font-size);
+  font-weight: var(--header-main-link-font-weight);
+  line-height: var(--header-main-link-line-height);
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: var(--header-color-transition);
+}
+
+header .nav-main-list a:hover {
+  color: var(--header-link-hover-color);
+  text-decoration: none;
+}
+
+/* ===== Search (expandable icon) — shared structural styles ===== */
 header .nav-search {
   position: relative;
   display: flex;
@@ -290,269 +388,138 @@ header .nav-search-submit {
   cursor: pointer;
 }
 
-/* ===== Hamburger (mobile only) ===== */
-header .nav-hamburger {
-  display: none;
-}
-
-/* ===== Tablet/intermediate (768–1199px) — keep horizontal nav, shrink the
-   content container and main-nav font so links don't overflow (matches source,
-   which uses a 750px/970px Bootstrap container and 12px main-nav text here).
-   Desktop (≥1200px) is untouched. ===== */
-@media (768px <= width <= 1199px) {
-  /* small desktop band (≥992px): Bootstrap container 970px. Main nav packs left
-     within the container (the logo overlaps it, as on source) — only the eyebrow
-     row keeps the logo-clearance indent. */
-  header ul.nav-eyebrow-links {
-    padding-right: calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding));
-    padding-left: calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent));
+/* ===== Tablet / intermediate (≥768px) — horizontal nav restored.
+   Single block holding all tablet styles. Uses the Bootstrap 970px container
+   and 12px main-nav text (matches source's small-desktop band). ===== */
+@media (width >= 768px) {
+  header nav {
+    display: block;
   }
 
-  /* main nav clears the logo on the left (same logo-clearance indent as eyebrow) */
-  header ul.nav-main-list {
-    padding-right: calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding));
-    padding-left: calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent));
+  /* progress bar visible again */
+  header .nav-progress {
+    display: block;
   }
 
-  /* logo tab anchors to the active container's left edge (not the 1100px one) */
+  /* brand: white rounded logo tab overlapping the eyebrow + main bands.
+     The container-centering term is clamped to ≥0 so the tab never slides
+     off-screen on the narrow side of the band (≈768–990px), where
+     (100% − container)/2 would otherwise go negative. */
   header .nav-brand {
-    left: calc((100% - var(--header-tablet-container)) / 2 - 10px);
+    position: absolute;
+    top: var(--header-logo-top);
+    left: max(0px, calc((100% - var(--header-tablet-container)) / 2 - 10px));
+    z-index: var(--header-logo-z-index);
+    display: block;
+    width: var(--header-logo-width);
+    padding: var(--header-logo-padding);
+    background-color: var(--header-logo-bg);
+    border-radius: var(--header-logo-radius);
+    line-height: 0;
   }
 
-  /* main nav shrinks to fit (source uses ~12px here) */
-  header .nav-main-list {
-    gap: var(--header-tablet-gap);
+  header .nav-brand > a {
+    padding: 0;
+    background: none;
+    border-radius: 0;
   }
 
-  header .nav-main-list a {
-    font-size: var(--header-tablet-link-font-size);
+  header .nav-brand img {
+    width: var(--header-logo-img-width);
+  }
+
+  /* mobile-only controls hidden */
+  header .nav-brand-controls,
+  header .nav-hamburger {
+    display: none;
+  }
+
+  /* eyebrow band: content packs left after the logo, within the 970 container.
+     Side term clamped to ≥0 so the narrow side of the band keeps a small gutter
+     instead of negative padding; wraps rather than overflowing if links can't fit. */
+  header ul.nav-eyebrow-links {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    row-gap: 2px;
+    padding-right: max(var(--header-side-padding), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)));
+    padding-left: max(var(--header-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
+  }
+
+  header .nav-eyebrow-links > li:nth-child(1) {
+    display: block;
   }
 
   header .nav-eyebrow-links a {
     padding: 0 var(--header-tablet-eyebrow-padding-x);
-  }
-}
-
-@media (768px <= width <= 991px) {
-  /* tablet band: content fits within viewport with ~16px gutters */
-  header ul.nav-eyebrow-links {
-    padding-right: var(--header-tablet-gap);
-    padding-left: var(--header-nav-indent);
+    font-size: var(--header-eyebrow-link-font-size);
+    text-decoration: none;
   }
 
-  /* shrink the logo tab in the tight band so the nav clears it and still fits */
-  header .nav-brand {
-    left: 6px;
-    width: var(--header-small-logo-width);
-    padding: 12px 12px 10px;
-  }
+  /* per-label width so each wraps to exactly two lines in the fallback font */
+  header .nav-eyebrow-links > li:nth-child(1) a { max-width: var(--header-eyebrow-link-1-max-width); }
+  header .nav-eyebrow-links > li:nth-child(2) a { max-width: var(--header-eyebrow-link-2-max-width); }
+  header .nav-eyebrow-links > li:nth-child(3) a { max-width: var(--header-eyebrow-link-3-max-width); }
+  header .nav-eyebrow-links > li:nth-child(4) a { max-width: var(--header-eyebrow-link-4-max-width); }
 
-  header .nav-brand img {
-    width: var(--header-small-logo-img-width);
-  }
-
-  /* main nav clears the (smaller) logo on the left; wraps to a second line
-     rather than overflowing when the links can't fit on one row */
+  /* main nav: horizontal row packed left after the logo. Same clamped side
+     terms as the eyebrow row; wraps to a second line on the narrow side of the
+     band rather than overflowing the viewport. */
   header ul.nav-main-list {
-    flex-wrap: wrap;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--header-main-gap);
     row-gap: 2px;
-    padding-right: var(--header-small-gutter);
-    padding-left: var(--header-small-nav-indent);
-  }
-
-  header .nav-main-list {
-    column-gap: 12px;
-  }
-
-  header .nav-main-list a {
-    font-size: var(--header-small-link-font-size);
-  }
-
-  header .nav-main-list .nav-search-item {
-    margin-left: 6px;
-  }
-
-  header .nav-eyebrow-links a {
-    padding: 0 7px;
-    font-size: var(--header-tablet-link-font-size);
-  }
-}
-
-/* ===== Mobile (≤767px) ===== */
-@media (width <= 767px) {
-  /* Row order on mobile: textbar → eyebrow PDF links → brand (logo+search+MENU) → nav */
-  header nav {
-    display: flex;
-    flex-direction: column;
-  }
-
-  header .nav-textbar { order: 0; }
-
-  /* progress bar is hidden on mobile (source uses hidden-xs) */
-  header .nav-progress {
-    display: none;
-  }
-
-  /* eyebrow PDF links: centered underlined row on the dark-teal band (ISI hidden) */
-  header ul.nav-eyebrow-links {
-    order: 1;
-    justify-content: center;
-    padding: 12px 10px;
-  }
-
-  header .nav-eyebrow-links > li:nth-child(1) {
-    display: none; /* hide ISI link (hidden-xs on source) */
-  }
-
-  header .nav-eyebrow-links > li {
-    border-right: 1px solid var(--header-divider-color);
-  }
-
-  header .nav-eyebrow-links a {
-    max-width: none;
-    padding: 0 14px;
-    font-size: var(--header-mobile-eyebrow-link-font-size);
-    text-decoration: underline;
-  }
-
-  /* brand row: logo tab (left) + search + MENU (right) on the dark-teal band */
-  header .nav-brand {
-    order: 2;
-    position: relative;
-    top: auto;
-    left: auto;
-    z-index: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 0 10px 12px;
-    background-color: var(--header-eyebrow-bg);
-    border-radius: 0;
-    line-height: normal;
-  }
-
-  header .nav-brand > a {
-    background-color: #fff;
-    padding: 10px 12px;
-    border-radius: 8px;
-    line-height: 0;
-  }
-
-  header .nav-brand img {
-    width: var(--header-mobile-logo-img-width);
-  }
-
-  header .nav-brand-controls {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    align-self: stretch;
-  }
-
-  /* search in brand row on mobile */
-  header .nav-brand-controls .nav-search {
-    padding: 0 14px;
-  }
-
-  header .nav-brand-controls .nav-search-form {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    margin: 0;
-    padding: 8px 12px;
-    background: var(--header-main-bg);
-    z-index: 20;
-  }
-
-  header .nav-brand-controls .nav-search-input {
-    flex: 1;
-  }
-
-  /* MENU button: text + hamburger bars, lighter-teal box, morphs to X */
-  header .nav-hamburger {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    align-self: stretch;
-    width: var(--header-mobile-hamburger-width);
-    padding: 0;
-    background: var(--header-mobile-hamburger-bg);
-    border: 0;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  header .nav-hamburger-label {
-    color: #fff;
-    font-size: var(--header-mobile-link-font-size);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
-
-  header .nav-hamburger-bars {
-    position: relative;
-    display: block;
-    width: var(--header-mobile-bar-width);
-    height: 19px;
-  }
-
-  header .nav-hamburger-bar {
-    position: absolute;
-    left: 0;
-    width: var(--header-mobile-bar-width);
-    height: var(--header-mobile-bar-height);
-    background: #fff;
-    border-radius: 1px;
-    transition: var(--header-mobile-bar-transition);
-  }
-
-  header .nav-hamburger-bar:nth-child(1) { top: 0; }
-  header .nav-hamburger-bar:nth-child(2) { top: var(--header-mobile-bar-gap); }
-  header .nav-hamburger-bar:nth-child(3) { top: calc(var(--header-mobile-bar-gap) * 2); }
-
-  /* morph to X when open */
-  header nav.nav-open .nav-hamburger-bar:nth-child(1) {
-    top: var(--header-mobile-bar-gap);
-    transform: rotate(45deg);
-  }
-
-  header nav.nav-open .nav-hamburger-bar:nth-child(2) {
-    opacity: 0;
-  }
-
-  header nav.nav-open .nav-hamburger-bar:nth-child(3) {
-    top: var(--header-mobile-bar-gap);
-    transform: rotate(-45deg);
-  }
-
-  /* main nav: hidden until MENU open, then full-width stacked list */
-  header ul.nav-main-list {
-    order: 3;
-    display: none;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
-  }
-
-  header nav.nav-open ul.nav-main-list {
-    display: flex;
+    min-height: var(--header-main-row-height);
+    padding-right: max(var(--header-side-padding), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)));
+    padding-left: max(var(--header-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
   }
 
   header .nav-main-list > li {
-    justify-content: center;
-    padding: 0;
-    border-top: 1px solid var(--header-divider-color);
+    justify-content: flex-start;
+    border-top: 0;
   }
 
   header .nav-main-list a {
-    width: 100%;
-    padding: 12px 15px;
-    font-size: var(--header-mobile-link-font-size);
-    text-align: center;
+    width: auto;
+    padding: 0;
+    font-size: var(--header-tablet-link-font-size);
+    text-align: left;
+    white-space: nowrap;
+  }
+}
+
+/* ===== Desktop (≥1200px) — full 1100px container, 14px nav text.
+   The approved desktop layout; only the values that differ from the tablet
+   band are overridden here. ===== */
+@media (width >= 1200px) {
+  /* logo tab anchors to the 1100 container's left edge */
+  header .nav-brand {
+    left: calc((100% - var(--header-content-max-width)) / 2 + var(--header-logo-left-offset));
+  }
+
+  header ul.nav-eyebrow-links {
+    flex-wrap: nowrap;
+    padding-right: calc((100% - var(--header-content-max-width)) / 2 + var(--header-side-padding));
+    padding-left: calc((100% - var(--header-content-max-width)) / 2 + var(--header-nav-indent));
+  }
+
+  header .nav-eyebrow-links a {
+    padding: 0 var(--header-eyebrow-link-padding-x);
+  }
+
+  header ul.nav-main-list {
+    flex-wrap: nowrap;
+    padding-right: calc((100% - var(--header-content-max-width)) / 2 + var(--header-side-padding));
+    padding-left: calc((100% - var(--header-content-max-width)) / 2 + var(--header-nav-indent));
+  }
+
+  /* nudge the search icon right to match the source icon center (desktop only) */
+  header .nav-main-list .nav-search-item {
+    transform: translateX(var(--header-search-item-offset));
+  }
+
+  header .nav-main-list a {
+    font-size: var(--header-main-link-font-size);
   }
 }
