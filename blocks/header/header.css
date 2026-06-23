@@ -141,6 +141,7 @@ header ul.nav-main-list {
 /* search pushes to the far right of the main row */
 header .nav-main-list .nav-search-item {
   margin-left: auto;
+  transform: translateX(var(--header-search-item-offset));
 }
 
 header .nav-main-list > li {

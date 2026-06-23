@@ -33,7 +33,7 @@
 
   /* row 0 — prescribing-context text bar */
   --header-textbar-font-size: 14px;
-  --header-textbar-font-weight: 700;
+  --header-textbar-font-weight: 800;
   --header-textbar-line-height: 1.07;
   --header-textbar-padding: 8px 15px;
   --header-textbar-indent: 130px;
@@ -62,7 +62,7 @@
   --header-main-gap: 35px;
   --header-main-row-height: 42px;
   --header-main-link-font-size: 14px;
-  --header-main-link-font-weight: 500;
+  --header-main-link-font-weight: 700;
   --header-main-link-line-height: 1.43;
 
   /* scroll-progress bar */
@@ -72,6 +72,9 @@
   /* search */
   --header-search-icon-size: 27px;
   --header-search-icon-url: url('/icons/search.svg');
+
+  /* nudge the search icon right to match source icon center (~19px) */
+  --header-search-item-offset: 19px;
   --header-search-connector-width: 45px;
   --header-search-connector-height: 15px;
   --header-search-form-width: 246px;
