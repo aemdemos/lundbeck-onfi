@@ -68,6 +68,11 @@
   /* active page indicator — yellow underline under the current nav item */
   --header-main-link-active-border: 5px solid #ffd212;
 
+  /* small downward nudge so the link text sits at the source's vertical position
+     within the main nav band (source top-aligns the link with a ~10px margin-top;
+     ours centers, landing ~4px higher — this offset matches it) */
+  --header-main-link-top-offset: 4px;
+
   /* scroll-progress bar */
   --header-progress-height: 8px;
   --header-progress-transition: width 0.6s;

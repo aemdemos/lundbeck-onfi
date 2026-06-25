@@ -537,6 +537,8 @@ header .nav-search-submit {
     font-weight: var(--header-main-link-font-weight);
     text-align: left;
     white-space: nowrap;
+    position: relative;
+    top: var(--header-main-link-top-offset);
   }
 
   /* active page: yellow underline under the current nav item (matches source) */
