@@ -3,30 +3,76 @@
 /* Fonts extracted from: https://www.onfi.com/
  *
  * The source site uses Monotype-licensed "Avenir LT W01" webfonts (Light/Roman/
- * Medium/Heavy/Black) self-hosted under the source domain's /clientlibs-onfi/fonts/
- * directory (eot/woff2/woff/ttf/svg). These are domain-bound Monotype web licenses
- * and CANNOT be lawfully self-hosted in this repo.
+ * Medium/Heavy/Black). These are now self-hosted here under a license that covers
+ * this EDS migration project's domains (confirmed 2026-06-25). Each cut is its own
+ * named family, exactly as the source references them — the CSS font stacks
+ * (styles/styles.css, blocks/header/header-tokens.css) list these names first.
  *
- * Portable substitute: Nunito Sans (SIL OFL, open-licensed). Its cap/x-height
- * proportions track Avenir closely, so the rendered glyph widths match the
- * source's Avenir at the same px size. A single variable woff2 covers the full
- * weight range (light 200 → heavy/black 800/900). Used wherever the source uses
- * a real Avenir face — the header nav and the footer.
+ * Source family -> file (weight is the source's numeric cut label):
+ *   Avenir LT W01_35 Light   -> avenir-lt-w01-35-light.woff2          (+ Light Oblique = italic)
+ *   Avenir LT W01_55 Roman   -> avenir-lt-w01-55-roman.woff2          (--body/heading-font-family)
+ *   Avenir LT W01_65 Medium  -> avenir-lt-w01-65-medium.woff2
+ *   Avenir LT W01_85 Heavy   -> avenir-lt-w01-85-heavy.woff2          (--header-font-family)
+ *   Avenir LT W01_95 Black   -> avenir-lt-w01-95-black.woff2
  *
- * NEEDS REVIEW: To match the source typography pixel-for-pixel in production,
- * obtain a portable Avenir web license (Monotype) and add its @font-face here,
- * then point --body-font-family / --heading-font-family (styles/styles.css) at it.
- *
- * Mapping (source family -> weight):
- *   Avenir LT W01_35 Light  -> 200
- *   Avenir LT W01_55 Roman  -> 400  (--body-font-family)
- *   Avenir LT W01_65 Medium -> 500
- *   Avenir LT W01_85 Heavy  -> 800  (--heading-font-family)
- *   Avenir LT W01_95 Black  -> 900
- */
+ * Each face is declared at normal weight under its own family name (the source
+ * selects cuts by family name, not by numeric font-weight). Nunito Sans + the
+ * size-adjusted local fallbacks remain only as a deeper fallback for the brief
+ * window before the Avenir woff2 loads (font-display: swap). */
 
-/* Nunito Sans — open-licensed (SIL OFL) humanist sans, portable stand-in for the
- * source's licensed Avenir LT. Single variable woff2 covers the full weight range. */
+/* ── Real Avenir LT W01 cuts (self-hosted, licensed) ───────────────────────── */
+@font-face {
+  font-family: "Avenir LT W01_35 Light";
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url('/fonts/avenir-lt-w01-35-light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Avenir LT W01_35 Light";
+  font-style: italic;
+  font-weight: normal;
+  font-display: swap;
+  src: url('/fonts/avenir-lt-w01-35-light-oblique.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Avenir LT W01_55 Roman";
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url('/fonts/avenir-lt-w01-55-roman.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Avenir LT W01_65 Medium";
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url('/fonts/avenir-lt-w01-65-medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Avenir LT W01_85 Heavy";
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url('/fonts/avenir-lt-w01-85-heavy.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Avenir LT W01_95 Black";
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url('/fonts/avenir-lt-w01-95-black.woff2') format('woff2');
+}
+
+/* ── Fallbacks (only used before the Avenir woff2 loads) ───────────────────── */
+
+/* Nunito Sans — open-licensed (SIL OFL) humanist sans whose cap/x-height tracks
+ * Avenir; deeper fallback now that the real Avenir cuts are self-hosted above. */
 @font-face {
   font-family: "nunito sans";
   font-style: normal;

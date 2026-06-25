@@ -16,8 +16,8 @@ main .isi .isi-inline > div { /* @boilerplate */
 }
 
 main .isi p,
-main .isi li { /* @boilerplate */
-  font-size: var(--body-font-size-s); /* @boilerplate */
+main .isi li {
+  font-size: var(--isi-body-font-size);
   color: var(--isi-text-color); /* @boilerplate */
   line-height: var(--isi-line-height); /* @boilerplate */
 }
@@ -25,6 +25,17 @@ main .isi li { /* @boilerplate */
 main .isi li { /* @boilerplate */
   line-height: var(--isi-list-line-height); /* @boilerplate */
   margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
+}
+
+/* ISI lists keep the boilerplate marker — neutralize the global teal "•" rule
+   (styles/styles.css). Three classes (.isi.block .isi-inline) outrank the global
+   rule's two :not()/:has() pseudo-classes so this reset wins. */
+main .isi.block .isi-inline ul > li {
+  padding-left: 0;
+}
+
+main .isi.block .isi-inline ul > li::before {
+  content: none;
 }
 
 main .isi h3 { /* @boilerplate */

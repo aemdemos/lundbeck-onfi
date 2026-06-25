@@ -1,6 +1,7 @@
 /* isi design tokens */
 :root { /* @boilerplate */
-  --isi-text-color: #484848; /* @boilerplate */
+  --isi-text-color: #333; /* inline ISI body text — matches source #333 */
+  --isi-body-font-size: 16px; /* inline ISI paragraphs + list items (source 16px, not 14px) */
   --isi-line-height: 1.5; /* @boilerplate */
   --isi-list-line-height: 1.7; /* @boilerplate */
   --isi-list-item-margin-bottom: 10px; /* @boilerplate */
