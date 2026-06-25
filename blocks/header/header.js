@@ -158,6 +158,20 @@ export default async function decorate(block) {
     if (ul) {
       ul.className = 'nav-main-list';
       mainList = ul;
+
+      // Mark the item whose link matches the current page (source adds .active
+      // to the matching <li>, which renders the yellow underline). These are
+      // read-only path comparisons for styling only — no navigation or redirect.
+      const normalizePath = (p) => p.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+      // eslint-disable-next-line browser-security/no-insecure-redirects -- read-only path read for active-nav styling, not a redirect target
+      const currentPath = normalizePath(window.location.pathname);
+      ul.querySelectorAll('li > a').forEach((link) => {
+        const linkPath = normalizePath(link.pathname);
+        if (linkPath !== '/' && currentPath === linkPath) {
+          link.closest('li').classList.add('active');
+        }
+      });
+
       nav.append(ul);
     }
   }

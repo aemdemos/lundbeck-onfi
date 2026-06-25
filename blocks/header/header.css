@@ -537,6 +537,21 @@ header .nav-search-submit {
     font-weight: var(--header-main-link-font-weight);
     text-align: left;
     white-space: nowrap;
+    position: relative;
+    top: var(--header-main-link-top-offset);
+  }
+
+  /* active page: yellow underline under the current nav item (matches source).
+     Drawn as an absolutely-positioned overlay so it adds no box height — the
+     link text stays put between normal/active states (no vertical bounce). */
+  header .nav-main-list > li.active > a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: var(--header-main-link-active-border-width);
+    background: var(--header-main-link-active-border-color);
   }
 }
 
