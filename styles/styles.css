@@ -53,18 +53,33 @@
   --section-divider-color: var(--border-color);
   --section-padding: 24px;
 
-  /* fonts — Avenir LT W01 (Monotype webfonts on source); see NEEDS REVIEW note */
-  --body-font-family: "Avenir LT W01_55 Roman", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
-  --heading-font-family: "Avenir LT W01_85 Heavy", avenir-heavy-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  /* fonts — Avenir LT W01 (Monotype webfonts on source); see NEEDS REVIEW note.
+     The licensed Avenir name is kept first so it activates automatically once a
+     portable license is added in fonts.css. "nunito sans" (self-hosted, SIL OFL)
+     is the portable substitute that actually renders for visitors without Avenir
+     — same approach used by the header. The avenir-*-fallback faces (size-adjusted
+     local Avenir/Arial) sit after Nunito Sans to reduce CLS for users who happen
+     to have a local Avenir installed. */
+  --body-font-family: "Avenir LT W01_55 Roman", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+
+  /* Source content headings (H2–H4) use the Avenir Roman cut at weight 500 — a
+     lighter "Medium" look, NOT the Heavy 800 cut. Keep the Roman name first so a
+     licensed Avenir activates the correct cut; "nunito sans" renders the medium
+     weight for current visitors via font-weight: 500. */
+  --heading-font-family: "Avenir LT W01_55 Roman", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+
+  /* bold inline text (<strong>/<b>) — the real Avenir cuts are single-weight named
+     families that cannot synthesize bold, so bold uses the Heavy cut by name. */
+  --bold-font-family: "Avenir LT W01_85 Heavy", "nunito sans", avenir-heavy-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --body-line-height: 1.43;
-  --heading-font-weight: 800;
+  --heading-font-weight: 500;
   --heading-line-height: 1.1;
   --font-weight-bold: 700;
   --block-margin-top: 0.67em;
   --block-margin-bottom: 0.5em;
 
-  /* body sizes */
-  --body-font-size-m: 16px;
+  /* body sizes — source body copy renders at 18px (Avenir) */
+  --body-font-size-m: 18px;
   --body-font-size-ms: 18px;
   --body-font-size-s: 14px;
   --body-font-size-xs: 12px;
@@ -251,6 +266,33 @@ pre,
 blockquote {
   margin-top: 0;
   margin-bottom: 10px;
+}
+
+/* superscript — the ® mark and numbered citations appear site-wide (headings +
+   body). Scoped raise so the small glyph never expands the line box (the browser
+   default vertical-align: super disrupts heading/line rhythm). */
+sup {
+  font-size: 0.6em;
+  line-height: 0;
+  position: relative;
+  top: -0.5em;
+  vertical-align: baseline;
+}
+
+sub {
+  font-size: 0.6em;
+  line-height: 0;
+  position: relative;
+  bottom: -0.25em;
+  vertical-align: baseline;
+}
+
+/* bold inline text — real Avenir cuts are separate single-weight families that
+   can't synthesize bold, so <strong>/<b> render via the named Heavy cut. */
+strong,
+b {
+  font-family: var(--bold-font-family);
+  font-weight: normal;
 }
 
 code,
@@ -500,6 +542,22 @@ main img {
   height: 100%;
   width: 100%;
   object-fit: contain;
+}
+
+/* body unordered lists — teal "•" bullet (matches source #008c99 marker).
+   Excludes icon-bullet lists (which carry an .icon). The ISI block resets this
+   for its own lists (see blocks/isi/isi.css). */
+main ul:not(.icon-bullets, :has(> li > .icon, > li > :is(strong, em, a) > .icon)) > li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.25em;
+}
+
+main ul:not(.icon-bullets, :has(> li > .icon, > li > :is(strong, em, a) > .icon)) > li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--brand-teal);
 }
 
 /* icon bullet lists — :has() prevents FOUC before JS adds .icon-bullets */

@@ -16,8 +16,8 @@ main .isi .isi-inline > div { /* @boilerplate */
 }
 
 main .isi p,
-main .isi li { /* @boilerplate */
-  font-size: var(--body-font-size-s); /* @boilerplate */
+main .isi li {
+  font-size: var(--isi-body-font-size);
   color: var(--isi-text-color); /* @boilerplate */
   line-height: var(--isi-line-height); /* @boilerplate */
 }
@@ -25,7 +25,12 @@ main .isi li { /* @boilerplate */
 main .isi li { /* @boilerplate */
   line-height: var(--isi-list-line-height); /* @boilerplate */
   margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
+  padding-top: var(--isi-list-item-padding-y);
+  padding-bottom: var(--isi-list-item-padding-y);
 }
+
+/* ISI lists use the global teal "•" bullet (styles/styles.css) — the source
+   renders the same teal markers here as in the rest of the body. */
 
 main .isi h3 { /* @boilerplate */
   color: var(--isi-heading-color); /* @boilerplate */
