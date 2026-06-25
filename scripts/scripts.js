@@ -557,17 +557,35 @@ function applySplitBoundaryPass(el) {
     const isNextText = next.nodeType === Node.TEXT_NODE;
 
     if (isPrevText && isMidInline && isNextText) {
-      // Pattern A: "prefix[[classes]" <inline>content</inline> "]suffix"
-      const openMatch = prev.nodeValue.match(SPLIT_OPEN_RE);
-      const classes = openMatch ? parseSplitClasses(openMatch[1]) : [];
-      const closeMatch = openMatch && classes.length ? next.nodeValue.match(/^\s*\]/) : null;
-      if (closeMatch) {
+      // tooltip branch: [[tooltip]<a href="#" title="...">text</a>]
+      // The <a> is replaced entirely — not wrapped — with a <span data-tooltip="...">.
+      const isTooltipAnchor = mid.nodeName === 'A'
+        && mid.getAttribute('href') === '#'
+        && mid.getAttribute('title');
+      const tooltipOpenRE = /\[\[tooltip\]\s*$/;
+      if (isTooltipAnchor && tooltipOpenRE.test(prev.nodeValue) && next.nodeValue.match(/^\s*\]/)) {
+        const closeMatch = next.nodeValue.match(/^\s*\]/);
         const span = document.createElement('span');
-        span.className = classes.join(' ');
-        span.appendChild(mid);
-        el.insertBefore(span, next);
-        prev.nodeValue = prev.nodeValue.slice(0, -openMatch[0].length);
+        span.className = 'tooltip';
+        span.dataset.tooltip = mid.getAttribute('title');
+        span.textContent = mid.textContent;
+        el.insertBefore(span, mid);
+        el.removeChild(mid);
+        prev.nodeValue = prev.nodeValue.replace(tooltipOpenRE, '');
         next.nodeValue = next.nodeValue.slice(closeMatch[0].length);
+      } else {
+        // Pattern A: "prefix[[classes]" <inline>content</inline> "]suffix"
+        const openMatch = prev.nodeValue.match(SPLIT_OPEN_RE);
+        const classes = openMatch ? parseSplitClasses(openMatch[1]) : [];
+        const closeMatch = openMatch && classes.length ? next.nodeValue.match(/^\s*\]/) : null;
+        if (closeMatch) {
+          const span = document.createElement('span');
+          span.className = classes.join(' ');
+          span.appendChild(mid);
+          el.insertBefore(span, next);
+          prev.nodeValue = prev.nodeValue.slice(0, -openMatch[0].length);
+          next.nodeValue = next.nodeValue.slice(closeMatch[0].length);
+        }
       }
     } else if (!isPrevText && mid.nodeType === Node.TEXT_NODE && !isNextText && next.children.length === 0) {
       // Pattern B: <inline>prefix[[</inline> "classes" <inline>]content]</inline>
