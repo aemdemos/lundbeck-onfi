@@ -71,7 +71,7 @@
   /* small downward nudge so the link text sits at the source's vertical position
      within the main nav band (source top-aligns the link with a ~10px margin-top;
      ours centers, landing ~4px higher — this offset matches it) */
-  --header-main-link-top-offset: 2px;
+  --header-main-link-top-offset: 3px;
 
   /* scroll-progress bar */
   --header-progress-height: 8px;
