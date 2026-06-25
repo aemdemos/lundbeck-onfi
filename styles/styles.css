@@ -377,6 +377,7 @@ button:disabled:hover {
   font-weight: 200;
   padding: 4px 14px;
   border-radius: 4px;
+
   /* Our Avenir substitute (Nunito Sans) is wider and taller than the source's
      Avenir Light, so the size/leading are tuned down to match its visual weight. */
   font-size: 13.5px;
