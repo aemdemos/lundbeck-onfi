@@ -66,6 +66,9 @@
      licensed Avenir activates the correct cut; "nunito sans" renders the medium
      weight for current visitors via font-weight: 500. */
   --heading-font-family: "Avenir LT W01_55 Roman", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  /* bold inline text (<strong>/<b>) — the real Avenir cuts are single-weight named
+     families that cannot synthesize bold, so bold uses the Heavy cut by name. */
+  --bold-font-family: "Avenir LT W01_85 Heavy", "nunito sans", avenir-heavy-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --body-line-height: 1.43;
   --heading-font-weight: 500;
   --heading-line-height: 1.1;
@@ -280,6 +283,14 @@ sub {
   position: relative;
   bottom: -0.25em;
   vertical-align: baseline;
+}
+
+/* bold inline text — real Avenir cuts are separate single-weight families that
+   can't synthesize bold, so <strong>/<b> render via the named Heavy cut. */
+strong,
+b {
+  font-family: var(--bold-font-family);
+  font-weight: normal;
 }
 
 code,

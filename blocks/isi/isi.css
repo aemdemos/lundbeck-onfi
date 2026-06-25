@@ -27,16 +27,8 @@ main .isi li { /* @boilerplate */
   margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
 }
 
-/* ISI lists keep the boilerplate marker — neutralize the global teal "•" rule
-   (styles/styles.css). Three classes (.isi.block .isi-inline) outrank the global
-   rule's two :not()/:has() pseudo-classes so this reset wins. */
-main .isi.block .isi-inline ul > li {
-  padding-left: 0;
-}
-
-main .isi.block .isi-inline ul > li::before {
-  content: none;
-}
+/* ISI lists use the global teal "•" bullet (styles/styles.css) — the source
+   renders the same teal markers here as in the rest of the body. */
 
 main .isi h3 { /* @boilerplate */
   color: var(--isi-heading-color); /* @boilerplate */
