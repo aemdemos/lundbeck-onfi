@@ -158,6 +158,18 @@ export default async function decorate(block) {
     if (ul) {
       ul.className = 'nav-main-list';
       mainList = ul;
+
+      // Mark the item whose link matches the current page (source adds .active
+      // to the matching <li>, which renders the yellow underline).
+      const currentPath = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+      ul.querySelectorAll('li > a').forEach((link) => {
+        const linkPath = new URL(link.href, window.location).pathname
+          .replace(/\.html$/, '').replace(/\/$/, '') || '/';
+        if (linkPath !== '/' && currentPath === linkPath) {
+          link.closest('li').classList.add('active');
+        }
+      });
+
       nav.append(ul);
     }
   }

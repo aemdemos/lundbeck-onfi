@@ -538,6 +538,11 @@ header .nav-search-submit {
     text-align: left;
     white-space: nowrap;
   }
+
+  /* active page: yellow underline under the current nav item (matches source) */
+  header .nav-main-list > li.active > a {
+    border-bottom: var(--header-main-link-active-border);
+  }
 }
 
 /* ===== Desktop (≥1200px) — full 1100px container, 14px nav text.
