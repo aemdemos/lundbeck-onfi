@@ -2,9 +2,10 @@
 :root { /* @boilerplate */
   --isi-text-color: #333; /* inline ISI body text — matches source #333 */
   --isi-body-font-size: 16px; /* inline ISI paragraphs + list items (source 16px, not 14px) */
-  --isi-line-height: 1.5; /* @boilerplate */
-  --isi-list-line-height: 1.7; /* @boilerplate */
-  --isi-list-item-margin-bottom: 10px; /* @boilerplate */
+  --isi-line-height: 1.43; /* source ISI body line-height */
+  --isi-list-line-height: 1.43; /* source list items are tight (1.43), not 1.7 */
+  --isi-list-item-margin-bottom: 0; /* source list items have no inter-item margin (2px padding only) */
+  --isi-list-item-padding-y: 2px; /* source li padding: 2px top/bottom */
   --isi-inline-padding-bottom: 64px; /* @boilerplate */
   --isi-heading-color: var(--brand-primary-dark); /* @boilerplate */
   --isi-heading-font-size: 18px; /* @boilerplate */

@@ -25,6 +25,8 @@ main .isi li {
 main .isi li { /* @boilerplate */
   line-height: var(--isi-list-line-height); /* @boilerplate */
   margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
+  padding-top: var(--isi-list-item-padding-y);
+  padding-bottom: var(--isi-list-item-padding-y);
 }
 
 /* ISI lists use the global teal "•" bullet (styles/styles.css) — the source
