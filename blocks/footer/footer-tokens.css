@@ -1,81 +1,260 @@
-/* footer design tokens — onfi.com footer */
+/* =====================================================================
+   FOOTER DESIGN TOKENS — Onfi (www.onfi.com)
+   ---------------------------------------------------------------------
+   Adapted from the libs reference (footer-tokens2.css / Vyepti). This is
+   the ONLY footer file that carries Onfi-specific values; footer.css is the
+   shared, site-agnostic structure and must stay identical to the boilerplate.
+
+   Onfi "shape": one shared gray footer background (no coloured link band),
+   teal pipe-separated inline links with a 1px WHITE rule beneath them, then a
+   2-column legal/logo row using the `.columns.divider` variant (legal 2/3 +
+   Lundbeck logo 1/3, vertical white divider between). No phone pill, no
+   social icons, no "for assistance" label.
+
+   Lines that keep the reference value carry the "@boilerplate" marker; lines
+   whose value was changed for Onfi have the marker removed (per the libs
+   cloning convention).
+   ===================================================================== */
+
 :root {
-  --footer-max-width: var(--max-width-site);
-  --footer-background: var(--footer-background-color);
+  /* ---- global frame -------------------------------------------------- */
+  --footer-max-width: var(--max-width-site); /* @boilerplate */
+  --footer-background: var(--footer-background-color); /* shared gray footer panel */
   --footer-text-color: var(--text-color-light);
   --footer-font-size: var(--body-font-size-m);
 
-  /* portable Avenir substitute (Nunito Sans) — matches the source glyph widths;
-     the local()-only avenir-* fallbacks otherwise drop to Arial off-Mac */
-  --footer-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  /* base footer font = the body-weight Avenir substitute (Nunito Sans) used
+     for the legal copy; links override to the Heavy stack below. The
+     local()-only avenir-* fallbacks otherwise drop to Arial off-Mac. */
+  --footer-font-family: "Avenir LT W01_55 Roman", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
 
-  /* mobile: large bottom padding matches the source (clears the fixed mobile UI) */
-  --footer-padding: 20px 15px 160px;
-  --footer-padding-desktop: 30px 15px;
-
-  /* mobile (<768px): links stack vertically (no pipes), legal copy is smaller
-     and centered, logo sits above the legal text */
-  --footer-link-mobile-gap: 10px;
-  --footer-legal-mobile-font-size: 14px;
-  --footer-legal-mobile-line-height: 20px;
-  --footer-legal-mobile-margin-bottom: 14px;
-
-  /* link row: centered, teal, pipe-separated */
-  --footer-link-color: var(--dark-color);
-  --footer-link-font-size: 20px;
+  /* ---- link section --------------------------------------------------
+     Onfi has NO coloured band — the whole footer shares one background and a
+     thin white rule sits under the links (added in the overrides below). */
+  --footer-linkbar-background: transparent;
+  --footer-linkbar-padding: 20px 0 0; /* mobile top space above the link row */
+  --footer-linkbar-inner-padding: 0 15px 23px; /* side gutters + gap down to the rule */
+  --footer-link-text-align: center;
+  --footer-link-color: var(--dark-color); /* teal */
+  --footer-link-hover-color: var(--dark-color); /* unchanged on hover (only underline appears) */
+  --footer-link-decoration: none; /* @boilerplate */
+  --footer-link-hover-decoration: underline;
+  --footer-link-font-size: 20px; /* mobile */
+  --footer-link-font-size-desktop: 20px; /* Onfi keeps 20px on desktop */
   --footer-link-font-weight: 700;
-  --footer-link-padding: 0 20px;
-  --footer-link-separator: 2px solid var(--dark-color);
+  --footer-link-line-height: 16px;
+  --footer-link-gap: 0; /* Onfi separates links with a pipe (p + p border-left), not a margin */
+  --footer-link-mobile-gap: 10px; /* @boilerplate */
+  --footer-transition: 0.2s ease; /* @boilerplate */
 
-  /* word-space the source gets from whitespace between its inline-block <li>s;
-     restores the 6.5px edge-to-edge gap (4.5px space + 2px pipe) between links */
+  /* ---- Onfi link extras (consumed by the overrides section) ---------- */
+  --footer-link-padding: 0 20px; /* inline-block padding on each link */
+  --footer-link-separator: 2px solid var(--dark-color); /* the teal pipe */
+
+  /* word-space the source gets between inline-block <li>s: 4.5px space + 2px
+     pipe ≈ the 6.5px edge-to-edge gap between desktop links */
   --footer-link-separator-gap: 4.5px;
-  --footer-link-row-line-height: 16px;
+  --footer-link-row-margin-top: 15px; /* desktop space above the link row */
+  --footer-link-row-gap: 15px; /* vertical gap when links wrap to a 2nd row (desktop) */
 
-  /* link row: top space above the links (source <li> margin-top: 15px) */
-  --footer-link-row-margin-top: 15px;
-
-  /* divider under the link row (source: 20px ul padding-bottom + 5px li
-     margin-bottom, netting a 24px gap below the link text to the rule) */
+  /* white rule under the link row (source: 23px below the link text, then a
+     1px rule, then an 11px gap down to the legal/logo row) */
   --footer-divider-color: #fff;
-  --footer-divider-padding-bottom: 23px;
   --footer-divider-margin-bottom: 11px;
+  --footer-divider-padding-bottom: 23px; /* baked into --footer-linkbar-inner-padding */
 
-  /* legal text + logo */
+  /* link font is the Heavy Avenir substitute (Nunito Sans); applied via the
+     overrides since the shared structure inherits one footer font-family */
+  --footer-link-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
 
-  /* body-weight Avenir substitute (Nunito Sans) for the legal copy; the
-     local()-only avenir-* fallbacks otherwise drop to Arial off-Mac */
-  --footer-legal-font-family: "Avenir LT W01_55 Roman", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  /* ---- body section (legal + logo) ----------------------------------- */
+  --footer-body-padding: 14px 15px 30px; /* desktop (top gap below the white rule) */
+  --footer-body-padding-mobile: 0 15px 160px; /* mobile: tall bottom clears the fixed mobile UI */
 
-  /* desktop legal copy size (mobile uses --footer-legal-mobile-font-size) */
-  --footer-legal-font-size: 16px;
+  /* legal column (column 1) — Onfi values are MOBILE here; the overrides bump
+     them on desktop (footer2 only models a single legal size). */
+  --footer-legal-color: var(--text-color-light); /* matches the inherited footer text colour */
+  --footer-legal-font-size: 14px; /* mobile */
+  --footer-legal-line-height: 20px; /* mobile */
+  --footer-legal-margin-bottom: 14px; /* mobile */
+  --footer-legal-width: 66.6667%; /* desktop 2/3 split (source col-sm-8) */
 
-  /* explicit px (not unitless) so Nunito's tall intrinsic metrics can't push the
-     line box toward `normal` (~28px); matches the source's 22.857px exactly */
-  --footer-legal-line-height: 22.86px;
+  /* desktop legal copy (consumed by the overrides). Explicit px so Nunito's
+     tall intrinsic metrics can't push the line box toward `normal`. */
+  --footer-legal-font-size-desktop: 16px;
+  --footer-legal-line-height-desktop: 22.86px;
+  --footer-legal-margin-bottom-desktop: 16px;
 
-  /* the legal/logo row matches the source's content height (184px) so the whole
+  /* right column (column 2) */
+  --footer-right-width: 33.3333%; /* desktop 1/3 split (source col-sm-4) */
+
+  /* ---- divider-column gutters (Onfi 2-col row) -----------------------
+     asymmetric gutters so the vertical rule lands at the 2/3 split:
+     15px on the legal side, 40px on the logo side; 15px outer each edge. */
+  --footer-divider-gap-outer: 15px;
+  --footer-divider-gap-legal: 40px; /* gap from legal text to the vertical rule */
+  --footer-divider-gap-logo: 40px;
+
+  /* the legal/logo row matches the source content height (184px) so the whole
      gray footer box totals the source's 314px */
   --footer-columns-row-min-height: 184px;
 
-  /* divider gutters (source Bootstrap columns: 15px on the legal side, 40px on
-     the logo side — asymmetric, so the rule sits at the 2/3 column split) */
-  --footer-divider-gap-outer: 15px;
-  --footer-divider-gap-legal: 15px;
-  --footer-divider-gap-logo: 40px;
-  --footer-legal-margin-bottom: 16px;
-
-  /* logo keeps its natural aspect (undistorted); width only */
-  --footer-logo-width: 140px;
+  /* ---- logo (Lundbeck) ----------------------------------------------- */
+  --footer-logo-width: 140px; /* natural aspect (height auto) */
 
   /* logo left offset within its column (source: ~71px from the column content
-     edge, i.e. left-aligned with an extra indent rather than centred) */
+     edge — left-aligned with an extra indent rather than centred) */
   --footer-logo-offset: 71px;
 
-  /* the logo column (which draws the vertical divider) is pushed down 30px and
-     sized to 88px tall via the logo's top margin + the column's bottom padding,
-     matching the source's 88px divider; the logo lands 40px below the text top. */
+  /* the logo column draws the vertical divider; it is pushed down 30px and
+     sized via the logo's top margin + the column's bottom padding to the
+     source's 88px divider height; the logo lands 40px below the text top. */
   --footer-logo-col-margin-top: 30px;
-  --footer-logo-col-padding-bottom: 20px;
+  --footer-logo-col-padding-bottom: 8px; /* sets the vertical divider height (logo box + this) */
   --footer-logo-margin-top: 10px;
+
+  /* ---- UNUSED BY ONFI (no phone pill / social icons / assistance label).
+     Kept so the shared structure's vars still resolve; the matching selectors
+     never appear in Onfi's authored content, so these never render. ------ */
+  --footer-assist-color: #484848; /* @boilerplate */
+  --footer-assist-font-size: 17px; /* @boilerplate */
+  --footer-assist-font-size-mobile: 14px; /* @boilerplate */
+  --footer-assist-line-height: 21px; /* @boilerplate */
+  --footer-assist-font-weight: 700; /* @boilerplate */
+  --footer-assist-margin-right: 11px; /* @boilerplate */
+  --footer-mobile-assist-gap: 12px; /* @boilerplate */
+  --footer-assist-mobile-margin-bottom: 15px; /* @boilerplate */
+  --footer-phone-background: #bf2c58; /* @boilerplate */
+  --footer-phone-hover-background: var(--brand-rose-dark); /* @boilerplate */
+  --footer-phone-color: #fff; /* @boilerplate */
+  --footer-phone-font-size: 16px; /* @boilerplate */
+  --footer-phone-font-weight: 700; /* @boilerplate */
+  --footer-phone-line-height: 22px; /* @boilerplate */
+  --footer-phone-padding: 20px 21px 20px 45px; /* @boilerplate */
+  --footer-phone-radius: 30px; /* @boilerplate */
+  --footer-phone-icon-size: 16px 19px; /* @boilerplate */
+  --footer-phone-icon-position: 19px 24px; /* @boilerplate */
+  --footer-phone-icon-image: none; /* Onfi has no phone pill */
+  --footer-social-row-margin-top: 27px; /* @boilerplate */
+  --footer-social-icon-width: 27px; /* @boilerplate */
+  --footer-social-icon-gap: 13px; /* @boilerplate */
+  --footer-logo-margin-left: 14px; /* @boilerplate */
+}
+
+/* =====================================================================
+   SITE-SPECIFIC OVERRIDES (Onfi extension layer)
+   ---------------------------------------------------------------------
+   These reproduce Onfi shapes the shared footer.css doesn't model. Each is
+   flagged with the structural gap it fills so the libs team can decide
+   whether to fold it into the boilerplate.
+
+   CASCADE NOTE: footer-tokens.css is @imported at the TOP of footer.css, so a
+   plain override here at the SAME specificity as a footer.css rule loses on
+   source order (and @media queries don't add specificity). Two techniques are
+   used below to win cleanly:
+     • redefine the token VALUE at the breakpoint (footer.css's own rule then
+       reads the new value — tokens always win, no specificity fight);
+     • bump specificity (e.g. a doubled class) only where footer.css hardcodes
+       a value we must replace.
+   ===================================================================== */
+
+/* [LIBS GAP] footer.css styles links as plain text with no inline-block /
+   padding / per-element font. Onfi links are inline-block, padded, and use the
+   Heavy font (the base footer font is the Roman/legal weight). */
+footer .footer .section:first-child a {
+  display: inline-block;
+  padding: var(--footer-link-padding);
+  font-family: var(--footer-link-font-family);
+}
+
+/* [LIBS GAP] footer.css has no rule beneath the links AND sets `margin: 0 auto`
+   on this wrapper. Onfi needs a thin white rule under the links plus an 11px
+   gap below it; the doubled class outranks footer.css's `margin: 0 auto` so the
+   bottom margin survives (top stays 0, sides stay auto-centred). */
+footer .footer .section:first-child .default-content-wrapper.default-content-wrapper {
+  margin: 0 auto var(--footer-divider-margin-bottom);
+  border-bottom: 1px solid var(--footer-divider-color);
+}
+
+/* [LIBS GAP] footer.css zeroes the first stacked link's top margin. Onfi's
+   source gives every mobile link the same 10px top gap, including the first.
+   Doubled `.footer` class outranks footer.css's `p:first-child { margin-top: 0 }`. */
+footer .footer.footer .section:first-child p:first-child {
+  margin-top: var(--footer-link-mobile-gap);
+}
+
+/* [LIBS GAP] feed the white divider colour to the columns `.divider` variant
+   (the vertical rule between legal copy and the logo). */
+footer .footer .columns.divider {
+  --columns-divider-color: var(--footer-divider-color);
+}
+
+/* [LIBS GAP] Onfi's logo is a bare <picture> in column 2, not a <p>-wrapped
+   icon, so footer.css's `p:has(img)` logo rules never match it. Style the bare
+   image directly. Mobile: centered, symmetric 30px gap above/below. */
+footer .footer .columns.divider img {
+  width: var(--footer-logo-width);
+  height: auto;
+  margin: var(--footer-logo-col-margin-top) auto;
+}
+
+@media (width >= 768px) {
+  /* Desktop value swaps via token redefinition — footer.css's own rules read
+     these, so no same-specificity source-order fight:
+       • legal copy grows 14/20 → 16/22.86 with a 16px paragraph gap;
+       • link section gets a 30px top gap above the links (matches the source). */
+  :root {
+    --footer-legal-font-size: var(--footer-legal-font-size-desktop);
+    --footer-legal-line-height: var(--footer-legal-line-height-desktop);
+    --footer-legal-margin-bottom: var(--footer-legal-margin-bottom-desktop);
+    --footer-linkbar-padding: 30px 0 0;
+  }
+
+  /* [LIBS GAP] footer.css lays the desktop links out as inline-block <p>s, so
+     when they wrap to a second row there's no vertical gap. Make the wrapper a
+     centered flex-wrap row with a row-gap so wrapped links get spacing above. */
+  footer .footer .section:first-child .default-content-wrapper.default-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    row-gap: var(--footer-link-row-gap);
+  }
+
+  /* [LIBS GAP] footer.css separates desktop links with a margin only. Onfi uses
+     a 2px teal pipe (border-left) plus the small word-space gap. */
+  footer .footer .section:first-child p + p {
+    margin-left: var(--footer-link-separator-gap);
+    border-left: var(--footer-link-separator);
+  }
+
+  /* [LIBS GAP] footer.css lays the right column out as a flex row (for social
+     icons). Onfi instead needs a 2/3–1/3 split, TOP-ALIGNED (explicit
+     flex-start so the vertical divider spans only the shorter logo column's
+     ~88px, not the full legal height), with a fixed row height and asymmetric
+     Bootstrap-style gutters so the rule lands at the 2/3 split. */
+  footer .footer .columns.divider.columns-2-cols > div {
+    align-items: flex-start;
+    min-height: var(--footer-columns-row-min-height);
+  }
+
+  footer .footer .columns.divider.columns-2-cols > div > :first-child {
+    flex: 0 0 var(--footer-legal-width);
+    padding-inline: var(--footer-divider-gap-outer) var(--footer-divider-gap-legal);
+  }
+
+  footer .footer .columns.divider.columns-2-cols > div > :nth-child(2) {
+    display: block; /* neutralise footer.css's flex/justify-content:flex-end on this column */
+    flex: 0 0 var(--footer-right-width);
+    margin-block-start: var(--footer-logo-col-margin-top);
+    padding-block-end: var(--footer-logo-col-padding-bottom);
+    padding-inline: var(--footer-divider-gap-logo) var(--footer-divider-gap-outer);
+  }
+
+  /* desktop logo: natural aspect, left-aligned with the source indent, dropped
+     10px below the column top (the mobile 30px block-end margin is retained). */
+  footer .footer .columns.divider img {
+    margin-block-start: var(--footer-logo-margin-top);
+    margin-inline: var(--footer-logo-offset) 0;
+  }
 }
