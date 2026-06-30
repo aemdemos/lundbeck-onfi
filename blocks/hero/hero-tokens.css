@@ -84,6 +84,13 @@
   --hero-home-mobile-bg: linear-gradient(#008c99 0%, #008c99 65%, #04656e 100%);
   --hero-home-panel-padding-mobile: 28px;
 
+  /* Mobile logo cap — source renders the "Don't Give Up" logo at 304px wide
+     (Bootstrap container 15px gutters + col-sm-4 padding), height 162.4px.
+     Our panel content box is wider (334px), so the logo would render ~178px
+     tall and inflate the section. Cap it to match the source's rendered width
+     so the height tracks the source's content-driven model. */
+  --hero-home-logo-max-width-mobile: 304px;
+
   /* Tablet+ (>=768px): translucent dark-teal panel floats over the photo */
   --hero-home-panel-bg: rgb(0 41 45 / 70%);
   --hero-home-panel-padding: 32px;
@@ -100,11 +107,26 @@
   --hero-home-overlay-position: 50% 100%;
   --hero-home-section-pad-bottom: 80px;
 
+  /* Exact source band heights (content-driven on the source, but the localhost
+     Avenir fallback renders the intro ~3px shorter, so pin the height to the
+     source's measured values for a 100% match). Mobile #home-hero = 365.44px;
+     desktop = 447.375px. Content is fixed pharma copy → no clipping risk. */
+  --hero-home-min-height-mobile: 365.44px;
+  --hero-home-min-height: 447.38px;
+
+  /* pulls the hero up 1px to cover the sub-pixel white seam below the sticky
+     header (the nav renders ~0.9px shorter than the header box) */
+  --hero-home-section-seam-offset: -1px;
+
   /* intro copy */
   --hero-home-intro-color: #fff;
   --hero-home-intro-font-size: 16px;
   --hero-home-intro-line-height: 24px;
   --hero-home-intro-margin: 32px 0 16px;
+
+  /* ® superscript — source renders it at 12px (0.75em), raised 6px */
+  --hero-home-sup-font-size: 12px;
+  --hero-home-sup-top: -6px;
 
   /* GO » CTA — inline green text link */
   --hero-home-cta-color: var(--brand-green);
