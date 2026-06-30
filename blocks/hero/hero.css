@@ -538,9 +538,11 @@ main > .section.hero-home .hero.home > div {
   margin-bottom: 0;
 }
 
-/* Opening-sentence link inside the box renders in light teal (source). */
+/* Opening-sentence link inside the box renders in light teal, with a drop
+   shadow (source `.banner-Text a` text-shadow: rgba(0,0,0,.5) 0 2px 2px). */
 .hero.home .hero-home-savings a:any-link {
   color: var(--hero-home-savings-link-color);
+  text-shadow: var(--hero-home-savings-link-shadow);
   text-decoration: none;
 }
 

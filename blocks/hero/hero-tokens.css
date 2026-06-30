@@ -128,16 +128,20 @@
   --hero-home-sup-font-size: 12px;
   --hero-home-sup-top: -6px;
 
-  /* GO » CTA — inline green text link */
-  --hero-home-cta-color: var(--brand-green);
-  --hero-home-cta-hover-color: var(--brand-green-dark);
+  /* GO » CTA — inline text link. Source renders it LIGHT TEAL (rgb(165,222,225)),
+     not green: the bare <a> is green but its inner <span> overrides to light teal,
+     so the visible "GO »" is light teal. */
+  --hero-home-cta-color: #a5dee1;
+  --hero-home-cta-hover-color: #a5dee1;
   --hero-home-cta-font-size: 16px;
 
   /* Savings copy (right overlay desktop / stacked mobile) — source .banner-Text */
   --hero-home-savings-color: #fff;
 
-  /* opening-sentence link inside the box — light teal (source rgb(165,222,225)) */
+  /* opening-sentence link inside the box — light teal (source rgb(165,222,225)),
+     with a soft drop shadow (source `.banner-Text a`) */
   --hero-home-savings-link-color: #a5dee1;
+  --hero-home-savings-link-shadow: rgb(0 0 0 / 50%) 0 2px 2px;
 
   /* source p1 ends with a trailing `<br>&nbsp;`, adding one empty line (~one
      line-height) between the two paragraphs; reproduced here as a bottom gap */

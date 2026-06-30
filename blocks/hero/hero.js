@@ -127,6 +127,15 @@ function decorateHomePanel(block) {
     if (!p.textContent.trim() && !p.querySelector('img, picture')) p.remove();
   });
 
+  // decorateMain() also nests the intro inside an extra wrapper <p>, leaving a
+  // <p><p>…<a>GO</a></p></p>. The nested block <p> adds its own margins and
+  // breaks the GO link's inline flow. Unwrap it so the intro is a single flat
+  // paragraph with the GO link inline, matching the source #home-hero markup.
+  cell.querySelectorAll(':scope > p > p').forEach((innerP) => {
+    const outerP = innerP.parentElement;
+    outerP.replaceWith(innerP);
+  });
+
   // Second cell (optional) = the savings copy. On desktop it overlays the
   // right side of the photo; on mobile it stacks below the panel in the teal
   // band. Tag it so the CSS can position it independently of the left panel.
