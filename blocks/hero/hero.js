@@ -1,4 +1,22 @@
 import { buildPictureContentFromImageCell } from '../../scripts/utils.js';
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+/**
+ * The section's `background-image` layer (`.bg-image`) is created by
+ * decorateSections() as a bare <img> at the optimizer's default 750px width.
+ * The home hero photo is full-bleed (renders ~1280px+ wide), so 750px upscales
+ * and looks blurry. Replace that <img> with a responsive <picture> via the
+ * shared boilerplate helper, whose default breakpoints serve a 2000px asset on
+ * desktop (≥600px) and 750px on mobile — no hardcoded values here.
+ * @param {Element} block
+ */
+function upgradeBackgroundImageResolution(block) {
+  const section = block.closest('.section');
+  const bgImg = section?.querySelector(':scope > .bg-image img');
+  if (!bgImg) return;
+  const picture = createOptimizedPicture(bgImg.src, bgImg.alt, false);
+  bgImg.closest('picture').replaceWith(picture);
+}
 
 function applyAccentColor(block) {
   block.querySelectorAll('h1 strong, h2 strong, h3 strong, p strong').forEach((strong) => {
@@ -112,6 +130,10 @@ function decorateHomePanel(block) {
 
   // First cell = the left translucent panel (logo + intro + GO).
   cell.classList.add('hero-home-panel');
+
+  // Serve a desktop-resolution background photo (the section layer defaults to
+  // 750px, which upscales blurrily on the full-bleed hero).
+  upgradeBackgroundImageResolution(block);
 
   // Unwrap the image-in-paragraph mangling: hoist any <picture>/<img> that
   // decorateMain() nested inside a <p> back up to the cell, before the copy.
