@@ -617,6 +617,14 @@ main > .section.hero-home .hero.home > div {
   content: none;
 }
 
+/* the » in the GO link is larger than the "GO" text — authored via the
+   [[raquo]»] bracket span (source renders » at 24px against 16px copy). Scoped
+   to the hero so a stray [[raquo]] elsewhere doesn't pick up this sizing. */
+.hero.home p a .raquo {
+  font-size: var(--hero-home-cta-raquo-font-size);
+  line-height: 1;
+}
+
 .hero.home p a:hover,
 .hero.home p a:focus {
   color: var(--hero-home-cta-hover-color);

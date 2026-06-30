@@ -134,6 +134,9 @@
   --hero-home-cta-color: #a5dee1;
   --hero-home-cta-hover-color: #a5dee1;
   --hero-home-cta-font-size: 16px;
+  /* the » glyph in the GO link renders larger than the "GO" text (source: 24px
+     against 16px copy = 1.5em); applied to the authored [[raquo]»] span */
+  --hero-home-cta-raquo-font-size: 1.5em;
 
   /* Savings copy (right overlay desktop / stacked mobile) — source .banner-Text */
   --hero-home-savings-color: #fff;

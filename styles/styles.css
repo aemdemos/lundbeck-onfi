@@ -394,14 +394,6 @@ button:disabled:hover {
   display: none;
 }
 
-/* enlarged inline glyph (e.g. the » in "GO »") — authorable via the [[raquo]»]
-   bracket span. 1.5em keeps it proportional to the surrounding text (source
-   renders the » at 24px against 16px copy). */
-.raquo {
-  font-size: 1.5em;
-  line-height: 1;
-}
-
 /* tooltip — authorable via [[tooltip]<a href="#" title="...">text</a>] bracket syntax */
 .tooltip {
   cursor: pointer;
