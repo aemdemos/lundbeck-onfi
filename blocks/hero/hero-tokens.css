@@ -80,16 +80,16 @@
 
   /* ── Onfi homepage hero (.hero.home) — source #home-hero ── */
 
-  /* Mobile (<768px): no photo, solid teal gradient fills the section */
-  --hero-home-mobile-bg: linear-gradient(#008c99 0%, #008c99 65%, #04656e 100%);
-  --hero-home-panel-padding-mobile: 28px;
-
-  /* Mobile logo cap — source renders the "Don't Give Up" logo at 304px wide
-     (Bootstrap container 15px gutters + col-sm-4 padding), height 162.4px.
-     Our panel content box is wider (334px), so the logo would render ~178px
-     tall and inflate the section. Cap it to match the source's rendered width
-     so the height tracks the source's content-driven model. */
-  --hero-home-logo-max-width-mobile: 304px;
+  /* Mobile (<768px): no photo. The source's full-width content container paints
+     a flat dark teal (#004248) over the section gradient, so mobile reads as a
+     plain solid color — no visible gradient. */
+  --hero-home-mobile-bg: #004248;
+  /* horizontal inset matches the source's 15px container gutter + 28px col-sm-4
+     padding (= 43px), which constrains the logo to the source's rendered width.
+     Top padding clears the header's white Onfi logo box, which protrudes ~91px
+     below the teal nav bar (the hero is pulled up under the sticky header, so
+     without this the logo box overlaps the "DON'T" of the hero logo). */
+  --hero-home-panel-padding-mobile: 119px 43px 28px;
 
   /* Tablet+ (>=768px): translucent dark-teal panel floats over the photo */
   --hero-home-panel-bg: rgb(0 41 45 / 70%);
@@ -107,11 +107,9 @@
   --hero-home-overlay-position: 50% 100%;
   --hero-home-section-pad-bottom: 80px;
 
-  /* Exact source band heights (content-driven on the source, but the localhost
-     Avenir fallback renders the intro ~3px shorter, so pin the height to the
-     source's measured values for a 100% match). Mobile #home-hero = 365.44px;
-     desktop = 447.375px. Content is fixed pharma copy → no clipping risk. */
-  --hero-home-min-height-mobile: 365.44px;
+  /* Desktop band height pinned to the source (447.375px); the localhost Avenir
+     fallback renders the intro ~3px shorter, so pin it for a 100% match. Mobile
+     is content-driven (full-width logo), so no fixed height there. */
   --hero-home-min-height: 447.38px;
 
   /* pulls the hero up 1px to cover the sub-pixel white seam below the sticky
@@ -150,15 +148,14 @@
      line-height) between the two paragraphs; reproduced here as a bottom gap */
   --hero-home-savings-gap: 19.43px;
 
-  /* mobile: stacked below the panel in the teal band, inside the same teal
-     gradient box (source .banner-Text persists at mobile, padding ~5.95px).
-     The 28px band gutter is applied as margin; the box itself takes the small
-     inner padding + radius. */
-  --hero-home-savings-margin-mobile: 0 28px 28px;
-  --hero-home-savings-padding-mobile: 5.95px;
-  --hero-home-savings-radius-mobile: 11.9px;
-  --hero-home-savings-font-size-mobile: 13.6px;
-  --hero-home-savings-line-height-mobile: 19.43px;
+  /* mobile: a separate FULL-WIDTH teal band stacked below the dark panel
+     (source `.textbanner.visible-xs`: bg #00808c, white 16px Avenir Light,
+     padding 20px 40px 0, inter-paragraph gap 23px). */
+  --hero-home-savings-bg-mobile: #00808c;
+  --hero-home-savings-padding-mobile: 20px 40px 0;
+  --hero-home-savings-font-size-mobile: 16px;
+  --hero-home-savings-line-height-mobile: 22.86px;
+  --hero-home-savings-gap-mobile: 23px;
 
   /* desktop (>=768px): teal gradient box over the right of the photo
      (source .banner-Text: gradient bg, 6.8px padding, 13.6px radius) */

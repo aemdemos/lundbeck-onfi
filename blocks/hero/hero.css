@@ -469,11 +469,9 @@ main > .section.hero-home {
   position: relative;
   overflow: hidden;
 
-  /* mobile: no photo, solid teal gradient */
+  /* mobile: no photo, solid teal gradient. Height is content-driven by the
+     full-width logo + intro (source #home-hero scales with the logo). */
   background: var(--hero-home-mobile-bg);
-
-  /* pin to the source's exact mobile band height (#home-hero = 365.44px) */
-  min-height: var(--hero-home-min-height-mobile);
 }
 
 main > .section.hero-home > div:not(.bg-image) {
@@ -505,44 +503,43 @@ main > .section.hero-home .hero.home > div {
   clear: both;
 }
 
-/* Overlay panel — mobile: transparent, full width, centered content */
+/* Overlay panel — mobile: transparent, full width, left-aligned content
+   (source panel content sits at the left gutter, not centered) */
 .hero.home .hero-home-panel {
   background: transparent;
   padding: var(--hero-home-panel-padding-mobile);
-  text-align: center;
+  text-align: left;
 }
 
 /* Savings copy — mobile: HIDDEN. The source hides the savings box
-   (.banner-Text { display:none }) entirely on mobile, so the section height is
-   driven solely by the logo + intro panel (source #home-hero == 365px). It
-   reappears on desktop (>=768px) as the absolutely-positioned right overlay. */
+   On mobile the source shows a SEPARATE full-width teal band below the dark
+   panel (`.textbanner.visible-xs`: #00808c, white 16px Avenir Light, padding
+   20px 40px 0). We reproduce that with the same savings cell: full-bleed teal
+   band stacked under the panel. On desktop (>=768px) it becomes the
+   absolutely-positioned right overlay instead. */
 .hero.home .hero-home-savings {
-  display: none;
-  margin: var(--hero-home-savings-margin-mobile);
+  /* flow-root contains the last paragraph's bottom margin so the teal band
+     extends over it (source keeps that 23px gap inside the teal band) */
+  display: flow-root;
+  margin: 0;
   padding: var(--hero-home-savings-padding-mobile);
-  background-image: var(--hero-home-savings-bg);
-  border-radius: var(--hero-home-savings-radius-mobile);
+  background: var(--hero-home-savings-bg-mobile);
   text-align: left;
 }
 
 .hero.home .hero-home-savings p {
   color: var(--hero-home-savings-color);
-  font-family: var(--bold-font-family);
+  font-family: var(--light-font-family);
   font-size: var(--hero-home-savings-font-size-mobile);
   font-weight: var(--font-weight-bold);
   line-height: var(--hero-home-savings-line-height-mobile);
-  margin: 0 0 var(--hero-home-savings-gap);
+  margin: 0 0 var(--hero-home-savings-gap-mobile);
 }
 
-.hero.home .hero-home-savings p:last-child {
-  margin-bottom: 0;
-}
-
-/* Opening-sentence link inside the box renders in light teal, with a drop
-   shadow (source `.banner-Text a` text-shadow: rgba(0,0,0,.5) 0 2px 2px). */
+/* Opening-sentence link inside the box renders in light teal (both breakpoints).
+   The desktop overlay adds a drop shadow; the mobile band has none. */
 .hero.home .hero-home-savings a:any-link {
   color: var(--hero-home-savings-link-color);
-  text-shadow: var(--hero-home-savings-link-shadow);
   text-decoration: none;
 }
 
@@ -557,6 +554,7 @@ main > .section.hero-home .hero.home > div {
 .hero.home .hero-home-savings a strong,
 .hero.home .hero-home-savings p a strong,
 .hero.home .hero-home-savings strong {
+  font-family: var(--light-font-family);
   font-size: var(--hero-home-savings-font-size-mobile);
   line-height: var(--hero-home-savings-line-height-mobile);
   font-weight: var(--font-weight-bold);
@@ -567,16 +565,14 @@ main > .section.hero-home .hero.home > div {
   text-decoration: underline;
 }
 
-/* "Don't Give Up" logo — fills the panel content width (source img-fluid).
-   Mobile caps the rendered width to the source's 304px so the section height
-   matches the source content-driven model; desktop removes the cap. */
+/* "Don't Give Up" logo — fills the full panel content width on mobile (source
+   img-fluid, no cap), left-aligned. Desktop scopes it inside the left panel. */
 .hero.home .hero-home-logo,
 .hero.home .hero-home-logo img {
   display: block;
   width: 100%;
-  max-width: var(--hero-home-logo-max-width-mobile);
   height: auto;
-  margin: 0 auto;
+  margin: 0;
 }
 
 /* Intro copy */
@@ -712,12 +708,6 @@ main > .section.hero-home .hero.home > div {
     text-align: left;
   }
 
-  /* Desktop: drop the mobile logo width cap — logo fills the floated panel */
-  .hero.home .hero-home-logo,
-  .hero.home .hero-home-logo img {
-    max-width: none;
-  }
-
   /* Savings copy — desktop: white text inside a teal gradient box overlaying the
      right of the photo. Anchored to the full-width section band exactly like the
      source .banner-Text (position:absolute; right:5%; bottom:4% of the full-width
@@ -725,21 +715,20 @@ main > .section.hero-home .hero.home > div {
      desktop range instead of drifting off a single calibration width.
      (source .banner-Text: teal vertical gradient, 6.8px pad, 13.6px radius.) */
   .hero.home .hero-home-savings {
-    display: block; /* re-show — hidden on mobile to match source .banner-Text */
     position: absolute;
     right: var(--hero-home-savings-right);
     bottom: var(--hero-home-savings-bottom);
     top: auto;
-    margin: 0; /* clear the mobile band-gutter margin so right:5% anchors true */
     width: var(--hero-home-savings-width);
     padding: var(--hero-home-savings-padding);
-    background-image: var(--hero-home-savings-bg);
+    background: var(--hero-home-savings-bg);
     border-radius: var(--hero-home-savings-radius);
     text-align: left;
     box-sizing: border-box;
   }
 
   .hero.home .hero-home-savings p {
+    font-family: var(--bold-font-family);
     font-size: var(--hero-home-savings-font-size);
     line-height: var(--hero-home-savings-line-height);
     margin: 0 0 var(--hero-home-savings-gap);
@@ -747,6 +736,23 @@ main > .section.hero-home .hero.home > div {
 
   .hero.home .hero-home-savings p:last-child {
     margin-bottom: 0;
+  }
+
+  /* desktop overlay uses the Heavy face at 13.6px (source .banner-Text); the
+     mobile band rule sets Light/16px, so re-assert it here for desktop */
+  .hero.home .hero-home-savings a,
+  .hero.home .hero-home-savings p a:any-link,
+  .hero.home .hero-home-savings a strong,
+  .hero.home .hero-home-savings p a strong,
+  .hero.home .hero-home-savings strong {
+    font-family: var(--bold-font-family);
+    font-size: var(--hero-home-savings-font-size);
+    line-height: var(--hero-home-savings-line-height);
+  }
+
+  /* desktop overlay link adds the drop shadow (mobile band has none) */
+  .hero.home .hero-home-savings a:any-link {
+    text-shadow: var(--hero-home-savings-link-shadow);
   }
 
   /* Single-panel desktop */
