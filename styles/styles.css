@@ -37,6 +37,13 @@
   --accent-bg: #cce8eb;
   --card-bg-light: #cce8eb;
 
+  /* accent-section footnote fine print (eligibility text under the hero) */
+  --accent-footnote-bg: #e3f9fd;
+  --accent-footnote-font-size: 16px;
+  --accent-footnote-line-height: 22.86px;
+  --accent-footnote-color: #000;
+  --accent-footnote-margin: 20px 0 23px;
+
   /* semantic colors */
   --background-color: #fff;
   --light-color: #cce8eb;
@@ -71,6 +78,10 @@
   /* bold inline text (<strong>/<b>) — the real Avenir cuts are single-weight named
      families that cannot synthesize bold, so bold uses the Heavy cut by name. */
   --bold-font-family: "Avenir LT W01_85 Heavy", "nunito sans", avenir-heavy-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+
+  /* light cut — fine print / footnotes (source uses Avenir LT W01_35 Light). Same
+     single-weight gotcha: named family, not synthesized from a weight. */
+  --light-font-family: "Avenir LT W01_35 Light", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --body-line-height: 1.43;
   --heading-font-weight: 500;
   --heading-line-height: 1.1;
@@ -643,9 +654,9 @@ main > .section > .bg-image img {
 
 /* section metadata - accent (light teal help strip) */
 main .section.accent {
-  background-color: var(--accent-bg);
+  background-color: var(--accent-footnote-bg);
   margin: 0;
-  padding: 20px 0;
+  padding: 0;
 }
 
 main .section.accent > div {
@@ -656,8 +667,29 @@ main .section.accent > div {
 }
 
 main .section.accent p {
-  margin: 0;
-  font-size: var(--body-font-size-ms);
+  /* source drives the band height via the paragraph margin (20px top / 23px
+     bottom = 43px), not section padding */
+  margin: var(--accent-footnote-margin);
+
+  /* fine-print footnote: 16px Avenir Light, black, left-aligned (source) */
+  font-family: var(--light-font-family);
+  font-size: var(--accent-footnote-font-size);
+  font-weight: 400;
+  line-height: var(--accent-footnote-line-height);
+  color: var(--accent-footnote-color);
+  text-align: left;
+}
+
+/* the inline "here" link in the footnote — green, 700-weight, no underline,
+   stays in the Light cut (source `.txt-black a`). Overrides the `<strong>`
+   Heavy styling so the link matches the surrounding fine print weight. */
+main .section.accent p a:any-link,
+main .section.accent p a strong {
+  font-family: var(--light-font-family);
+  font-size: inherit;
+  font-weight: 700;
+  color: var(--link-color);
+  text-decoration: none;
 }
 
 main .section.accent img {
