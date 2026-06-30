@@ -451,6 +451,159 @@ main > .section.hero-container {
 
 
 
+/* ═══════════════════════════════════════════════════
+   ONFI HOMEPAGE HERO (.hero.home)
+   Translucent overlay panel anchored left over a full-width
+   section background photo. Source: onfi.com #home-hero.
+   Mobile-first: photo hidden, solid teal gradient; panel full-width.
+   Tablet+ (>=768px): photo + gradient overlay; floating left panel.
+   ═══════════════════════════════════════════════════ */
+
+/* Section shell — full-bleed, no inner max-width constraint */
+main > .section.hero-home {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+
+  /* mobile: no photo, solid teal gradient */
+  background: var(--hero-home-mobile-bg);
+}
+
+main > .section.hero-home > div:not(.bg-image) {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: var(--hero-z-content);
+}
+
+/* Background photo layer (from section-metadata background-image) — hidden on
+   mobile where the source shows only the teal gradient. */
+main > .section.hero-home > .bg-image {
+  display: none;
+}
+
+main > .section.hero-home .hero.home {
+  width: 100%;
+}
+
+main > .section.hero-home .hero.home > div {
+  margin: 0;
+}
+
+/* Contain the floated panel so it drives the section height (tablet+) */
+.hero.home > div::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Overlay panel — mobile: transparent, full width, centered content */
+.hero.home .hero-home-panel {
+  background: transparent;
+  padding: var(--hero-home-panel-padding-mobile);
+  text-align: center;
+}
+
+/* Savings copy — mobile: stacks below the panel inside the teal gradient box
+   (source .banner-Text), white, left-aligned. (Desktop overlays the right of
+   the photo — see >=768px.) */
+.hero.home .hero-home-savings {
+  margin: var(--hero-home-savings-margin-mobile);
+  padding: var(--hero-home-savings-padding-mobile);
+  background-image: var(--hero-home-savings-bg);
+  border-radius: var(--hero-home-savings-radius-mobile);
+  text-align: left;
+}
+
+.hero.home .hero-home-savings p {
+  color: var(--hero-home-savings-color);
+  font-family: var(--bold-font-family);
+  font-size: var(--hero-home-savings-font-size-mobile);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--hero-home-savings-line-height-mobile);
+  margin: 0 0 var(--hero-home-savings-gap);
+}
+
+.hero.home .hero-home-savings p:last-child {
+  margin-bottom: 0;
+}
+
+/* Opening-sentence link inside the box renders in light teal (source). */
+.hero.home .hero-home-savings a:any-link {
+  color: var(--hero-home-savings-link-color);
+  text-decoration: none;
+}
+
+/* Force the box's links + any strong inside them to inherit the box type
+   (13.6px / 19.43px / 700). The GO-CTA rule `.hero.home p a:any-link` (16px)
+   otherwise wins for the opening-sentence link (it sits inside a <p>), and a
+   global strong rule sizes the inner <strong> at 16px too. Source has ALL box
+   text at 13.6px. Color is left untouched (link stays light teal). Selector
+   uses `.hero-home-savings p a:any-link` to out-specify the GO-CTA rule. */
+.hero.home .hero-home-savings a,
+.hero.home .hero-home-savings p a:any-link,
+.hero.home .hero-home-savings a strong,
+.hero.home .hero-home-savings p a strong,
+.hero.home .hero-home-savings strong {
+  font-size: var(--hero-home-savings-font-size-mobile);
+  line-height: var(--hero-home-savings-line-height-mobile);
+  font-weight: var(--font-weight-bold);
+}
+
+.hero.home .hero-home-savings a:hover,
+.hero.home .hero-home-savings a:focus {
+  text-decoration: underline;
+}
+
+/* "Don't Give Up" logo — fills the panel content width (source img-fluid) */
+.hero.home .hero-home-logo,
+.hero.home .hero-home-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Intro copy */
+.hero.home p {
+  color: var(--hero-home-intro-color);
+  font-family: var(--bold-font-family);
+  font-size: var(--hero-home-intro-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--hero-home-intro-line-height);
+  margin: var(--hero-home-intro-margin);
+  text-align: left;
+}
+
+/* GO » CTA — inline green text link (not a button) */
+.hero.home p a:any-link {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--hero-home-cta-color);
+  font-family: var(--bold-font-family);
+  font-size: var(--hero-home-cta-font-size);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  white-space: normal;
+}
+
+.hero.home p a:any-link::after {
+  content: none;
+}
+
+.hero.home p a:hover,
+.hero.home p a:focus {
+  color: var(--hero-home-cta-hover-color);
+  background: transparent;
+  text-decoration: none;
+}
+
 @media (width >= 600px) {
   .hero.single {
     min-height: var(--hero-single-min-height-tablet);
@@ -472,6 +625,94 @@ main > .section.hero-container {
 
 
 @media (width >= 768px) {
+  /* ── Onfi home hero — photo appears, panel floats left ── */
+  main > .section.hero-home {
+    background: none; /* drop the mobile solid-teal gradient */
+  }
+
+  /* Put the band's bottom breathing room INSIDE the content wrapper (not the
+     section) so the wrapper height == the full photo band height. The savings
+     box is absolutely positioned against this full-width wrapper and uses
+     bottom:4% — anchoring to the band bottom exactly like the source
+     .banner-Text (bottom:4% of the full-width .banner band). */
+  main > .section.hero-home > div:not(.bg-image) {
+    padding-bottom: var(--hero-home-section-pad-bottom);
+  }
+
+  /* Show the section background photo (object-fit: cover), full-bleed.
+     Override the global .section > div max-width / margin / padding caps. */
+  main > .section.hero-home > .bg-image {
+    display: block;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Teal gradient overlay over the photo — matches source background layering:
+     linear-gradient(transparent → rgba(0,140,153,.5)) sized 100% x 30% and
+     anchored to the bottom (50% 100%), so the teal only shows in the lower
+     portion of the hero band. */
+  main > .section.hero-home > .bg-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--hero-home-photo-overlay);
+    background-size: var(--hero-home-overlay-size);
+    background-position: var(--hero-home-overlay-position);
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+
+  /* Constrain the hero content (panel) to the site container. NOTE: this div
+     must NOT establish a positioning context — the savings box anchors to the
+     full-width section band (.section.hero-home) so it tracks the source model
+     (.banner-Text: right:5% / bottom:4% of the full-width .banner band). */
+  main > .section.hero-home .hero.home > div {
+    max-width: var(--max-width-tablet);
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .hero.home .hero-home-panel {
+    float: left;
+    width: var(--hero-home-panel-width);
+    margin-left: var(--hero-home-panel-offset);
+    padding: var(--hero-home-panel-padding);
+    background: var(--hero-home-panel-bg);
+    border-radius: var(--hero-home-panel-radius);
+    text-align: left;
+  }
+
+  /* Savings copy — desktop: white text inside a teal gradient box overlaying the
+     right of the photo. Anchored to the full-width section band exactly like the
+     source .banner-Text (position:absolute; right:5%; bottom:4% of the full-width
+     .banner band; fixed width:460px). This tracks the source across the whole
+     desktop range instead of drifting off a single calibration width.
+     (source .banner-Text: teal vertical gradient, 6.8px pad, 13.6px radius.) */
+  .hero.home .hero-home-savings {
+    position: absolute;
+    right: var(--hero-home-savings-right);
+    bottom: var(--hero-home-savings-bottom);
+    top: auto;
+    margin: 0; /* clear the mobile band-gutter margin so right:5% anchors true */
+    width: var(--hero-home-savings-width);
+    padding: var(--hero-home-savings-padding);
+    background-image: var(--hero-home-savings-bg);
+    border-radius: var(--hero-home-savings-radius);
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  .hero.home .hero-home-savings p {
+    font-size: var(--hero-home-savings-font-size);
+    line-height: var(--hero-home-savings-line-height);
+    margin: 0 0 var(--hero-home-savings-gap);
+  }
+
+  .hero.home .hero-home-savings p:last-child {
+    margin-bottom: 0;
+  }
+
   /* Single-panel desktop */
   .hero.single {
     min-height: unset;
@@ -586,6 +827,11 @@ main > .section.hero-container {
 }
 
 @media (width >= 992px) {
+  /* Onfi home hero — container grows to 970px (Bootstrap-3) */
+  main > .section.hero-home .hero.home > div {
+    max-width: 970px;
+  }
+
   .hero-panel-dark .hero-panel-description {
     max-width: 100%;
   }
@@ -627,6 +873,11 @@ main > .section.hero-container {
 }
 
 @media (width >= 1200px) {
+  /* Onfi home hero — container grows to 1100px (source content width) */
+  main > .section.hero-home .hero.home > div {
+    max-width: var(--max-width-site);
+  }
+
   .hero-panel-content {
     padding-top: 40px;
   }
