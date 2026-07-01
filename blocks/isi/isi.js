@@ -136,10 +136,18 @@ export default function decorate(block) {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
 
-  /* Set the initial state, and re-run once layout settles (fonts/images/fragment
-     can shift the ISI's position after decorate) so the peek shows correctly on
-     load without needing a scroll. */
+  /* Set the initial state, and re-run once layout settles so the peek shows on
+     load without needing a scroll. The ISI is decorated in the lazy phase —
+     often AFTER window 'load' has fired and BEFORE the images above it have laid
+     out — so at first paint the in-flow ISI sits too high and the hand-off test
+     wrongly hides the peek. A ResizeObserver on <body> re-runs the check on every
+     reflow (each image that loads pushes the ISI down), so the peek appears as
+     soon as the page reaches its true height. */
   updatePeek();
   requestAnimationFrame(updatePeek);
   window.addEventListener('load', updatePeek);
+  if (typeof ResizeObserver !== 'undefined') {
+    const ro = new ResizeObserver(() => onScroll());
+    ro.observe(document.body);
+  }
 }
