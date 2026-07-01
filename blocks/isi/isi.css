@@ -177,30 +177,37 @@
   padding: 0 15px var(--isi-full-body-padding-bottom);
 }
 
-/* ── Fixed peek banner ───────────────────────────────────────── */
+/* ── Fixed peek banner ───────────────────────────────────────────
+   Pinned to the viewport bottom, inset to the body box (matches source:
+   left/right = (100vw − bodyMax)/2, capped so it never exceeds the 1400px body).
+   No box-shadow (source has none). The visible strip (teal header + top of the
+   warning box) peeks above the fold; the rest is clipped by overflow. */
 .isi-peek {
   position: fixed;
-  left: var(--isi-peek-inset-x);
-  right: var(--isi-peek-inset-x);
+  left: max(0px, calc((100vw - var(--max-width-outer)) / 2));
+  right: max(0px, calc((100vw - var(--max-width-outer)) / 2));
   bottom: 0;
   z-index: var(--isi-peek-z-index);
   max-height: 60vh;
   overflow: hidden;
   background: var(--isi-peek-bg);
-  box-shadow: 0 -2px 6px rgb(0 0 0 / 15%);
-  transition: opacity 0.15s ease-out;
 }
 
+/* The peek's docked strip height must match the source (~159px): teal header +
+   "What is ONFI?" + the one-sentence description. The description paragraph's own
+   16px bottom margin supplies the gap to the fold, so the body adds no extra
+   bottom padding (which would otherwise inflate the strip). */
 .isi-peek .isi-body {
-  padding: 0 0 var(--isi-peek-body-padding-bottom);
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-/* the peek banner's header/body share the same content-column inset as the full
-   copy so the text lines up; on mobile the banner is full-bleed */
+/* the peek banner's header/body align its title/toggle to the content column
+   (same responsive inset as the full copy); on mobile it's full-bleed */
 .isi-peek .isi-header,
 .isi-peek .isi-body {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-right: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
 }
 
 /* ── Mobile: hide the MORE/LESS label, keep just the +/− glyph ── */

@@ -16,7 +16,6 @@
  */
 
 const FULL_ID = 'isi-full';
-const FADE_DISTANCE = 300; // px before the full ISI reaches the top that the peek fades over
 
 /**
  * Splits an authored ISI cell into a teal header (first heading becomes the
@@ -82,12 +81,14 @@ export default function decorate(block) {
   peek.setAttribute('aria-label', 'Important Safety Information');
   const peekParts = buildParts(peekCell, 'more', `#${FULL_ID}`);
 
-  /* The peek shows only the abbreviated version (source parity): the intro
-     paragraphs up to and including the WARNING box. Drop everything after the
-     first blockquote so the bullet lists / closing headings don't appear. */
-  const warning = peekParts.body.querySelector('blockquote');
-  if (warning) {
-    let node = warning.nextSibling;
+  /* The peek shows only the intro (source parity): the "What is ONFI?" heading
+     paragraph + the one-sentence description. Everything from the "IMPORTANT
+     SAFETY INFORMATION for ONFI" marker onward (incl. the WARNING box and the
+     full bullet lists) is dropped so only the short teal-header strip shows. */
+  const marker = [...peekParts.body.querySelectorAll('p')]
+    .find((p) => /IMPORTANT SAFETY INFORMATION/i.test(p.textContent));
+  if (marker) {
+    let node = marker;
     while (node) {
       const next = node.nextSibling;
       node.remove();
@@ -108,28 +109,21 @@ export default function decorate(block) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ── Peek visibility ─────────────────────────────────────────
-     The peek banner is only shown while the full in-flow ISI is still entirely
-     below the fold. As soon as the real ISI starts entering the viewport it is
-     hidden, so the two copies are never on screen at the same time (the source
-     shows the ISI content only once). A short fade over the last FADE_DISTANCE
-     of the approach keeps the hand-off smooth. */
+  /* ── Peek visibility (source parity) ─────────────────────────
+     The peek banner stays fully opaque and docked to the viewport bottom the
+     whole time the in-flow ISI is still below it — no fade. The hand-off is a
+     clean, invisible swap: because the peek strip and the in-flow ISI show the
+     identical teal header + "What is ONFI?" intro, the moment the in-flow copy
+     scrolls up to sit exactly where the peek is docked, we hide the peek and the
+     real content occupies the same pixels. Scrolling back up re-shows it.
+     Default is visible, so it appears on load without needing a scroll. */
   const updatePeek = () => {
     ticking = false;
-    const { top } = full.getBoundingClientRect();
-    const vh = window.innerHeight;
-    // distance from the viewport bottom to the top of the full ISI
-    const distanceBelowFold = top - vh;
-    if (distanceBelowFold <= 0) {
-      // full ISI has entered the viewport — hide the peek entirely
-      peek.style.opacity = '0';
-      peek.style.visibility = 'hidden';
-    } else {
-      peek.style.visibility = 'visible';
-      peek.style.opacity = distanceBelowFold < FADE_DISTANCE
-        ? String(Math.max(0, distanceBelowFold / FADE_DISTANCE))
-        : '1';
-    }
+    const inflowTop = full.getBoundingClientRect().top;
+    // The peek's docked top edge (bottom:0 → top = viewport height − strip).
+    const peekTop = window.innerHeight - peek.offsetHeight;
+    // Hand off once the in-flow ISI has risen to (or above) the docked strip.
+    peek.style.visibility = inflowTop <= peekTop ? 'hidden' : 'visible';
   };
   let ticking = false;
   const onScroll = () => {
@@ -141,5 +135,11 @@ export default function decorate(block) {
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+
+  /* Set the initial state, and re-run once layout settles (fonts/images/fragment
+     can shift the ISI's position after decorate) so the peek shows correctly on
+     load without needing a scroll. */
   updatePeek();
+  requestAnimationFrame(updatePeek);
+  window.addEventListener('load', updatePeek);
 }
