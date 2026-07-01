@@ -86,10 +86,10 @@
   --hero-home-mobile-bg: #004248;
   /* horizontal inset matches the source's 15px container gutter + 28px col-sm-4
      padding (= 43px), which constrains the logo to the source's rendered width.
-     Top padding clears the header's white Onfi logo box, which protrudes ~91px
-     below the teal nav bar (the hero is pulled up under the sticky header, so
-     without this the logo box overlaps the "DON'T" of the hero logo). */
-  --hero-home-panel-padding-mobile: 119px 43px 28px;
+     Top padding is the source's natural 28px gap between the header bottom and the
+     hero logo. (The header now sizes to contain its own white logo tab on mobile,
+     so the hero no longer compensates for an overflowing tab.) */
+  --hero-home-panel-padding-mobile: 28px 43px 28px;
 
   /* Tablet+ (>=768px): translucent dark-teal panel floats over the photo */
   --hero-home-panel-bg: rgb(0 41 45 / 70%);
