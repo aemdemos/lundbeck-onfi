@@ -1,68 +1,61 @@
-/* isi design tokens */
-:root { /* @boilerplate */
-  --isi-text-color: #333; /* inline ISI body text — matches source #333 */
-  --isi-body-font-size: 16px; /* inline ISI paragraphs + list items (source 16px, not 14px) */
-  --isi-line-height: 1.43; /* source ISI body line-height */
-  --isi-list-line-height: 1.43; /* source list items are tight (1.43), not 1.7 */
-  --isi-list-item-margin-bottom: 0; /* source list items have no inter-item margin (2px padding only) */
-  --isi-list-item-padding-y: 2px; /* source li padding: 2px top/bottom */
-  --isi-inline-padding-bottom: 64px; /* @boilerplate */
-  --isi-heading-color: var(--brand-primary-dark); /* @boilerplate */
-  --isi-heading-font-size: 18px; /* @boilerplate */
-  --isi-heading-font-weight: 700; /* @boilerplate */
-  --isi-heading-line-height: 22px; /* @boilerplate */
-  --isi-heading-margin-bottom: 0; /* @boilerplate */
-  --isi-bar-z-index: 5; /* @boilerplate */
-  --isi-bar-expanded-z-index: 10; /* @boilerplate */
-  --isi-bar-background: var(--background-color); /* @boilerplate */
-  --isi-section-border-width: 1px; /* @boilerplate */
-  --isi-section-border-color: #d1d1d1; /* @boilerplate */
-  --isi-bar-border-width: var(--isi-section-border-width); /* @boilerplate */
-  --isi-bar-border-color: var(--isi-section-border-color); /* @boilerplate */
-  --isi-bar-height: 90px; /* @boilerplate */
-  --isi-bar-padding: 13px 13px 8px; /* @boilerplate */
-  --isi-bar-height-transition-duration: 0.3s; /* @boilerplate */
-  --isi-bar-height-transition-easing: ease-in-out; /* @boilerplate */
-  --isi-bar-expanded-max-height: 70vh; /* @boilerplate */
-  --isi-content-max-width: var(--max-width-site); /* @boilerplate */
-  --isi-bar-content-gap: 0 24px; /* @boilerplate */
-  --isi-bar-col-flex-basis: 45%; /* @boilerplate */
-  --isi-bar-heading-padding-bottom: 18px; /* @boilerplate */
-  --isi-bar-paragraph-line-height: 24px; /* @boilerplate */
-  --isi-bar-paragraph-padding-bottom: 8px; /* @boilerplate */
-  --isi-bar-list-padding-left: 20px; /* @boilerplate */
-  --isi-bar-list-margin-bottom: 8px; /* @boilerplate */
-  --isi-bar-link-font-weight: 600; /* @boilerplate */
-  --isi-toggle-right: 15px; /* @boilerplate */
-  --isi-toggle-top: 13px; /* @boilerplate */
-  --isi-toggle-border-width: 2px; /* @boilerplate */
-  --isi-toggle-size: 24px; /* @boilerplate */
-  --isi-toggle-color: var(--brand-primary-dark); /* @boilerplate */
-  --isi-toggle-hover-color: var(--link-hover-color); /* @boilerplate */
-  --isi-toggle-transition-duration: 0.2s; /* @boilerplate */
-  --isi-toggle-z-index: 2; /* @boilerplate */
-  --isi-toggle-icon-size: 12px; /* @boilerplate */
-  --isi-toggle-icon-bar-thickness: 2px; /* @boilerplate */
-  --isi-toggle-icon-bar-radius: 1px; /* @boilerplate */
-  --isi-bar-content-padding-x-mobile: 16px; /* @boilerplate */
-  --isi-bar-content-padding-x-desktop: 32px; /* @boilerplate */
-  --isi-toggle-right-mobile: 16px; /* @boilerplate */
-  --isi-toggle-right-desktop: 32px; /* @boilerplate */
+/* ISI design tokens — onfi.com Important Safety Information */
+:root {
+  /* content column + peek banner geometry */
+  --isi-content-max-width: var(--max-width-site); /* 1100px content column */
+  --isi-peek-z-index: 100;
+  --isi-peek-inset-x: 20px; /* desktop: 20px from each viewport edge */
+  --isi-peek-bg: var(--background-color);
+
+  /* teal header bar (source rgb(4,101,110)) */
+  --isi-header-bg: #04656e;
+  --isi-header-height: 38px;
+  --isi-title-color: #fff;
+  --isi-title-font-family: var(--bold-font-family); /* Avenir 85 Heavy */
+  --isi-title-font-size: 15px;
+  --isi-title-font-weight: 800;
+
+  /* MORE/LESS toggle */
+  --isi-toggle-color: #fff;
+  --isi-toggle-font-family: var(--body-font-family); /* Avenir 55 Roman */
+  --isi-toggle-font-size: 13px;
+  --isi-toggle-line-height: 36px;
+  --isi-toggle-gap: 6.25px;
+
+  /* +/− icon: green glyph on a white circle */
+  --isi-toggle-icon-size: 26px;
+  --isi-toggle-icon-glyph-size: 25px;
+  --isi-toggle-icon-color: #7fa73a; /* rgb(127,167,58) green */
+  --isi-toggle-icon-bg: #fff;
+  --isi-toggle-icon-font-family: var(--light-font-family);
+
+  /* body typography */
+  --isi-body-color: #333;
+  --isi-body-font-size: 16px;
+  --isi-body-line-height: 22.857px;
+  --isi-body-paragraph-margin: 20px 0 16px;
+  --isi-body-heading-margin: 22px 0 0;
+  --isi-body-heading-line-height: 17.6px;
+  --isi-link-color: #729533; /* green */
+
+  /* custom bullets (li::before) — source green rgb(127,167,58) */
+  --isi-bullet-color: #7fa73a;
+  --isi-bullet-size: 6px;
+  --isi-list-indent: 16px;
+  --isi-list-item-gap: 2px;
+
+  /* warning box (bordered in the peek copy, borderless in the full copy) */
+  --isi-warning-border: 1px solid #000;
+  --isi-warning-padding: 0 15px;
+
+  /* body bottom padding */
+  --isi-full-body-padding-bottom: 48px;
+  --isi-peek-body-padding-bottom: 16px;
 }
 
-@media (width <= 768px) { /* @boilerplate */
-  :root { /* @boilerplate */
-    --isi-bar-height: 109px; /* @boilerplate */
-    --isi-bar-padding: 0; /* @boilerplate */
-    --isi-bar-heading-color: var(--brand-primary); /* @boilerplate */
-    --isi-bar-heading-padding-bottom: 8px; /* @boilerplate */
-    --isi-bar-paragraph-padding-bottom: 16px; /* @boilerplate */
-    --isi-toggle-right: var(--isi-toggle-right-mobile); /* @boilerplate */
-  }
-}
-
-@media (width >= 992px) { /* @boilerplate */
-  :root { /* @boilerplate */
-    --isi-toggle-right: var(--isi-toggle-right-desktop); /* @boilerplate */
+@media (width <= 768px) {
+  :root {
+    /* peek banner is full-bleed on mobile */
+    --isi-peek-inset-x: 0px;
+    --isi-title-font-size: 16.8px;
   }
 }
