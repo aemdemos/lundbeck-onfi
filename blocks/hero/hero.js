@@ -122,11 +122,21 @@ function decorateDualPanel(block, rows) {
  * @param {Element} block
  */
 function decorateHomePanel(block) {
-  const row = block.querySelector(':scope > div');
-  if (!row) return;
-  const cells = [...row.children];
-  const cell = cells[0];
+  const rows = [...block.children];
+  const firstRow = rows[0];
+  if (!firstRow) return;
+  const firstRowCells = [...firstRow.children];
+  const cell = firstRowCells[0];
   if (!cell) return;
+
+  // The savings copy can be authored two ways:
+  //  - 2 columns in one row: panel = cell 0, savings = cell 1 (legacy shape)
+  //  - 1 column across two rows: panel = row 0's cell, savings = row 1's cell
+  //    (the standard single-column EDS hero shape)
+  // Prefer the sibling cell in the first row; otherwise fall back to the second
+  // row's first cell. Either way the savings element gets the same class, so all
+  // the CSS/positioning is shared.
+  const savingsCell = firstRowCells[1] || (rows[1] && rows[1].firstElementChild);
 
   // First cell = the left translucent panel (logo + intro + GO).
   cell.classList.add('hero-home-panel');
@@ -172,10 +182,10 @@ function decorateHomePanel(block) {
     outerP.replaceWith(innerP);
   });
 
-  // Second cell (optional) = the savings copy. On desktop it overlays the
-  // right side of the photo; on mobile it stacks below the panel in the teal
-  // band. Tag it so the CSS can position it independently of the left panel.
-  const savingsCell = cells[1];
+  // Savings copy (optional) = the second cell (2-column) or second row's cell
+  // (single-column), resolved above. On desktop it overlays the right side of
+  // the photo; on mobile it stacks below the panel in the teal band. Tag it so
+  // the CSS can position it independently of the left panel.
   if (savingsCell) savingsCell.classList.add('hero-home-savings');
 }
 
