@@ -84,6 +84,9 @@
      a flat dark teal (#004248) over the section gradient, so mobile reads as a
      plain solid color — no visible gradient. */
   --hero-home-mobile-bg: #004248;
+  /* "Don't Give Up" logo intrinsic ratio (262x140); reserves the box so the
+     lazy image load doesn't shift the page (CLS) */
+  --hero-home-logo-aspect-ratio: 262 / 140;
   /* horizontal inset matches the source's 15px container gutter + 28px col-sm-4
      padding (= 43px), which constrains the logo to the source's rendered width.
      Top padding is the source's natural 28px gap between the header bottom and the

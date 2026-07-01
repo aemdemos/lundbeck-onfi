@@ -142,6 +142,20 @@ function decorateHomePanel(block) {
   if (panelPicture) {
     panelPicture.classList.add('hero-home-logo');
     cell.prepend(panelPicture);
+
+    // The authored logo <img> ships with no width/height and loading="lazy", so
+    // the browser can't reserve its box until the bytes arrive — the late load
+    // then pushes the page down (CLS). Stamp the intrinsic dimensions (which give
+    // the aspect ratio the CSS uses to reserve height) and load it eagerly since
+    // it sits above the fold.
+    const logoImg = panelPicture.tagName === 'IMG' ? panelPicture : panelPicture.querySelector('img');
+    if (logoImg) {
+      logoImg.setAttribute('loading', 'eager');
+      if (!logoImg.hasAttribute('width') && logoImg.naturalWidth) {
+        logoImg.setAttribute('width', logoImg.naturalWidth);
+        logoImg.setAttribute('height', logoImg.naturalHeight);
+      }
+    }
   }
 
   // Drop any now-empty <p> shells left behind by hoisting the image out.
