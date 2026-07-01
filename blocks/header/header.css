@@ -13,9 +13,16 @@
 }
 
 /* ===== Header shell (shared across all viewports) ===== */
+/* Mobile: header is static and scrolls away with the page (matches source, whose
+   mobile header is position:static). It becomes sticky at >=768px below.
+   Height is reserved eagerly (fixed height) so the empty header doesn't collapse
+   before the block CSS loads (which would shift the hero down = CLS). The reserved
+   value steps down (271 → 256 at >=472px) as the textbar intro wraps from 3 to 2
+   lines, so the reservation matches the real content at each range — no white gap
+   above the hero. */
 header.header-wrapper {
-  position: sticky;
-  top: 0;
+  position: static;
+  height: var(--header-height);
   z-index: var(--header-z-index);
 }
 
@@ -48,7 +55,7 @@ header .nav-textbar p {
   margin: 0;
   padding: var(--header-mobile-textbar-padding);
   color: var(--header-text-color);
-  font-family: var(--header-font-family);
+  font-family: var(--header-textbar-font-family);
   font-size: var(--header-mobile-textbar-font-size);
   font-weight: var(--header-mobile-textbar-font-weight);
   line-height: var(--header-mobile-textbar-line-height);
@@ -216,11 +223,14 @@ header ul.nav-eyebrow-links {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 10px;
+  padding: var(--header-mobile-eyebrow-padding);
   background-color: var(--header-eyebrow-bg);
 }
 
 header .nav-eyebrow-links > li {
+  /* source gives each item a 5px top/bottom margin, so the eyebrow band is
+     15px pad + (5 + link + 5) + 15 pad = 83px on mobile (matches #nav-eyebrow) */
+  margin: var(--header-mobile-eyebrow-item-margin-y) 0;
   border-right: 1px solid var(--header-divider-color);
   transition: var(--header-eyebrow-hover-transition);
 }
@@ -422,6 +432,15 @@ header .nav-search-submit {
    logo-clearance indent shrink fluidly so the row stays on one line and clears
    the logo down to 768px, where the mobile hamburger takes over. ===== */
 @media (width >= 768px) {
+  /* desktop: header sticks to the top on scroll (source uses a fixed/sticky
+     desktop header); mobile stays static per the base rule above. The fixed
+     reserved height applies here (single-line rows, sticky positioning). */
+  header.header-wrapper {
+    position: sticky;
+    top: 0;
+    height: var(--header-height);
+  }
+
   header nav {
     display: block;
   }
@@ -491,6 +510,12 @@ header .nav-search-submit {
       max(var(--header-side-padding), calc((100% - var(--header-tablet-container)) / 2 + var(--header-side-padding)))
       var(--header-eyebrow-padding-y)
       max(var(--header-tablet-nav-indent), calc((100% - var(--header-tablet-container)) / 2 + var(--header-nav-indent)));
+  }
+
+  /* the mobile 5px item margin (which builds the 83px mobile band) is not present
+     on desktop — the eyebrow row is a single line here */
+  header .nav-eyebrow-links > li {
+    margin: 0;
   }
 
   header .nav-eyebrow-links > li:nth-child(1) {
@@ -588,5 +613,15 @@ header .nav-search-submit {
 
   header .nav-main-list a {
     font-size: var(--header-main-link-font-size);
+  }
+}
+
+/* Wide (>1400px): the body/header hits its 1400px cap and stops growing, so the
+   logo tab now anchors at the left edge of the centered band. The source indents
+   the textbar 130px here so "ONFI" clears the logo (below the cap the text sits at
+   the band's 15px gutter instead). */
+@media (width >= 1401px) {
+  header .nav-textbar p {
+    padding-left: var(--header-textbar-indent-wide);
   }
 }

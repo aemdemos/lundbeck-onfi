@@ -113,10 +113,12 @@
   --h1-max-width: 14em;
 
   /* nav heights — reserved eagerly (this file loads before the header block) so
-     the sticky header holds its box and never shifts the hero when it populates.
-     Mobile stacks textbar + eyebrow + logo band (~255px); desktop collapses to a
-     shorter bar with the logo tab absolutely positioned (159px, set at >=768px). */
-  --nav-height: 255px;
+     the header holds its box and never shifts the hero when it populates.
+     Narrow mobile: textbar intro wraps to 3 lines (61) + eyebrow band (83) +
+     logo band (127) = 271px. At >=472px the textbar wraps to 2 lines, dropping
+     the header to 256px (stepped below). Desktop collapses to a shorter bar with
+     the logo tab absolutely positioned (159px, set at >=768px). */
+  --nav-height: 271px;
   --nav-brand-row-height-mobile: 97px;
   --breadcrumbs-height: 34px; /* EDS internal default */
   --header-height: var(--nav-height);
@@ -771,6 +773,15 @@ main .section.dark a.button.secondary:focus {
 @media (width <= 767px) {
   body {
     font-size: var(--body-font-size-s);
+  }
+}
+
+/* wider mobile (≥472px): the header textbar intro wraps to 2 lines instead of 3,
+   so the reserved header height drops 15px (271 → 256) to stay flush with the
+   hero (no white gap) while still holding the box against load-time collapse */
+@media (width >= 472px) {
+  :root {
+    --nav-height: 256px;
   }
 }
 
