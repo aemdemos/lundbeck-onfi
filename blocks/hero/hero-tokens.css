@@ -6,7 +6,7 @@
 
   /* colors */
   --hero-text-color-light: #fff;
-  --hero-text-shadow: 0 1px 3px rgb(0 0 0 / 60%)
+  --hero-text-shadow: 0 1px 3px rgb(0 0 0 / 60%);
 
   /* eyebrow (h3) */
   --hero-eyebrow-font-size: 20px;
@@ -77,4 +77,115 @@
   --hero-z-bg: 0;
   --hero-z-content: 1;
   --hero-z-caption: 2;
+
+  /* ── Onfi homepage hero (.hero.home) — source #home-hero ── */
+
+  /* Mobile (<768px): no photo. The source's full-width content container paints
+     a flat dark teal (#004248) over the section gradient, so mobile reads as a
+     plain solid color — no visible gradient. */
+  --hero-home-mobile-bg: #004248;
+
+  /* "Don't Give Up" logo intrinsic ratio (262x140); reserves the box so the
+     lazy image load doesn't shift the page (CLS) */
+  --hero-home-logo-aspect-ratio: 262 / 140;
+
+  /* horizontal inset matches the source's 15px container gutter + 28px col-sm-4
+     padding (= 43px), which constrains the logo to the source's rendered width.
+     Top padding is the source's natural 28px gap between the header bottom and the
+     hero logo. (The header now sizes to contain its own white logo tab on mobile,
+     so the hero no longer compensates for an overflowing tab.) */
+  --hero-home-panel-padding-mobile: 28px 43px 28px;
+
+  /* Tablet+ (>=768px): translucent dark-teal panel floats over the photo */
+  --hero-home-panel-bg: rgb(0 41 45 / 70%);
+  --hero-home-panel-padding: 32px;
+  --hero-home-panel-radius: 0 0 20px 20px;
+  --hero-home-panel-offset: -10px; /* source margin-left: -10px overhang */
+  --hero-home-panel-width: 33.333%; /* Bootstrap col-sm-4 */
+
+  /* Section photo + overlay gradient — exact source background:
+     background-image: linear-gradient(transparent, rgba(0,140,153,.5)), url(photo)
+     background-size:   100% 30%, cover    (gradient confined to bottom 30%)
+     background-position: 50% 100%, 50% 50% (gradient anchored to bottom) */
+  --hero-home-photo-overlay: linear-gradient(rgb(0 0 0 / 0%), rgb(0 140 153 / 50%));
+  --hero-home-overlay-size: 100% 30%;
+  --hero-home-overlay-position: 50% 100%;
+  --hero-home-section-pad-bottom: 80px;
+
+  /* Desktop band height pinned to the source (447.375px); the localhost Avenir
+     fallback renders the intro ~3px shorter, so pin it for a 100% match. Mobile
+     is content-driven (full-width logo), so no fixed height there. */
+  --hero-home-min-height: 447.38px;
+
+  /* pulls the hero up 1px to cover the sub-pixel white seam below the sticky
+     header (the nav renders ~0.9px shorter than the header box) */
+  --hero-home-section-seam-offset: -1px;
+
+  /* intro copy */
+  --hero-home-intro-color: #fff;
+  --hero-home-intro-font-size: 16px;
+  --hero-home-intro-line-height: 24px;
+  --hero-home-intro-margin: 32px 0 16px;
+
+  /* ® superscript — source renders it at 12px (0.75em), raised 6px */
+  --hero-home-sup-font-size: 12px;
+  --hero-home-sup-top: -6px;
+
+  /* GO » CTA — inline text link. Source renders it LIGHT TEAL (rgb(165,222,225)),
+     not green: the bare <a> is green but its inner <span> overrides to light teal,
+     so the visible "GO »" is light teal. */
+  --hero-home-cta-color: #a5dee1;
+  --hero-home-cta-hover-color: #a5dee1;
+  --hero-home-cta-font-size: 16px;
+
+  /* the » glyph in the GO link renders larger than the "GO" text (source: 24px
+     against 16px copy = 1.5em); applied to the authored [[raquo]»] span */
+  --hero-home-cta-raquo-font-size: 1.5em;
+
+  /* Savings copy (right overlay desktop / stacked mobile) — source .banner-Text */
+  --hero-home-savings-color: #fff;
+
+  /* opening-sentence link inside the box — light teal (source rgb(165,222,225)),
+     with a soft drop shadow (source `.banner-Text a`) */
+  --hero-home-savings-link-color: #a5dee1;
+  --hero-home-savings-link-shadow: rgb(0 0 0 / 50%) 0 2px 2px;
+
+  /* source p1 ends with a trailing `<br>&nbsp;`, adding one empty line (~one
+     line-height) between the two paragraphs; reproduced here as a bottom gap */
+  --hero-home-savings-gap: 19.43px;
+
+  /* mobile: a separate FULL-WIDTH teal band stacked below the dark panel
+     (source `.textbanner.visible-xs`: bg #00808c, white 16px Avenir Light,
+     padding 20px 40px 0, inter-paragraph gap 23px). */
+  --hero-home-savings-bg-mobile: #00808c;
+  --hero-home-savings-padding-mobile: 20px 40px 0;
+  --hero-home-savings-font-size-mobile: 16px;
+  --hero-home-savings-line-height-mobile: 22.86px;
+  --hero-home-savings-gap-mobile: 23px;
+
+  /* desktop (>=768px): teal gradient box over the right of the photo
+     (source .banner-Text: gradient bg, 6.8px padding, 13.6px radius) */
+
+  /* fixed 460px width — source uses a constant width:460px across all desktop
+     widths (verified at 768/992/1280/1440: box width is always 460px) */
+  --hero-home-savings-width: 460px;
+
+  /* Responsive anchor: the box is positioned against the FULL-WIDTH section
+     band (.section.hero-home), reproducing the source .banner-Text model which
+     is right:5% / bottom:4% of the full-width .banner band. Percentage anchors
+     track the source across the whole desktop range (768 → 1440+) instead of
+     drifting off a single 1280 calibration point.
+       right:5%  → 5% of band width   (64px @1280 → box right edge x=1216)
+       bottom:4% → 4% of band height  (~18px @1280 → box top y≈400) */
+  --hero-home-savings-right: 5%;
+  --hero-home-savings-bottom: 4%;
+  --hero-home-savings-font-size: 13.6px;
+  --hero-home-savings-line-height: 19.43px;
+  --hero-home-savings-bg: linear-gradient(
+    rgb(0 140 153 / 50%) 0,
+    rgb(0 140 153 / 50%) 50%,
+    var(--brand-teal) 100%
+  );
+  --hero-home-savings-padding: 6.8px;
+  --hero-home-savings-radius: 13.6px;
 }

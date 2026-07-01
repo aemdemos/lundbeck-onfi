@@ -1,4 +1,22 @@
 import { buildPictureContentFromImageCell } from '../../scripts/utils.js';
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+/**
+ * The section's `background-image` layer (`.bg-image`) is created by
+ * decorateSections() as a bare <img> at the optimizer's default 750px width.
+ * The home hero photo is full-bleed (renders ~1280px+ wide), so 750px upscales
+ * and looks blurry. Replace that <img> with a responsive <picture> via the
+ * shared boilerplate helper, whose default breakpoints serve a 2000px asset on
+ * desktop (≥600px) and 750px on mobile — no hardcoded values here.
+ * @param {Element} block
+ */
+function upgradeBackgroundImageResolution(block) {
+  const section = block.closest('.section');
+  const bgImg = section?.querySelector(':scope > .bg-image img');
+  if (!bgImg) return;
+  const picture = createOptimizedPicture(bgImg.src, bgImg.alt, false);
+  bgImg.closest('picture').replaceWith(picture);
+}
 
 function applyAccentColor(block) {
   block.querySelectorAll('h1 strong, h2 strong, h3 strong, p strong').forEach((strong) => {
@@ -91,6 +109,87 @@ function decorateDualPanel(block, rows) {
 }
 
 /**
+ * Onfi homepage hero (.hero.home): a translucent overlay panel anchored to the
+ * left of a full-width section background photo. The panel holds the
+ * "Don't Give Up" logo, the intro copy and an inline "GO »" link. The
+ * background photo is supplied by the section-metadata `background-image`
+ * (decorated into a sibling `.bg-image` layer by scripts.js), so this block
+ * only owns the panel content.
+ *
+ * decorateMain() wraps the bare logo `<img>` together with the following intro
+ * `<p>` inside a single outer `<p>`; this normalises that back into a standalone
+ * `<picture>` followed by the intro paragraph so the CSS contract is simple.
+ * @param {Element} block
+ */
+function decorateHomePanel(block) {
+  const rows = [...block.children];
+  const firstRow = rows[0];
+  if (!firstRow) return;
+  const firstRowCells = [...firstRow.children];
+  const cell = firstRowCells[0];
+  if (!cell) return;
+
+  // The savings copy can be authored two ways:
+  //  - 2 columns in one row: panel = cell 0, savings = cell 1 (legacy shape)
+  //  - 1 column across two rows: panel = row 0's cell, savings = row 1's cell
+  //    (the standard single-column EDS hero shape)
+  // Prefer the sibling cell in the first row; otherwise fall back to the second
+  // row's first cell. Either way the savings element gets the same class, so all
+  // the CSS/positioning is shared.
+  const savingsCell = firstRowCells[1] || (rows[1] && rows[1].firstElementChild);
+
+  // First cell = the left translucent panel (logo + intro + GO).
+  cell.classList.add('hero-home-panel');
+
+  // Serve a desktop-resolution background photo (the section layer defaults to
+  // 750px, which upscales blurrily on the full-bleed hero).
+  upgradeBackgroundImageResolution(block);
+
+  // Unwrap the image-in-paragraph mangling: hoist any <picture>/<img> that
+  // decorateMain() nested inside a <p> back up to the cell, before the copy.
+  const picture = cell.querySelector('picture, img');
+  const panelPicture = picture ? (picture.closest('picture') || picture) : null;
+  if (panelPicture) {
+    panelPicture.classList.add('hero-home-logo');
+    cell.prepend(panelPicture);
+
+    // The authored logo <img> ships with no width/height and loading="lazy", so
+    // the browser can't reserve its box until the bytes arrive — the late load
+    // then pushes the page down (CLS). Stamp the intrinsic dimensions (which give
+    // the aspect ratio the CSS uses to reserve height) and load it eagerly since
+    // it sits above the fold.
+    const logoImg = panelPicture.tagName === 'IMG' ? panelPicture : panelPicture.querySelector('img');
+    if (logoImg) {
+      logoImg.setAttribute('loading', 'eager');
+      if (!logoImg.hasAttribute('width') && logoImg.naturalWidth) {
+        logoImg.setAttribute('width', logoImg.naturalWidth);
+        logoImg.setAttribute('height', logoImg.naturalHeight);
+      }
+    }
+  }
+
+  // Drop any now-empty <p> shells left behind by hoisting the image out.
+  cell.querySelectorAll(':scope > p').forEach((p) => {
+    if (!p.textContent.trim() && !p.querySelector('img, picture')) p.remove();
+  });
+
+  // decorateMain() also nests the intro inside an extra wrapper <p>, leaving a
+  // <p><p>…<a>GO</a></p></p>. The nested block <p> adds its own margins and
+  // breaks the GO link's inline flow. Unwrap it so the intro is a single flat
+  // paragraph with the GO link inline, matching the source #home-hero markup.
+  cell.querySelectorAll(':scope > p > p').forEach((innerP) => {
+    const outerP = innerP.parentElement;
+    outerP.replaceWith(innerP);
+  });
+
+  // Savings copy (optional) = the second cell (2-column) or second row's cell
+  // (single-column), resolved above. On desktop it overlays the right side of
+  // the photo; on mobile it stacks below the panel in the teal band. Tag it so
+  // the CSS can position it independently of the left panel.
+  if (savingsCell) savingsCell.classList.add('hero-home-savings');
+}
+
+/**
  * Section-metadata styles single-light / single-dark force the single full-bleed
  * panel layout regardless of how the hero cells are authored.
  * @param {Element} block
@@ -135,6 +234,12 @@ function consolidateSinglePanelImage(block) {
 
 export default function decorate(block) {
   const rows = [...block.children];
+
+  // Onfi homepage hero — translucent overlay panel over a section bg photo
+  if (block.classList.contains('home')) {
+    decorateHomePanel(block);
+    return;
+  }
 
   // Section style single-light / single-dark always renders as a single panel
   if (hasSingleSectionStyle(block)) {
