@@ -243,6 +243,18 @@
     ]
   },
   {
+    "id": "page-nav",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Anchor links (optional)",
+        "valueType": "string",
+        "description": "Leave empty to auto-list every H2 on the page (or type a level like \"h3\"). For a curated list, add a bulleted list of links, each pointing to a section heading, e.g. a link labelled \"Resources\" to #helpful-resources."
+      }
+    ]
+  },
+  {
     "id": "quote",
     "fields": [
       {

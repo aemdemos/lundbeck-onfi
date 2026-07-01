@@ -1,0 +1,33 @@
+{
+  "definitions": [
+    {
+      "title": "Page Nav",
+      "id": "page-nav",
+      "model": "page-nav",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "content", "selector": "div>div" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "page-nav",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Anchor links (optional)",
+          "valueType": "string",
+          "description": "Leave empty to auto-list every H2 on the page (or type a level like \"h3\"). For a curated list, add a bulleted list of links, each pointing to a section heading, e.g. a link labelled \"Resources\" to #helpful-resources."
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

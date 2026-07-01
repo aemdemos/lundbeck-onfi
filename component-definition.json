@@ -276,6 +276,23 @@
           }
         },
         {
+          "title": "Page Nav",
+          "id": "page-nav",
+          "model": "page-nav",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "content",
+                  "selector": "div>div"
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Quote",
           "id": "quote",
           "model": "quote",

@@ -1,0 +1,73 @@
+/* Page nav: in-flow list on mobile, fixed sidebar on desktop. */
+main .page-nav nav ul.page-nav-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+main .page-nav nav ul.page-nav-items > li {
+  margin: 0;
+  padding: 0 0 10px;
+}
+
+/* A single divider beneath the whole list (only the last item). */
+main .page-nav nav ul.page-nav-items > li:last-child {
+  border-bottom: 3px solid #a5dee1;
+}
+
+/* Border adapts when the last item sits over a dark section. */
+main .page-nav nav ul.page-nav-items > li:last-child:has(a.on-dark) {
+  border-bottom-color: rgb(255 255 255 / 60%);
+}
+
+main .page-nav nav ul.page-nav-items > li::before {
+  content: none;
+}
+
+main .page-nav nav a {
+  display: inline-block;
+  color: var(--brand-primary);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.43;
+  text-decoration: none;
+  opacity: 0.55;
+}
+
+/* Flipped to white where a link overlaps a dark-colored section. */
+main .page-nav nav a.on-dark {
+  color: #fff;
+}
+
+main .page-nav nav a:hover,
+main .page-nav nav a:focus {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Selected item: full opacity (others stay slightly transparent). */
+main .page-nav nav a.active {
+  opacity: 1;
+}
+
+/* Desktop: fixed sidebar beneath the logo that pushes content to the right. */
+@media (width >= 900px) {
+  main .page-nav {
+    position: fixed;
+    top: calc(var(--header-height, 0px) + 16px);
+    left: max(15px, calc((100vw - var(--max-width-site)) / 2 + var(--header-logo-left-offset, 5px)));
+    width: 185px;
+    z-index: 5;
+  }
+
+  /* Reserve room for the sidebar by shifting centered content right. */
+  body.has-page-nav main > .section {
+    padding-left: clamp(180px, calc((100vw - var(--max-width-site)) / 2 + 190px), 340px);
+  }
+
+  /* The page-nav's own section is not indented. */
+  body.has-page-nav main > .section:has(.page-nav) {
+    padding-left: 0;
+  }
+}
