@@ -70,6 +70,13 @@
   margin: var(--isi-body-paragraph-margin);
 }
 
+/* Some list items wrap their text in a <p> (authoring artefact). The source
+   renders these flush like plain list text, so the paragraph must not add its
+   20/16px block margins — that's what inflates the gaps between list rows. */
+.isi-body li p {
+  margin: 0;
+}
+
 .isi-body h3 {
   color: var(--isi-body-color);
   font-family: var(--bold-font-family);

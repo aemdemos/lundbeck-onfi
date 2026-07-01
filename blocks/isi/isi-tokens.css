@@ -35,7 +35,7 @@
   --isi-body-paragraph-margin: 20px 0 16px;
   --isi-body-heading-margin: 22px 0 0;
   --isi-body-heading-line-height: 17.6px;
-  --isi-link-color: #008c99; /* teal */
+  --isi-link-color: #729533; /* green */
 
   /* custom bullets (li::before) — source green rgb(127,167,58) */
   --isi-bullet-color: #7fa73a;
