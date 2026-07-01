@@ -19,15 +19,6 @@ header.header-wrapper {
   z-index: var(--header-z-index);
 }
 
-/* Mobile: the stacked nav rows (textbar + eyebrow + brand/logo band) are taller
-   than the desktop-calibrated --header-height, so let the header size to its own
-   content. This keeps the white logo tab INSIDE the header instead of overflowing
-   into the hero (overriding the global `header { height: var(--header-height) }`).
-   The fixed reserved height is restored at >=768px below. */
-header.header-wrapper {
-  height: auto;
-}
-
 header .nav-wrapper {
   width: 100%;
 }
@@ -431,12 +422,6 @@ header .nav-search-submit {
    logo-clearance indent shrink fluidly so the row stays on one line and clears
    the logo down to 768px, where the mobile hamburger takes over. ===== */
 @media (width >= 768px) {
-  /* restore the fixed reserved height (the logo tab is absolutely positioned at
-     this breakpoint, so the header box uses --header-height as designed) */
-  header.header-wrapper {
-    height: var(--header-height);
-  }
-
   header nav {
     display: block;
   }

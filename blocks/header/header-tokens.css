@@ -3,8 +3,10 @@
  * CSS rules stay in header.css and reference these via var(). To restyle the
  * header, change values here — not header.css. */
 :root {
-  /* layout */
-  --nav-height: 159px;
+  /* layout — --nav-height (the eagerly-reserved header box) is owned by
+     styles.css so the sticky header holds its space before this block CSS loads:
+     255px mobile, 159px at >=768px. Do not re-declare it here or the block-load
+     would shift the reserved box and reintroduce CLS. */
   --header-content-max-width: 1100px;
   --header-z-index: 100;
   --header-side-padding: 15px;

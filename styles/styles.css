@@ -112,8 +112,11 @@
   --icon-size: 24px;
   --h1-max-width: 14em;
 
-  /* nav heights — refined later by navigation skill */
-  --nav-height: 183px;
+  /* nav heights — reserved eagerly (this file loads before the header block) so
+     the sticky header holds its box and never shifts the hero when it populates.
+     Mobile stacks textbar + eyebrow + logo band (~255px); desktop collapses to a
+     shorter bar with the logo tab absolutely positioned (159px, set at >=768px). */
+  --nav-height: 255px;
   --nav-brand-row-height-mobile: 97px;
   --breadcrumbs-height: 34px; /* EDS internal default */
   --header-height: var(--nav-height);
@@ -773,6 +776,12 @@ main .section.dark a.button.secondary:focus {
 
 /* tablet (≥768px): Bootstrap-3 container 750px */
 @media (width >= 768px) {
+  /* header switches to the horizontal desktop layout here; the logo tab is
+     absolutely positioned, so the reserved bar height drops to 159px */
+  :root {
+    --nav-height: 159px;
+  }
+
   main > .section > div {
     max-width: var(--max-width-tablet);
   }
