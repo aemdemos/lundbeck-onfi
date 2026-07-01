@@ -37,8 +37,8 @@
   --isi-body-heading-line-height: 17.6px;
   --isi-link-color: #008c99; /* teal */
 
-  /* custom bullets (li::before) */
-  --isi-bullet-color: #333;
+  /* custom bullets (li::before) — source green rgb(127,167,58) */
+  --isi-bullet-color: #7fa73a;
   --isi-bullet-size: 6px;
   --isi-list-indent: 16px;
   --isi-list-item-gap: 2px;

@@ -107,7 +107,12 @@
   color: var(--isi-body-color);
 }
 
-.isi-body li::before {
+/* Green round bullet (source rgb(127,167,58)). The extra `.isi-full`/`.isi-peek`
+   class raises specificity above the global `main ul:not(...) > li::before` rule
+   in styles.css (0,1,4) so our `content:''` wins — otherwise the global teal "•"
+   glyph renders ON TOP of this dot, giving a doubled bullet. */
+.isi-full .isi-body li::before,
+.isi-peek .isi-body li::before {
   content: '';
   position: absolute;
   left: 0;
@@ -116,6 +121,12 @@
   height: var(--isi-bullet-size);
   background: var(--isi-bullet-color);
   border-radius: 50%;
+}
+
+/* Parent items that wrap a nested list carry no bullet of their own (source). */
+.isi-full .isi-body li:has(> ul)::before,
+.isi-peek .isi-body li:has(> ul)::before {
+  content: none;
 }
 
 .isi-body li > ul {
