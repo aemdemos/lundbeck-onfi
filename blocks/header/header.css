@@ -13,6 +13,7 @@
 }
 
 /* ===== Header shell (shared across all viewports) ===== */
+
 /* Mobile: header is static and scrolls away with the page (matches source, whose
    mobile header is position:static). It becomes sticky at >=768px below.
    Height is reserved eagerly (fixed height) so the empty header doesn't collapse

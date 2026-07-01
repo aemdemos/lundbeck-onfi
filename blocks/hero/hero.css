@@ -573,6 +573,7 @@ main > .section.hero-home .hero.home > div {
   width: 100%;
   height: auto;
   margin: 0;
+
   /* reserve the logo's box from its intrinsic ratio (262x140) so the late image
      load doesn't push the page down (CLS) */
   aspect-ratio: var(--hero-home-logo-aspect-ratio);

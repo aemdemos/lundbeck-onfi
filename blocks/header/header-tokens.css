@@ -41,6 +41,7 @@
   --header-textbar-font-weight: 400;
   --header-textbar-line-height: 1.07;
   --header-textbar-padding: 8px 15px;
+
   /* Textbar left offset. Until the header hits its 1400px cap, the text starts
      15px inside the 1100px band (source: "ONFI" at ~105px @1280). Once the header
      caps (viewport >1400px) the source indents the textbar 130px to clear the logo

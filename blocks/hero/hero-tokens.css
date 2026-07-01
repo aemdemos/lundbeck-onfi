@@ -84,9 +84,11 @@
      a flat dark teal (#004248) over the section gradient, so mobile reads as a
      plain solid color — no visible gradient. */
   --hero-home-mobile-bg: #004248;
+
   /* "Don't Give Up" logo intrinsic ratio (262x140); reserves the box so the
      lazy image load doesn't shift the page (CLS) */
   --hero-home-logo-aspect-ratio: 262 / 140;
+
   /* horizontal inset matches the source's 15px container gutter + 28px col-sm-4
      padding (= 43px), which constrains the logo to the source's rendered width.
      Top padding is the source's natural 28px gap between the header bottom and the
@@ -135,6 +137,7 @@
   --hero-home-cta-color: #a5dee1;
   --hero-home-cta-hover-color: #a5dee1;
   --hero-home-cta-font-size: 16px;
+
   /* the » glyph in the GO link renders larger than the "GO" text (source: 24px
      against 16px copy = 1.5em); applied to the authored [[raquo]»] span */
   --hero-home-cta-raquo-font-size: 1.5em;
@@ -162,9 +165,11 @@
 
   /* desktop (>=768px): teal gradient box over the right of the photo
      (source .banner-Text: gradient bg, 6.8px padding, 13.6px radius) */
+
   /* fixed 460px width — source uses a constant width:460px across all desktop
      widths (verified at 768/992/1280/1440: box width is always 460px) */
   --hero-home-savings-width: 460px;
+
   /* Responsive anchor: the box is positioned against the FULL-WIDTH section
      band (.section.hero-home), reproducing the source .banner-Text model which
      is right:5% / bottom:4% of the full-width .banner band. Percentage anchors
