@@ -123,12 +123,14 @@
   color: var(--isi-body-color);
 }
 
-/* Green round bullet (source rgb(127,167,58)). The extra `.isi-full`/`.isi-peek`
+/* Green round bullet (source rgb(127,167,58)) — only on NESTED items. In the
+   source, the top-level statements of the ISI list carry no bullet (they read as
+   indented statements); only their sub-points are bulleted. A nested item is any
+   <li> that has an ancestor <li> (i.e. `li li`). The extra `.isi-full`/`.isi-peek`
    class raises specificity above the global `main ul:not(...) > li::before` rule
-   in styles.css (0,1,4) so our `content:''` wins — otherwise the global teal "•"
-   glyph renders ON TOP of this dot, giving a doubled bullet. */
-.isi-full .isi-body li::before,
-.isi-peek .isi-body li::before {
+   in styles.css (0,1,4) so our rules win over the global teal "•" glyph. */
+.isi-full .isi-body li li::before,
+.isi-peek .isi-body li li::before {
   content: '';
   position: absolute;
   left: 0;
@@ -139,9 +141,10 @@
   border-radius: 50%;
 }
 
-/* Parent items that wrap a nested list carry no bullet of their own (source). */
-.isi-full .isi-body li:has(> ul)::before,
-.isi-peek .isi-body li:has(> ul)::before {
+/* Top-level list statements have no bullet (source). This also overrides the
+   global `main ul:not(...) > li::before` teal glyph for those top-level items. */
+.isi-full .isi-body > ul > li::before,
+.isi-peek .isi-body > ul > li::before {
   content: none;
 }
 
@@ -150,34 +153,32 @@
   padding-left: var(--isi-list-indent);
 }
 
-/* ── Indented safety block — authored as a <blockquote>. ──
-   In the source this is one table cell, inset 15px from the body column and
-   LEFT-aligned. It holds the warning lines AND the "ONFI is a benzodiazepine…"
-   statement; the 15px inset is what visually indents that left-aligned body text.
-   The warning lines are centred individually (see .isi-center below) rather than
-   by centring the whole block — otherwise the indent is invisible on centred text
-   and the benzodiazepine statement can't share the same indented container. */
+/* ── WARNING box + indented safety statement. ──
+   In the source these share one table cell inset 15px from the body column: the
+   warning lines are centred, the "ONFI is a benzodiazepine…" statement below them
+   is left-aligned. The AEM pipeline only keeps ONE paragraph inside a <blockquote>
+   (any following paragraph is hoisted out to a sibling), so the warning stays in
+   the centred blockquote and the benzodiazepine statement is the paragraph right
+   after it — indented 15px to line up with the warning, matching the source. The
+   indent is visible because that following paragraph is left-aligned. */
 .isi-body blockquote {
   margin: var(--isi-body-paragraph-margin);
   padding: var(--isi-warning-padding);
-  text-align: start;
+  text-align: center;
 }
 
 .isi-body blockquote p {
   margin: 8px 0;
+  text-align: center;
+}
+
+.isi-body blockquote + p {
+  padding-left: 15px;
 }
 
 .isi-body blockquote em {
   font-style: italic;
   font-weight: 400;
-}
-
-/* Opt-in centring for the warning lines. Authored via the span bracket syntax in
-   the document: [[isi-center]WARNING…]. display:block lets a wrapped inline span
-   center its (possibly multi-line) text within the left-aligned quote. */
-.isi-body .isi-center {
-  display: block;
-  text-align: center;
 }
 
 /* The peek copy shows the bordered warning box (source border=1 on the sticky
