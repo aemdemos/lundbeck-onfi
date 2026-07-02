@@ -243,27 +243,6 @@
     ]
   },
   {
-    "id": "page-nav-item",
-    "fields": [
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "label",
-        "label": "Label",
-        "required": true,
-        "description": "The text shown in the sidebar (e.g. \"Resources\")."
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "target",
-        "label": "Target",
-        "required": true,
-        "description": "An in-page anchor like #helpful-resources (scrolls to the element with that id — headings get an id from their text, lowercased with hyphens), or a URL/path such as /onfi-savings-resources-and-support (opens that page)."
-      }
-    ]
-  },
-  {
     "id": "quote",
     "fields": [
       {

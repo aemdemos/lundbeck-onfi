@@ -276,40 +276,6 @@
           }
         },
         {
-          "title": "Page Nav",
-          "id": "page-nav",
-          "model": "page-nav",
-          "filter": "page-nav",
-          "plugins": {
-            "da": {
-              "name": "page-nav",
-              "rows": 0,
-              "columns": 0
-            }
-          }
-        },
-        {
-          "title": "Page Nav Item",
-          "id": "page-nav-item",
-          "model": "page-nav-item",
-          "plugins": {
-            "da": {
-              "rows": 1,
-              "columns": 2,
-              "fields": [
-                {
-                  "name": "label",
-                  "selector": "div:nth-child(1)"
-                },
-                {
-                  "name": "target",
-                  "selector": "div:nth-child(2)"
-                }
-              ]
-            }
-          }
-        },
-        {
           "title": "Quote",
           "id": "quote",
           "model": "quote",

@@ -17,7 +17,6 @@
       "form",
       "hero",
       "image",
-      "page-nav",
       "quote",
       "search",
       "section-title",
@@ -66,12 +65,6 @@
     "components": [
       "text",
       "image"
-    ]
-  },
-  {
-    "id": "page-nav",
-    "components": [
-      "page-nav-item"
     ]
   },
   {
