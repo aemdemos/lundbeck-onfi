@@ -42,7 +42,8 @@
   --isi-bullet-color: #7fa73a;
   --isi-bullet-size: 6px;
   --isi-list-indent: 16px;
-  --isi-list-item-gap: 2px;
+  --isi-list-item-gap: 2px; /* tight vertical padding on every item (source: 2px) */
+  --isi-list-top-gap: 20px; /* extra separation between top-level statements (source) */
 
   /* warning box (bordered in the peek copy, borderless in the full copy) */
   --isi-warning-border: 1px solid #000;

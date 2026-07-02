@@ -116,11 +116,17 @@
 
 .isi-body li {
   position: relative;
-  padding-left: var(--isi-list-indent);
-  margin: var(--isi-list-item-gap) 0;
+  padding: var(--isi-list-item-gap) 0 var(--isi-list-item-gap) var(--isi-list-indent);
+  margin: 0;
   font-size: var(--isi-body-font-size);
   line-height: var(--isi-body-line-height);
   color: var(--isi-body-color);
+}
+
+/* Top-level statements are separated by 20px (source); nested sub-points stay
+   tight (only their 2px padding). */
+.isi-body > ul > li {
+  margin-bottom: var(--isi-list-top-gap);
 }
 
 /* Green round bullet (source rgb(127,167,58)) — only on NESTED items. In the
