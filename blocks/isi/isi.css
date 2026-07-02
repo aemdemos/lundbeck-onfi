@@ -150,17 +150,21 @@
   padding-left: var(--isi-list-indent);
 }
 
-/* ── WARNING box — authored as a <blockquote>; rendered as the bordered,
-   centered box seen in the source's peek copy. ── */
+/* ── Indented safety block — authored as a <blockquote>. ──
+   In the source this is one table cell, inset 15px from the body column and
+   LEFT-aligned. It holds the warning lines AND the "ONFI is a benzodiazepine…"
+   statement; the 15px inset is what visually indents that left-aligned body text.
+   The warning lines are centred individually (see .isi-center below) rather than
+   by centring the whole block — otherwise the indent is invisible on centred text
+   and the benzodiazepine statement can't share the same indented container. */
 .isi-body blockquote {
   margin: var(--isi-body-paragraph-margin);
   padding: var(--isi-warning-padding);
-  text-align: center;
+  text-align: start;
 }
 
 .isi-body blockquote p {
   margin: 8px 0;
-  text-align: center;
 }
 
 .isi-body blockquote em {
@@ -168,13 +172,12 @@
   font-weight: 400;
 }
 
-/* In the source, the WARNING box and the "ONFI is a benzodiazepine…" statement
-   share one table cell that is inset 15px from the body column. Our blockquote
-   already carries that 15px via its own padding; the statement authored as the
-   paragraph right after it does not, so it alone reads flush. Indent that single
-   following paragraph to line up with the warning box, matching the source. */
-.isi-body blockquote + p {
-  padding-left: 15px;
+/* Opt-in centring for the warning lines. Authored via the span bracket syntax in
+   the document: [[isi-center]WARNING…]. display:block lets a wrapped inline span
+   center its (possibly multi-line) text within the left-aligned quote. */
+.isi-body .isi-center {
+  display: block;
+  text-align: center;
 }
 
 /* The peek copy shows the bordered warning box (source border=1 on the sticky
