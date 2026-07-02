@@ -91,6 +91,15 @@
   text-decoration: none;
 }
 
+/* Links default to green (--isi-link-color). To render an individual link teal
+   instead, authors wrap it with the span bracket syntax in the document:
+   [[isi-link-teal]link text]. The <strong> case covers links whose label is
+   bold. Keep this in sync with --isi-link-color-alt. */
+.isi-body .isi-link-teal a,
+.isi-body .isi-link-teal a strong {
+  color: var(--isi-link-color-alt);
+}
+
 .isi-body strong,
 .isi-body b {
   font-family: var(--bold-font-family);
@@ -159,6 +168,15 @@
   font-weight: 400;
 }
 
+/* In the source, the WARNING box and the "ONFI is a benzodiazepine…" statement
+   share one table cell that is inset 15px from the body column. Our blockquote
+   already carries that 15px via its own padding; the statement authored as the
+   paragraph right after it does not, so it alone reads flush. Indent that single
+   following paragraph to line up with the warning box, matching the source. */
+.isi-body blockquote + p {
+  padding-left: 15px;
+}
+
 /* The peek copy shows the bordered warning box (source border=1 on the sticky
    version); the full in-flow copy is borderless. */
 .isi-peek .isi-body blockquote {
@@ -196,14 +214,17 @@
 }
 
 /* ── Fixed peek banner ───────────────────────────────────────────
-   Pinned to the viewport bottom, inset to the body box (matches source:
-   left/right = (100vw − bodyMax)/2, capped so it never exceeds the 1400px body).
-   No box-shadow (source has none). The visible strip (teal header + top of the
-   warning box) peeks above the fold; the rest is clipped by overflow. */
+   Pinned to the viewport bottom, inset to the body box (capped so it never
+   exceeds the 1400px body). Uses 100% (not 100vw) so the inset is measured in the
+   same scrollbar-excluded space the in-flow full ISI lays out in — otherwise, on
+   a browser with a classic scrollbar, 100vw includes the scrollbar width and the
+   fixed band ends up ~15px wider/offset from the full ISI band during the scroll
+   hand-off. No box-shadow (source has none). The visible strip (teal header + top
+   of the warning box) peeks above the fold; the rest is clipped by overflow. */
 .isi-peek {
   position: fixed;
-  left: max(0px, calc((100vw - var(--max-width-outer)) / 2));
-  right: max(0px, calc((100vw - var(--max-width-outer)) / 2));
+  left: max(0px, calc((100% - var(--max-width-outer)) / 2));
+  right: max(0px, calc((100% - var(--max-width-outer)) / 2));
   bottom: 0;
   z-index: var(--isi-peek-z-index);
   max-height: 60vh;
