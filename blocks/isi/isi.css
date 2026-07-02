@@ -194,6 +194,7 @@
 }
 
 /* ── Full in-flow ISI ────────────────────────────────────────── */
+
 /* The ISI may be authored inside a max-width content wrapper, but its teal band
    must span the full BODY width (capped at --max-width-outer / 1400px, centered)
    like the source — NOT the whole browser window. This breaks the ISI out of any
