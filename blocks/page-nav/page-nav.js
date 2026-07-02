@@ -30,49 +30,20 @@ function effectiveBg(el) {
   return { r: 255, g: 255, b: 255 };
 }
 
-// Resolve a link to a same-page fragment id, or '' if it isn't one. Handles
-// bare '#id', 'path#id', and absolute URLs — so it survives the editor
-// rewriting '#id' to 'path#id'. Only same-page links count, so a cross-page
-// link sharing a fragment name is never treated as an in-page anchor. The path
-// is matched by its last segment, tolerating mount prefixes (e.g. the preview
-// server serves under /content/) between authoring and delivery.
-function lastSegment(pathname) {
-  const parts = pathname.split('/').filter(Boolean);
-  return parts.at(-1) ?? '';
+// Slug of a heading's text, matching the id the delivery pipeline assigns.
+function slugify(text) {
+  return text.trim().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
 }
 
-function samePageFragment(href) {
-  let url;
-  try {
-    url = new URL(href, window.location.href);
-  } catch {
-    return '';
-  }
-  if (!url.hash) return '';
-  const bare = href.trim().startsWith('#');
-  if (!bare && lastSegment(url.pathname) !== lastSegment(window.location.pathname)) return '';
-  return url.hash.slice(1);
-}
-
-// Unwrap a link, keeping its inner content in place of the <a>.
-function unwrap(a) {
-  a.replaceWith(...a.childNodes);
-}
-
-// Anchor definition: an author marks an element as an anchor target by adding a
-// self-link to /<page-path>#<id> on it (the path#fragment form survives the DA
-// editor). We stamp that id onto the host element and unwrap the link so it
-// renders as normal content. Only same-page self-links are treated this way;
-// links inside the page-nav block are the navigation list and are skipped.
-function defineAnchors(main) {
-  main.querySelectorAll('a[href]').forEach((a) => {
-    if (a.closest('.page-nav')) return;
-    const id = samePageFragment(a.getAttribute('href'));
-    if (!id) return;
-    const host = a.closest('h1,h2,h3,h4,h5,h6') || a.parentElement;
-    if (!host) return;
-    if (!host.id) host.id = id;
-    unwrap(a);
+// Ensure every heading carries its slug id. The published pipeline assigns
+// these automatically, but the local preview does not — assigning here makes
+// "#slug" targets resolve identically in both. Existing ids are preserved.
+function ensureHeadingIds(main) {
+  main.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach((h) => {
+    if (h.closest('.page-nav')) return;
+    if (!h.id && h.textContent.trim()) h.id = slugify(h.textContent);
   });
 }
 
@@ -80,24 +51,41 @@ export default function decorate(block) {
   const main = document.querySelector('main');
   if (!main) return;
 
-  // Promote author-placed self-links into real anchor ids on their elements.
-  defineAnchors(main);
-
   const offset = headerOffset();
+  ensureHeadingIds(main);
 
-  // The sidebar is driven strictly by the links authored in this block.
-  // A link whose fragment matches a heading on this page scrolls and joins the
-  // scrollspy; anything else is ordinary navigation — it just opens.
-  const entries = [...block.querySelectorAll('a[href]')]
-    .map((a) => {
-      const href = a.getAttribute('href');
-      const label = a.textContent.trim();
-      const id = samePageFragment(href);
-      const target = id ? document.getElementById(id) : null;
-      if (target) return { type: 'anchor', label, href: `#${id}`, target };
-      return { type: 'link', label, href };
+  // Resolve a target id to its element. Authors point at a heading's id (e.g.
+  // "#helpful-resources"); restrict to same-page ids inside main.
+  const findTarget = (id) => {
+    if (!id) return null;
+    const el = document.getElementById(id);
+    return el && main.contains(el) && !el.closest('.page-nav') ? el : null;
+  };
+
+  // Each block row is two cells: [Label, Target]. The target is written as
+  // plain text and is one of:
+  //   #some-id   → scroll to the element with that id (a heading's id)
+  //   /path      → navigate to another page
+  //   https://…  → navigate to an external URL
+  // Plain "#id" text survives publishing (only <a href="#…"> would be stripped),
+  // so the anchor id travels intact. A link in the target cell also supplies a
+  // navigation URL.
+  const entries = [...block.children]
+    .map((row) => {
+      const cells = [...row.children];
+      const label = (cells[0]?.textContent || '').trim();
+      const targetCell = cells[1];
+      if (!label || !targetCell) return null;
+      const link = targetCell.querySelector('a[href]');
+      const href = link ? link.getAttribute('href') : '';
+      const targetText = targetCell.textContent.trim();
+      // A "#id" target scrolls to that element; anything else navigates.
+      if (!href && targetText.startsWith('#')) {
+        return { type: 'anchor', label, id: targetText.slice(1) };
+      }
+      return { type: 'link', label, href: href || targetText };
     })
-    .filter((e) => e.label && (e.type === 'anchor' ? e.target : e.href));
+    .filter((e) => e && (e.type === 'link' ? e.href : e.id));
 
   block.textContent = '';
 
@@ -118,19 +106,32 @@ export default function decorate(block) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.textContent = entry.label;
-    a.href = entry.href;
 
     if (entry.type === 'anchor') {
-      // Align in-page jumps below the sticky header.
-      entry.target.style.scrollMarginTop = `${offset + 20}px`;
+      a.href = `#${entry.id}`;
+      // Resolve the heading lazily: it may render after this block (or, in the
+      // preview, gain its id later). Cached once found.
+      entry.resolve = () => {
+        if (!entry.target || !entry.target.isConnected) {
+          entry.target = findTarget(entry.id);
+          if (entry.target) {
+            entry.target.style.scrollMarginTop = `${offset + 20}px`;
+          }
+        }
+        return entry.target;
+      };
       a.addEventListener('click', (e) => {
+        const target = entry.resolve();
+        if (!target) return; // let the browser handle the hash if unresolved
         e.preventDefault();
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        entry.target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-        window.history.replaceState(null, '', entry.href);
+        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        window.history.replaceState(null, '', `#${target.id || entry.id}`);
       });
       entry.a = a;
       anchorEntries.push(entry);
+    } else {
+      a.href = entry.href;
     }
 
     li.append(a);
@@ -140,12 +141,6 @@ export default function decorate(block) {
 
   nav.append(list);
   block.append(nav);
-
-  // Document-ordered anchor list so the scrollspy tracks position regardless
-  // of how the author sequenced the links (ordinary links are excluded).
-  const domOrder = [...main.querySelectorAll('*')];
-  const byDocument = [...anchorEntries]
-    .sort((a, b) => domOrder.indexOf(a.target) - domOrder.indexOf(b.target));
 
   // Push main content to the right of the fixed sidebar (desktop only).
   document.body.classList.add('has-page-nav');
@@ -179,18 +174,28 @@ export default function decorate(block) {
   };
 
   const spy = () => {
-    if (byDocument.length) {
+    // Sections may render after this block; keep late headings id'd so their
+    // targets resolve.
+    ensureHeadingIds(main);
+    // Resolve targets (they may render late) and order by document position so
+    // the scrollspy tracks correctly regardless of the authored row order.
+    const domOrder = [...main.querySelectorAll('h1,h2,h3,h4,h5,h6')];
+    const resolved = anchorEntries
+      .map((entry) => ({ entry, target: entry.resolve() }))
+      .filter((r) => r.target)
+      .sort((a, b) => domOrder.indexOf(a.target) - domOrder.indexOf(b.target));
+    if (resolved.length) {
       const line = offset + 40;
       // Only honor "at bottom" once actually scrolled — on a fresh load the page
       // height isn't settled and would falsely read as bottom (selecting the last item).
       const atBottom = window.scrollY > 0 && window.innerHeight + window.scrollY
         >= document.documentElement.scrollHeight - 2;
       if (atBottom) {
-        setActive(byDocument.at(-1));
+        setActive(resolved.at(-1).entry);
       } else {
-        let current = byDocument[0];
-        byDocument.forEach((entry) => {
-          if (entry.target.getBoundingClientRect().top <= line) current = entry;
+        let current = resolved[0].entry;
+        resolved.forEach(({ entry, target }) => {
+          if (target.getBoundingClientRect().top <= line) current = entry;
         });
         setActive(current);
       }

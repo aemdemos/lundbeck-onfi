@@ -243,14 +243,23 @@
     ]
   },
   {
-    "id": "page-nav",
+    "id": "page-nav-item",
     "fields": [
       {
-        "component": "richtext",
-        "name": "content",
-        "label": "Anchor links (optional)",
+        "component": "text",
         "valueType": "string",
-        "description": "Leave empty to auto-list every H2 on the page (or type a level like \"h3\"). For a curated list, add a bulleted list of links, each pointing to a section heading, e.g. a link labelled \"Resources\" to #helpful-resources."
+        "name": "label",
+        "label": "Label",
+        "required": true,
+        "description": "The text shown in the sidebar (e.g. \"Resources\")."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "target",
+        "label": "Target",
+        "required": true,
+        "description": "An in-page anchor like #helpful-resources (scrolls to the element with that id — headings get an id from their text, lowercased with hyphens), or a URL/path such as /onfi-savings-resources-and-support (opens that page)."
       }
     ]
   },

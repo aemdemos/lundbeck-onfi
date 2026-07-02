@@ -69,6 +69,12 @@
     ]
   },
   {
+    "id": "page-nav",
+    "components": [
+      "page-nav-item"
+    ]
+  },
+  {
     "id": "table",
     "rte": {
       "toolbar": {

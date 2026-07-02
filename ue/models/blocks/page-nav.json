@@ -4,12 +4,26 @@
       "title": "Page Nav",
       "id": "page-nav",
       "model": "page-nav",
+      "filter": "page-nav",
+      "plugins": {
+        "da": {
+          "name": "page-nav",
+          "rows": 0,
+          "columns": 0
+        }
+      }
+    },
+    {
+      "title": "Page Nav Item",
+      "id": "page-nav-item",
+      "model": "page-nav-item",
       "plugins": {
         "da": {
           "rows": 1,
-          "columns": 1,
+          "columns": 2,
           "fields": [
-            { "name": "content", "selector": "div>div" }
+            { "name": "label", "selector": "div:nth-child(1)" },
+            { "name": "target", "selector": "div:nth-child(2)" }
           ]
         }
       }
@@ -17,17 +31,33 @@
   ],
   "models": [
     {
-      "id": "page-nav",
+      "id": "page-nav-item",
       "fields": [
         {
-          "component": "richtext",
-          "name": "content",
-          "label": "Anchor links (optional)",
+          "component": "text",
           "valueType": "string",
-          "description": "Leave empty to auto-list every H2 on the page (or type a level like \"h3\"). For a curated list, add a bulleted list of links, each pointing to a section heading, e.g. a link labelled \"Resources\" to #helpful-resources."
+          "name": "label",
+          "label": "Label",
+          "required": true,
+          "description": "The text shown in the sidebar (e.g. \"Resources\")."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "target",
+          "label": "Target",
+          "required": true,
+          "description": "An in-page anchor like #helpful-resources (scrolls to the element with that id — headings get an id from their text, lowercased with hyphens), or a URL/path such as /onfi-savings-resources-and-support (opens that page)."
         }
       ]
     }
   ],
-  "filters": []
+  "filters": [
+    {
+      "id": "page-nav",
+      "components": [
+        "page-nav-item"
+      ]
+    }
+  ]
 }
