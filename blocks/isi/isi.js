@@ -43,7 +43,14 @@ function buildParts(cell, mode, href) {
   toggle.href = href;
   const glyph = mode === 'less' ? '–' : '+'; // – / +
   const label = mode === 'less' ? 'LESS' : 'MORE';
-  toggle.innerHTML = `<i class="isi-toggle-icon" aria-hidden="true">${glyph}</i><span class="isi-toggle-label">${label}</span>`;
+  const glyphIcon = document.createElement('i');
+  glyphIcon.className = 'isi-toggle-icon';
+  glyphIcon.setAttribute('aria-hidden', 'true');
+  glyphIcon.textContent = glyph;
+  const labelSpan = document.createElement('span');
+  labelSpan.className = 'isi-toggle-label';
+  labelSpan.textContent = label;
+  toggle.append(glyphIcon, labelSpan);
   toggle.setAttribute('aria-label', mode === 'less'
     ? 'Collapse Important Safety Information'
     : 'Expand Important Safety Information');
@@ -117,6 +124,7 @@ export default function decorate(block) {
      scrolls up to sit exactly where the peek is docked, we hide the peek and the
      real content occupies the same pixels. Scrolling back up re-shows it.
      Default is visible, so it appears on load without needing a scroll. */
+  let ticking = false;
   const updatePeek = () => {
     ticking = false;
     const inflowTop = full.getBoundingClientRect().top;
@@ -125,7 +133,6 @@ export default function decorate(block) {
     // Hand off once the in-flow ISI has risen to (or above) the docked strip.
     peek.style.visibility = inflowTop <= peekTop ? 'hidden' : 'visible';
   };
-  let ticking = false;
   const onScroll = () => {
     if (!ticking) {
       ticking = true;
