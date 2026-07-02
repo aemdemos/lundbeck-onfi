@@ -30,28 +30,48 @@ function effectiveBg(el) {
   return { r: 255, g: 255, b: 255 };
 }
 
-// Unwrap a link into its inline content (keeps text/markup, drops the <a>).
+// Resolve a link to a same-page fragment id, or '' if it isn't one. Handles
+// bare '#id', 'path#id', and absolute URLs — so it survives the editor
+// rewriting '#id' to 'path#id'. Only same-page links count, so a cross-page
+// link sharing a fragment name is never treated as an in-page anchor. The path
+// is matched by its last segment, tolerating mount prefixes (e.g. the preview
+// server serves under /content/) between authoring and delivery.
+function lastSegment(pathname) {
+  const parts = pathname.split('/').filter(Boolean);
+  return parts.at(-1) ?? '';
+}
+
+function samePageFragment(href) {
+  let url;
+  try {
+    url = new URL(href, window.location.href);
+  } catch {
+    return '';
+  }
+  if (!url.hash) return '';
+  const bare = href.trim().startsWith('#');
+  if (!bare && lastSegment(url.pathname) !== lastSegment(window.location.pathname)) return '';
+  return url.hash.slice(1);
+}
+
+// Unwrap a link, keeping its inner content in place of the <a>.
 function unwrap(a) {
   a.replaceWith(...a.childNodes);
 }
 
-/**
- * Anchor-definition pass. Authors mark a spot on the page by selecting an
- * element (e.g. an H2) and linking it to a fragment such as "#helpful-resources".
- * Here we turn that self-link into a real anchor: set the id on its host element
- * and remove the now-redundant link. Links inside the page-nav block are the
- * navigation list and are left untouched.
- */
+// Anchor definition: an author marks an element as an anchor target by adding a
+// self-link to /<page-path>#<id> on it (the path#fragment form survives the DA
+// editor). We stamp that id onto the host element and unwrap the link so it
+// renders as normal content. Only same-page self-links are treated this way;
+// links inside the page-nav block are the navigation list and are skipped.
 function defineAnchors(main) {
-  main.querySelectorAll('a[href^="#"]').forEach((a) => {
+  main.querySelectorAll('a[href]').forEach((a) => {
     if (a.closest('.page-nav')) return;
-    const id = a.getAttribute('href').slice(1);
+    const id = samePageFragment(a.getAttribute('href'));
     if (!id) return;
-    // If the target already exists elsewhere, this link is plain navigation.
-    if (document.getElementById(id)) return;
     const host = a.closest('h1,h2,h3,h4,h5,h6') || a.parentElement;
     if (!host) return;
-    host.id = id;
+    if (!host.id) host.id = id;
     unwrap(a);
   });
 }
@@ -60,23 +80,21 @@ export default function decorate(block) {
   const main = document.querySelector('main');
   if (!main) return;
 
-  // First, promote authored in-content fragment links to real anchors.
+  // Promote author-placed self-links into real anchor ids on their elements.
   defineAnchors(main);
 
   const offset = headerOffset();
 
   // The sidebar is driven strictly by the links authored in this block.
-  // An in-page anchor (#id) that resolves to a target scrolls and joins the
-  // scrollspy; any other link (a URL, or an unresolved #fragment) is treated
-  // as ordinary navigation — it just opens, with no scroll behavior.
+  // A link whose fragment matches a heading on this page scrolls and joins the
+  // scrollspy; anything else is ordinary navigation — it just opens.
   const entries = [...block.querySelectorAll('a[href]')]
     .map((a) => {
       const href = a.getAttribute('href');
       const label = a.textContent.trim();
-      if (href.startsWith('#')) {
-        const target = document.getElementById(href.slice(1));
-        if (target) return { type: 'anchor', label, href, target };
-      }
+      const id = samePageFragment(href);
+      const target = id ? document.getElementById(id) : null;
+      if (target) return { type: 'anchor', label, href: `#${id}`, target };
       return { type: 'link', label, href };
     })
     .filter((e) => e.label && (e.type === 'anchor' ? e.target : e.href));
