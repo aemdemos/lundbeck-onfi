@@ -77,8 +77,8 @@ main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
 
   /* The desktop line arrangement is authored with per-line <br>s (matching the
      source). On mobile the wider strip should read as natural prose, so the breaks
-     collapse to their surrounding spaces. Each authored <br> carries a real space on
-     at least one side, so hiding it leaves words correctly separated. */
+     are hidden and the text reflows. Each authored <br> carries a real space on at
+     least one side (see content), so hiding it leaves words correctly separated. */
   main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div > p br {
     display: none;
   }

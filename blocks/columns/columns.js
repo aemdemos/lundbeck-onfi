@@ -26,4 +26,13 @@ export default function decorate(block) {
       }
     });
   });
+
+  // Cards use per-line <br>s for the desktop layout; on mobile those breaks are
+  // hidden so the copy reflows as prose. Guarantee a space after every <br> so words
+  // never run together when the break is hidden, regardless of authored whitespace.
+  block.querySelectorAll('br').forEach((br) => {
+    const next = br.nextSibling;
+    const hasLeadingSpace = next && next.nodeType === Node.TEXT_NODE && /^\s/.test(next.textContent);
+    if (!hasLeadingSpace) br.after(document.createTextNode(' '));
+  });
 }
