@@ -773,6 +773,27 @@ main .section.accent img {
   height: 54px;
 }
 
+/* Any section given a background color (via section-metadata) gets vertical
+   breathing room so its content isn't flush against the adjacent white sections.
+   Applies to all colored sections, including .dark, for consistent spacing. */
+main .section[data-background-color] {
+  padding-block: 22px;
+}
+
+/* the first content element (e.g. a heading) carries its own top margin, which
+   would stack on top of the section padding and make the top gap larger than the
+   bottom. Collapse it so the section padding alone controls the top spacing. */
+main .section[data-background-color] > div:first-child > :first-child {
+  margin-top: 0;
+}
+
+/* a plain (uncolored) section that sits directly above a colored one gets extra
+   bottom breathing room, so the white content isn't cramped against the colored
+   band that follows (matches the source's generous gap before colored sections). */
+main .section:not([data-background-color]):has(+ .section[data-background-color]) {
+  padding-bottom: var(--section-padding-vertical);
+}
+
 /* section metadata - light */
 main .section.light,
 main .section.highlight {
@@ -786,7 +807,7 @@ main .section.dark {
   background-color: var(--brand-teal);
   color: var(--background-color);
   margin: 0;
-  padding: var(--section-padding-vertical) 0;
+  padding: 22px 0;
 }
 
 main .section.dark h1,
