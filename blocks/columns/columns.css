@@ -17,6 +17,34 @@
   display: block; /* @boilerplate */
 }
 
+/* Facts About LGS stat grid — the fact cells carry bg-* classes that appear only
+   in this grid, so :has() scopes the layout without touching other columns blocks
+   (e.g. the about-onfi "columns center" dosing block has no bg-* cells).
+   Source: 3 equal-height rounded cards per row, ~10px gutter, copy vertically
+   centered. Colors / type are set elsewhere and intentionally untouched here. */
+main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--columns-fact-gap);
+}
+
+main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
+main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal-dark,
+main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green-light {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--columns-fact-min-height);
+  padding: 0 var(--columns-fact-padding-inline);
+  border-radius: var(--columns-fact-radius);
+}
+
+/* single centered paragraph per cell — drop the default bottom margin so the
+   copy sits optically centered within the fixed-height card */
+main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
+  margin: 0;
+}
+
 /* stats-callout variant — vyepti study/survey results callouts.
    Teal headings, large red italic "X fewer" numbers, centered copy. */
 main .columns.stats-callout > div > div {
@@ -95,6 +123,12 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
   .columns > div > div { /* @boilerplate */
     flex: 1; /* @boilerplate */
     order: unset; /* @boilerplate */
+  }
+
+  /* fact grid rows: tighter source gutter + equal-height cards side by side */
+  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div {
+    align-items: stretch;
+    gap: var(--columns-fact-gap);
   }
 
   .columns.divider.columns-2-cols > div {

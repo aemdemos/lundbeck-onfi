@@ -27,6 +27,22 @@
   --brand-green-dark: #556f26;
   --brand-yellow: #ffd212;
 
+  /* Facts About LGS colors (LGS page stat grid) */
+  --fact-teal-dark: #1e6a71;
+  --fact-green: #7fa73a;
+  --fact-cyan: #01c6d8;
+  --fact-green-bright: #abda5a;
+  --fact-teal-deep: #04656e;
+
+  /* Facts About LGS type scale (LGS page stat grid — source-exact, non-standard
+     to this grid so kept as feature tokens rather than added to the global scale) */
+  --fact-font-size: 22px;
+  --fact-font-weight: 200;
+  --fact-line-height: 28px;
+  --fact-emphasis-font-size: 30px;
+  --fact-emphasis-font-weight: 800;
+  --fact-emphasis-line-height: 32px;
+
   /* brand semantic aliases */
   --brand-primary: var(--brand-teal);
   --brand-primary-light: var(--brand-teal-light);
@@ -200,6 +216,55 @@ html {
   color: var(--brand-secondary);
 
   --link-color: var(--brand-secondary);
+}
+
+/* Facts About LGS colors — LGS stat-grid cell backgrounds + emphasis text.
+   Cell background classes apply via [classname] cell code; the white cell text
+   is inherited by the paragraphs, then emphasis words override via [[classname]]. */
+div.bg-teal {
+  background-color: var(--brand-teal);
+  color: var(--background-color);
+}
+
+div.bg-teal-dark {
+  background-color: var(--fact-teal-dark);
+  color: var(--background-color);
+}
+
+div.bg-green-light {
+  background-color: var(--fact-green);
+  color: var(--background-color);
+}
+
+.color-cyan {
+  color: var(--fact-cyan);
+}
+
+.color-green-bright {
+  color: var(--fact-green-bright);
+}
+
+.color-teal-deep {
+  color: var(--fact-teal-deep);
+}
+
+/* Facts About LGS type scale — source renders each fact cell at 22px/200 with the
+   emphasis words bumped to 30px/800. Scoped to the stat-grid cells (their bg-*
+   classes only appear in this grid); color-only classes above are untouched. */
+main .columns div.bg-teal p,
+main .columns div.bg-teal-dark p,
+main .columns div.bg-green-light p {
+  font-size: var(--fact-font-size);
+  font-weight: var(--fact-font-weight);
+  line-height: var(--fact-line-height);
+}
+
+main .columns div.bg-teal p strong,
+main .columns div.bg-teal-dark p strong,
+main .columns div.bg-green-light p strong {
+  font-size: var(--fact-emphasis-font-size);
+  font-weight: var(--fact-emphasis-font-weight);
+  line-height: var(--fact-emphasis-line-height);
 }
 
 header {

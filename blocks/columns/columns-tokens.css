@@ -4,4 +4,13 @@
   --columns-divider-width: 1px;
   --columns-divider-spacing: var(--spacing-l, 32px);
   --columns-divider-color: #7ebcc6;
+
+  /* Facts About LGS stat-grid — source uses fixed 160px rounded cards with a
+     ~10px gutter and vertically-centered copy. No equivalent global spacing /
+     radius token exists (global --border-radius is 0), so these are grid-local.
+     TODO: promote to a shared spacing/radius scale if reused by other grids. */
+  --columns-fact-gap: 10px;
+  --columns-fact-min-height: 160px;
+  --columns-fact-padding-inline: 10px;
+  --columns-fact-radius: 10px;
 }
