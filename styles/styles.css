@@ -35,11 +35,13 @@
   --fact-teal-deep: #04656e;
 
   /* Facts About LGS type scale (LGS page stat grid — source-exact, non-standard
-     to this grid so kept as feature tokens rather than added to the global scale) */
-  --fact-font-size: 22px;
+     to this grid so kept as feature tokens rather than added to the global scale).
+     Mobile-first: source shrinks the fact text on small screens (cell 18.33/20,
+     emphasis 25/32) so 1-col cards stay compact; desktop values restored ≥768px. */
+  --fact-font-size: 18.33px;
   --fact-font-weight: 200;
-  --fact-line-height: 28px;
-  --fact-emphasis-font-size: 30px;
+  --fact-line-height: 20px;
+  --fact-emphasis-font-size: 25px;
   --fact-emphasis-font-weight: 800;
   --fact-emphasis-line-height: 32px;
 
@@ -856,9 +858,15 @@ main .section.dark a.button.secondary:focus {
 /* tablet (≥768px): Bootstrap-3 container 750px */
 @media (width >= 768px) {
   /* header switches to the horizontal desktop layout here; the logo tab is
-     absolutely positioned, so the reserved bar height drops to 159px */
+     absolutely positioned, so the reserved bar height drops to 159px.
+     Facts grid type scales back up to the source's larger tablet/desktop sizes
+     (cell 22/28, emphasis 30/32) now that cards sit in 2–3 fixed-height columns. */
   :root {
     --nav-height: 159px;
+    --fact-font-size: 22px;
+    --fact-line-height: 28px;
+    --fact-emphasis-font-size: 30px;
+    --fact-emphasis-line-height: 32px;
   }
 
   main > .section > div {

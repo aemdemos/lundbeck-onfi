@@ -15,8 +15,8 @@
   --columns-fact-padding-inline: 10px;
   --columns-fact-radius: 10px;
 
-  /* Source constrains the grid so each of the 3 cards lands at ~268px:
-     3 × 268 + 2 × 8px column gaps = 820px. Capping the grid keeps the cards
+  /* Source constrains the grid so each of the 3 cards lands at ~297px:
+     3 × 297 + 2 × 8px column gaps = 907px. Capping the grid keeps the cards
      from stretching full content width, which changed how the text wrapped. */
-  --columns-fact-max-width: 820px;
+  --columns-fact-max-width: 907px;
 }
