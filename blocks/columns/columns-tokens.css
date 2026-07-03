@@ -5,12 +5,18 @@
   --columns-divider-spacing: var(--spacing-l, 32px);
   --columns-divider-color: #7ebcc6;
 
-  /* Facts About LGS stat-grid — source uses fixed 160px rounded cards with a
-     ~10px gutter and vertically-centered copy. No equivalent global spacing /
-     radius token exists (global --border-radius is 0), so these are grid-local.
-     TODO: promote to a shared spacing/radius scale if reused by other grids. */
-  --columns-fact-gap: 10px;
+  /* Facts About LGS stat-grid — source uses fixed 160px rounded cards, a 10px
+     row gap and an 8px column gap, and vertically-centered copy. No equivalent
+     global spacing / radius token exists (global --border-radius is 0), so these
+     are grid-local. TODO: promote to a shared scale if reused by other grids. */
+  --columns-fact-row-gap: 10px;
+  --columns-fact-col-gap: 8px;
   --columns-fact-min-height: 160px;
   --columns-fact-padding-inline: 10px;
   --columns-fact-radius: 10px;
+
+  /* Source constrains the grid so each of the 3 cards lands at ~268px:
+     3 × 268 + 2 × 8px column gaps = 820px. Capping the grid keeps the cards
+     from stretching full content width, which changed how the text wrapped. */
+  --columns-fact-max-width: 820px;
 }

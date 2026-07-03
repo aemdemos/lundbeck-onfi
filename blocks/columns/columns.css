@@ -25,7 +25,9 @@
 main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
   display: flex;
   flex-direction: column;
-  gap: var(--columns-fact-gap);
+  gap: var(--columns-fact-row-gap);
+  max-width: var(--columns-fact-max-width);
+  margin-inline: auto;
 }
 
 main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
@@ -128,7 +130,7 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
   /* fact grid rows: tighter source gutter + equal-height cards side by side */
   main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div {
     align-items: stretch;
-    gap: var(--columns-fact-gap);
+    gap: var(--columns-fact-col-gap);
   }
 
   .columns.divider.columns-2-cols > div {
