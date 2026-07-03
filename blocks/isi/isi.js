@@ -18,6 +18,27 @@
 const FULL_ID = 'isi-full';
 
 /**
+ * On pages with a `body.has-page-nav` sidebar, .isi-full's parent is shifted
+ * asymmetrically (narrowed + pushed right) to make room for the sidebar
+ * column, so the CSS breakout formula's `50%` (which assumes a centered
+ * parent) no longer lands on the viewport's true center. This measures how
+ * far the parent's horizontal CENTER has drifted from the viewport's center
+ * — not the parent's raw left edge, which would overcorrect — and publishes
+ * that delta as --isi-parent-offset for isi.css to subtract back out.
+ * @param {HTMLElement} full the .isi-full element
+ */
+function updatePageNavOffset(full) {
+  if (!document.body.classList.contains('has-page-nav')) {
+    full.style.removeProperty('--isi-parent-offset');
+    return;
+  }
+  const parentRect = full.parentElement.getBoundingClientRect();
+  const parentCenter = parentRect.left + (parentRect.width / 2);
+  const viewportCenter = window.innerWidth / 2;
+  full.style.setProperty('--isi-parent-offset', `${parentCenter - viewportCenter}px`);
+}
+
+/**
  * Splits an authored ISI cell into a teal header (first heading becomes the
  * title) + a body wrapper holding the rest, and adds the +/− toggle.
  * @param {Element} cell the authored content cell
@@ -116,27 +137,36 @@ export default function decorate(block) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ── Peek visibility (source parity) ─────────────────────────
+  /* ── Peek visibility (source parity) + page-nav offset ───────
      The peek banner stays fully opaque and docked to the viewport bottom the
      whole time the in-flow ISI is still below it — no fade. The hand-off is a
      clean, invisible swap: because the peek strip and the in-flow ISI show the
      identical teal header + "What is ONFI?" intro, the moment the in-flow copy
      scrolls up to sit exactly where the peek is docked, we hide the peek and the
      real content occupies the same pixels. Scrolling back up re-shows it.
-     Default is visible, so it appears on load without needing a scroll. */
+     Default is visible, so it appears on load without needing a scroll.
+
+     updatePageNavOffset rides the same triggers: when the ISI is loaded via
+     the `fragment` block (e.g. embedded on /about-onfi), this whole function
+     first runs on a detached, off-document copy before fragment.js splices it
+     into the live page, so an immediate getBoundingClientRect() reads all
+     zeros. Re-running on load/scroll/resize/ResizeObserver — the same signals
+     that already self-heal the peek hand-off once the fragment is attached
+     and images above it settle — self-heals the offset the same way. */
   let ticking = false;
-  const updatePeek = () => {
+  const updateLayout = () => {
     ticking = false;
     const inflowTop = full.getBoundingClientRect().top;
     // The peek's docked top edge (bottom:0 → top = viewport height − strip).
     const peekTop = window.innerHeight - peek.offsetHeight;
     // Hand off once the in-flow ISI has risen to (or above) the docked strip.
     peek.style.visibility = inflowTop <= peekTop ? 'hidden' : 'visible';
+    updatePageNavOffset(full);
   };
   const onScroll = () => {
     if (!ticking) {
       ticking = true;
-      requestAnimationFrame(updatePeek);
+      requestAnimationFrame(updateLayout);
     }
   };
 
@@ -148,11 +178,12 @@ export default function decorate(block) {
      often AFTER window 'load' has fired and BEFORE the images above it have laid
      out — so at first paint the in-flow ISI sits too high and the hand-off test
      wrongly hides the peek. A ResizeObserver on <body> re-runs the check on every
-     reflow (each image that loads pushes the ISI down), so the peek appears as
-     soon as the page reaches its true height. */
-  updatePeek();
-  requestAnimationFrame(updatePeek);
-  window.addEventListener('load', updatePeek);
+     reflow (each image that loads pushes the ISI down, or the fragment itself
+     gets attached), so both the peek and the page-nav offset settle correctly
+     as soon as the page reaches its true layout. */
+  updateLayout();
+  requestAnimationFrame(updateLayout);
+  window.addEventListener('load', updateLayout);
   if (typeof ResizeObserver !== 'undefined') {
     const ro = new ResizeObserver(() => onScroll());
     ro.observe(document.body);

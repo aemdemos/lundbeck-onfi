@@ -1,9 +1,19 @@
 @import url('./isi-tokens.css');
 
-/* ISI (Important Safety Information) — onfi.com parity.
-   Two copies share the same markup:
+/* =====================================================================
+   ISI (Important Safety Information) — shared structural / layout styles
+   ---------------------------------------------------------------------
+   This file is SITE-AGNOSTIC. It contains only structure, layout, and
+   default behaviour, written to be driven by the design tokens defined
+   in isi-tokens.css. To adapt the ISI for a new site, you should only
+   need to edit isi-tokens.css — not this file.
+
+   Two copies share the same markup (built by isi.js from two authored
+   rows):
    - .isi-full  → the full ISI in normal flow (toggle "– LESS")
-   - .isi-peek  → the fixed peek banner docked to the viewport bottom ("+ MORE") */
+   - .isi-peek  → the fixed peek banner docked to the viewport bottom
+                  ("+ MORE")
+   ===================================================================== */
 
 /* ── Shared: teal header bar ─────────────────────────────────── */
 .isi-header {
@@ -22,7 +32,7 @@
   line-height: var(--isi-header-height);
 }
 
-/* MORE / LESS toggle — floats right on the teal bar */
+/* MORE / LESS toggle — floats right on the header bar */
 .isi-header .isi-toggle {
   float: right;
   display: flex;
@@ -31,7 +41,7 @@
   color: var(--isi-toggle-color);
   font-family: var(--isi-toggle-font-family);
   font-size: var(--isi-toggle-font-size);
-  font-weight: 400;
+  font-weight: var(--isi-toggle-font-weight);
   line-height: var(--isi-toggle-line-height);
   text-decoration: none;
 }
@@ -40,7 +50,7 @@
   text-decoration: none;
 }
 
-/* green glyph on a white circle */
+/* glyph on a circular badge */
 .isi-header .isi-toggle-icon {
   display: inline-flex;
   align-items: center;
@@ -52,7 +62,7 @@
   color: var(--isi-toggle-icon-color);
   font-family: var(--isi-toggle-icon-font-family);
   font-size: var(--isi-toggle-icon-glyph-size);
-  font-weight: 900;
+  font-weight: var(--isi-toggle-icon-font-weight);
   font-style: normal;
   line-height: 1;
 }
@@ -72,7 +82,7 @@
 
 /* Some list items wrap their text in a <p> (authoring artefact). The source
    renders these flush like plain list text, so the paragraph must not add its
-   20/16px block margins — that's what inflates the gaps between list rows. */
+   block margins — that's what inflates the gaps between list rows. */
 .isi-body li p {
   margin: 0;
 }
@@ -81,7 +91,7 @@
   color: var(--isi-body-color);
   font-family: var(--bold-font-family);
   font-size: var(--isi-body-font-size);
-  font-weight: 700;
+  font-weight: var(--isi-body-heading-font-weight);
   line-height: var(--isi-body-heading-line-height);
   margin: var(--isi-body-heading-margin);
 }
@@ -91,10 +101,10 @@
   text-decoration: none;
 }
 
-/* Links default to green (--isi-link-color). To render an individual link teal
-   instead, authors wrap it with the span bracket syntax in the document:
-   [[isi-link-teal]link text]. The <strong> case covers links whose label is
-   bold. Keep this in sync with --isi-link-color-alt. */
+/* Links default to --isi-link-color. To render an individual link in the
+   alternate colour instead, authors wrap it with the span bracket syntax in
+   the document: [[isi-link-teal]link text]. The <strong> case covers links
+   whose label is bold. Keep this in sync with --isi-link-color-alt. */
 .isi-body .isi-link-teal a,
 .isi-body .isi-link-teal a strong {
   color: var(--isi-link-color-alt);
@@ -103,11 +113,11 @@
 .isi-body strong,
 .isi-body b {
   font-family: var(--bold-font-family);
-  font-weight: 700;
+  font-weight: var(--isi-body-bold-font-weight);
 }
 
-/* Lists — custom teal-dark square bullets via ::before (source uses no native
-   markers); nested lists indent a further step. */
+/* Lists — custom square bullets via ::before (source uses no native markers);
+   nested lists indent a further step. */
 .isi-body ul {
   list-style: none;
   margin: 0;
@@ -123,24 +133,24 @@
   color: var(--isi-body-color);
 }
 
-/* Top-level statements are separated by 20px (source); nested sub-points stay
-   tight (only their 2px padding). */
+/* Top-level statements get extra separation (source); nested sub-points stay
+   tight (only their padding). */
 .isi-body > ul > li {
   margin-bottom: var(--isi-list-top-gap);
 }
 
-/* Green round bullet (source rgb(127,167,58)) — only on NESTED items. In the
-   source, the top-level statements of the ISI list carry no bullet (they read as
-   indented statements); only their sub-points are bulleted. A nested item is any
-   <li> that has an ancestor <li> (i.e. `li li`). The extra `.isi-full`/`.isi-peek`
-   class raises specificity above the global `main ul:not(...) > li::before` rule
-   in styles.css (0,1,4) so our rules win over the global teal "•" glyph. */
+/* Round bullet — only on NESTED items. In the source, the top-level
+   statements of the ISI list carry no bullet (they read as indented
+   statements); only their sub-points are bulleted. A nested item is any <li>
+   that has an ancestor <li> (i.e. `li li`). The extra `.isi-full`/`.isi-peek`
+   class raises specificity above the global `main ul:not(...) > li::before`
+   rule in styles.css (0,1,4) so our rules win over the global bullet glyph. */
 .isi-full .isi-body li li::before,
 .isi-peek .isi-body li li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 0.5em;
+  top: var(--isi-bullet-offset-top);
   width: var(--isi-bullet-size);
   height: var(--isi-bullet-size);
   background: var(--isi-bullet-color);
@@ -148,7 +158,7 @@
 }
 
 /* Top-level list statements have no bullet (source). This also overrides the
-   global `main ul:not(...) > li::before` teal glyph for those top-level items. */
+   global `main ul:not(...) > li::before` glyph for those top-level items. */
 .isi-full .isi-body > ul > li::before,
 .isi-peek .isi-body > ul > li::before {
   content: none;
@@ -160,13 +170,13 @@
 }
 
 /* ── WARNING box + indented safety statement. ──
-   In the source these share one table cell inset 15px from the body column: the
-   warning lines are centred, the "ONFI is a benzodiazepine…" statement below them
-   is left-aligned. The AEM pipeline only keeps ONE paragraph inside a <blockquote>
-   (any following paragraph is hoisted out to a sibling), so the warning stays in
-   the centred blockquote and the benzodiazepine statement is the paragraph right
-   after it — indented 15px to line up with the warning, matching the source. The
-   indent is visible because that following paragraph is left-aligned. */
+   In the source these share one table cell inset from the body column: the
+   warning lines are centred, the statement below them is left-aligned. The
+   AEM pipeline only keeps ONE paragraph inside a <blockquote> (any following
+   paragraph is hoisted out to a sibling), so the warning stays in the centred
+   blockquote and the trailing statement is the paragraph right after it —
+   indented to line up with the warning, matching the source. The indent is
+   visible because that following paragraph is left-aligned. */
 .isi-body blockquote {
   margin: var(--isi-body-paragraph-margin);
   padding: var(--isi-warning-padding);
@@ -174,17 +184,20 @@
 }
 
 .isi-body blockquote p {
-  margin: 8px 0;
+  margin: var(--isi-warning-text-margin);
   text-align: center;
 }
 
 .isi-body blockquote + p {
-  padding-left: 15px;
+  padding-left: var(--isi-warning-statement-indent);
 }
 
+/* NOTE for libs: rendering <em> in italic (and cancelling any inherited bold)
+   is treated as a structural default of the WARNING box rather than a
+   site-tunable value — every site's regulatory copy uses <em> the same way. */
 .isi-body blockquote em {
   font-style: italic;
-  font-weight: 400;
+  font-weight: normal;
 }
 
 /* The peek copy shows the bordered warning box (source border=1 on the sticky
@@ -195,13 +208,13 @@
 
 /* ── Full in-flow ISI ────────────────────────────────────────── */
 
-/* The ISI may be authored inside a max-width content wrapper, but its teal band
-   must span the full BODY width (capped at --max-width-outer / 1400px, centered)
-   like the source — NOT the whole browser window. This breaks the ISI out of any
-   constraining ancestor to exactly the body box. Because the content wrapper is
-   always horizontally centred within the body, `50%` equals the body centre, so
-   `50% − min(50vw, bodyMax/2)` lands the edge on the body edge (or the window
-   edge when the viewport is narrower than the body cap). */
+/* The ISI may be authored inside a max-width content wrapper, but its header
+   band must span the full BODY width (capped at --max-width-outer, centered)
+   like the source — NOT the whole browser window. This breaks the ISI out of
+   any constraining ancestor to exactly the body box. Because the content
+   wrapper is always horizontally centred within the body, `50%` equals the
+   body centre, so `50% − min(50vw, bodyMax/2)` lands the edge on the body
+   edge (or the window edge when the viewport is narrower than the body cap). */
 .isi-full {
   width: min(100vw, var(--max-width-outer));
   margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2));
@@ -209,8 +222,21 @@
   background: var(--isi-peek-bg);
 }
 
-/* Teal header spans the full body-width bar; its title/toggle stay aligned to
-   the centred content column via a responsive side inset. */
+/* On pages with a page-nav sidebar, .isi-full's parent is shifted
+   asymmetrically to make room for the sidebar column, so the `50%` above no
+   longer lands on the viewport's true center. isi.js measures how far the
+   parent's center has drifted from the viewport's center and publishes it as
+   --isi-parent-offset on this element; subtracting/adding it here pulls the
+   breakout back to the true viewport edges. The var() fallback of 0px makes
+   this a no-op wherever the property isn't set (every page without the
+   sidebar), so normal-page behavior is unchanged. */
+body.has-page-nav .isi-full {
+  margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
+  margin-right: calc(50% - min(50vw, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
+}
+
+/* Header spans the full body-width bar; its title/toggle stay aligned to the
+   centred content column via a responsive side inset. */
 .isi-full .isi-header {
   padding-left: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
   padding-right: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
@@ -226,12 +252,13 @@
 
 /* ── Fixed peek banner ───────────────────────────────────────────
    Pinned to the viewport bottom, inset to the body box (capped so it never
-   exceeds the 1400px body). Uses 100% (not 100vw) so the inset is measured in the
-   same scrollbar-excluded space the in-flow full ISI lays out in — otherwise, on
-   a browser with a classic scrollbar, 100vw includes the scrollbar width and the
-   fixed band ends up ~15px wider/offset from the full ISI band during the scroll
-   hand-off. No box-shadow (source has none). The visible strip (teal header + top
-   of the warning box) peeks above the fold; the rest is clipped by overflow. */
+   exceeds the body max-width). Uses 100% (not 100vw) so the inset is
+   measured in the same scrollbar-excluded space the in-flow full ISI lays
+   out in — otherwise, on a browser with a classic scrollbar, 100vw includes
+   the scrollbar width and the fixed band ends up wider/offset from the full
+   ISI band during the scroll hand-off. No box-shadow (source has none). The
+   visible strip (header + top of the warning box) peeks above the fold; the
+   rest is clipped by overflow. */
 .isi-peek {
   position: fixed;
   left: max(0px, calc((100% - var(--max-width-outer)) / 2));
@@ -243,9 +270,9 @@
   background: var(--isi-peek-bg);
 }
 
-/* The peek's docked strip height must match the source (~159px): teal header +
-   "What is ONFI?" + the one-sentence description. The description paragraph's own
-   16px bottom margin supplies the gap to the fold, so the body adds no extra
+/* The peek's docked strip height must match the source: header + intro
+   heading + one-sentence description. The description paragraph's own
+   bottom margin supplies the gap to the fold, so the body adds no extra
    bottom padding (which would otherwise inflate the strip). */
 .isi-peek .isi-body {
   padding-top: 0;
@@ -260,7 +287,13 @@
   padding-right: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
 }
 
-/* ── Mobile: hide the MORE/LESS label, keep just the +/− glyph ── */
+/* ── Mobile: hide the MORE/LESS label, keep just the +/− glyph ──
+   NOTE for libs: 768px is kept as a literal breakpoint (matching the rest of
+   this block and isi-tokens.css) rather than one of the project's standard
+   600/900/1200 breakpoints, to preserve the existing onfi.com hand-off point
+   pixel-for-pixel. CSS custom properties cannot be used inside a media query
+   condition, so this value can't be tokenized either — flagging in case libs
+   wants to standardize it when porting. */
 @media (width <= 768px) {
   .isi-header .isi-toggle-label {
     display: none;
