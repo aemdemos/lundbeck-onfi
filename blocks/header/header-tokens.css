@@ -3,8 +3,10 @@
  * CSS rules stay in header.css and reference these via var(). To restyle the
  * header, change values here — not header.css. */
 :root {
-  /* layout */
-  --nav-height: 159px;
+  /* layout — --nav-height (the eagerly-reserved header box) is owned by
+     styles.css so the sticky header holds its space before this block CSS loads:
+     255px mobile, 159px at >=768px. Do not re-declare it here or the block-load
+     would shift the reserved box and reintroduce CLS. */
   --header-content-max-width: 1100px;
   --header-z-index: 100;
   --header-side-padding: 15px;
@@ -31,12 +33,21 @@
      source (which uses real Avenir Heavy/Black/Medium faces) */
   --header-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
 
-  /* row 0 — prescribing-context text bar */
+  /* row 0 — prescribing-context text bar. Source renders this in the heaviest
+     Avenir face (95 Black), one step above the nav's 85 Heavy — that's what gives
+     it its bolder look. Dedicated family so only the textbar uses Black. */
+  --header-textbar-font-family: "Avenir LT W01_95 Black", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --header-textbar-font-size: 14px;
-  --header-textbar-font-weight: 800;
+  --header-textbar-font-weight: 400;
   --header-textbar-line-height: 1.07;
   --header-textbar-padding: 8px 15px;
-  --header-textbar-indent: 130px;
+
+  /* Textbar left offset. Until the header hits its 1400px cap, the text starts
+     15px inside the 1100px band (source: "ONFI" at ~105px @1280). Once the header
+     caps (viewport >1400px) the source indents the textbar 130px to clear the logo
+     tab that now sits at the band's left edge — see --header-textbar-indent-wide. */
+  --header-textbar-indent: 15px;
+  --header-textbar-indent-wide: 130px;
 
   /* brand / logo tab */
   --header-logo-width: 150px;
@@ -131,15 +142,18 @@
 
   /* mobile (<768px) — matches source onfi mobile header */
 
-  /* textbar: centered, small, light weight on the light-teal band */
+  /* textbar: centered, small, on the light-teal band (95 Black face, so the
+     numeric weight is 400 — the face is already black) */
   --header-mobile-textbar-font-size: 10px;
-  --header-mobile-textbar-font-weight: 800;
+  --header-mobile-textbar-font-weight: 400;
   --header-mobile-textbar-line-height: 15px;
   --header-mobile-textbar-padding: 8px 15px;
 
-  /* eyebrow links band */
+  /* eyebrow links band — source #nav-eyebrow is 83px tall on mobile:
+     15px vertical padding + item (5px margin + 43px link + 5px margin) + 15px */
   --header-mobile-eyebrow-link-font-size: 13px;
-  --header-mobile-eyebrow-padding: 12px 10px;
+  --header-mobile-eyebrow-padding: 15px 10px;
+  --header-mobile-eyebrow-item-margin-y: 5px;
   --header-mobile-eyebrow-link-padding: 6.5px 19.5px;
 
   /* cap link text width so each label wraps to two lines (source uses a <br>;
