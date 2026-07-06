@@ -1,3 +1,5 @@
+/* eslint-disable secure-coding/no-insecure-comparison
+-- this is browser-side EDS code, not Node server auth logic. Not secret material; public DOM/content metadata validation. */
 import {
   buildBlock,
   decorateBlock,
@@ -321,7 +323,7 @@ export function decorateSections(main) {
     let defaultContent = false;
     // Snapshot children so moving nodes during iteration doesn't invalidate indices
     const sectionChildren = [...section.children].slice(0, MAX_SECTION_CHILDREN);
-    for (const e of sectionChildren) {
+    sectionChildren.forEach((e) => {
       // from the da boilerplate
       if (e.classList.contains('richtext')) {
         e.removeAttribute('class');
@@ -338,7 +340,7 @@ export function decorateSections(main) {
         if (defaultContent) wrapper.classList.add('default-content-wrapper');
       }
       wrappers.at(-1)?.append(e);
-    }
+    });
 
     // Add wrapped content back
     wrappers.forEach((wrapper) => section.append(wrapper));
@@ -517,31 +519,67 @@ export function decorateIconsAndBullets(element, prefix = '') {
   iconsToBullets(element);
 }
 
-/* === SPAN TAGS ===
+/* === BRACKET TAGS ===
  * Bracket syntax: [[class1,class2]text] → <span class="class1 class2">text</span>
+ * Nested section syntax: [#section-id] → cloned content from section-metadata ID.
  * Only alphanumeric, hyphen, and underscore are allowed in class names.
  * Malformed patterns (empty class list, invalid chars) are left unchanged.
+ * Alignment classes (center, left, right) are hoisted to the containing element
+ * instead of applied to a span.
  */
 
-function parseClasses(raw) {
+function parseClasses(raw, classNamePattern = /^[a-zA-Z0-9_-]+$/) {
   const names = raw.split(',').map((c) => c.trim());
-  if (names.some((c) => !c || !/^[a-zA-Z0-9_-]+$/.test(c))) return [];
+  if (names.some((c) => !c || !classNamePattern.test(c))) return [];
   return names;
 }
 
 function parseSplitClasses(raw) {
-  const names = raw.split(',').map((c) => c.trim());
-  if (names.some((c) => !c || !/^[a-z0-9-]+$/.test(c))) return [];
-  return names;
+  return parseClasses(raw, /^[a-z0-9-]+$/);
 }
 
 const SPLIT_INLINE_TAGS = new Set(['STRONG', 'EM', 'A', 'BR']);
 
-// eslint-disable-next-line sonarjs/slow-regex
+const ALIGNMENT_CLASSES = new Set(['center', 'left', 'right']);
+
+const SPAN_TAG_SELECTOR = 'h1, h2, h3, h4, h5, h6, p, li';
+
 const SPLIT_OPEN_RE = /\[\[([a-z0-9,-]+)\]\s*$/;
 
-// eslint-disable-next-line sonarjs/slow-regex
-const BRACKET_RE = /\[\[[^\]]+\]([^\]]*)\]/g;
+const SPAN_TAG_RE = /\[\[(?=([^\]]+))\1\](?=([^\]]*))\2\]/g;
+
+const TOOLTIP_OPEN_RE = /\[\[tooltip\]\s*$/;
+
+const NESTED_SECTION_RE = /\[#([^\]]+)\]/g;
+const NESTED_SECTION_ONLY_RE = /^\[#([^\]]+)\]$/;
+
+function normalizeNestedSectionId(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .trim()
+    .replace(/^#/, '')
+    .replace(/^id\s*=\s*/i, '')
+    .trim();
+}
+
+function collectTextNodes(element, marker) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  let node = walker.nextNode();
+  while (node) {
+    if (!marker || node.nodeValue.includes(marker)) nodes.push(node);
+    node = walker.nextNode();
+  }
+  return nodes;
+}
+
+function splitAlignmentClasses(classes) {
+  return classes.reduce((groups, c) => {
+    if (ALIGNMENT_CLASSES.has(c)) groups.alignClasses.push(c);
+    else groups.regularClasses.push(c);
+    return groups;
+  }, { alignClasses: [], regularClasses: [] });
+}
 
 function applySplitBoundaryPass(el) {
   const children = [...el.childNodes];
@@ -552,7 +590,6 @@ function applySplitBoundaryPass(el) {
     const next = children.at(i + 2);
 
     const isPrevText = prev.nodeType === Node.TEXT_NODE;
-    // eslint-disable-next-line secure-coding/detect-object-injection
     const isMidInline = mid.nodeType === Node.ELEMENT_NODE && SPLIT_INLINE_TAGS.has(mid.nodeName);
     const isNextText = next.nodeType === Node.TEXT_NODE;
 
@@ -562,48 +599,54 @@ function applySplitBoundaryPass(el) {
       const isTooltipAnchor = mid.nodeName === 'A'
         && mid.getAttribute('href') === '#'
         && mid.getAttribute('title');
-      const tooltipOpenRE = /\[\[tooltip\]\s*$/;
-      if (isTooltipAnchor && tooltipOpenRE.test(prev.nodeValue) && next.nodeValue.match(/^\s*\]/)) {
-        const closeMatch = next.nodeValue.match(/^\s*\]/);
+      const tooltipCloseMatch = isTooltipAnchor && TOOLTIP_OPEN_RE.test(prev.nodeValue)
+        ? next.nodeValue.match(/^\s*\]/) : null;
+      if (tooltipCloseMatch) {
         const span = document.createElement('span');
         span.className = 'tooltip';
         span.dataset.tooltip = mid.getAttribute('title');
         span.textContent = mid.textContent;
         el.insertBefore(span, mid);
         el.removeChild(mid);
-        prev.nodeValue = prev.nodeValue.replace(tooltipOpenRE, '');
-        next.nodeValue = next.nodeValue.slice(closeMatch[0].length);
+        prev.nodeValue = prev.nodeValue.replace(TOOLTIP_OPEN_RE, '');
+        next.nodeValue = next.nodeValue.slice(tooltipCloseMatch[0].length);
       } else {
         // Pattern A: "prefix[[classes]" <inline>content</inline> "]suffix"
         const openMatch = prev.nodeValue.match(SPLIT_OPEN_RE);
         const classes = openMatch ? parseSplitClasses(openMatch[1]) : [];
         const closeMatch = openMatch && classes.length ? next.nodeValue.match(/^\s*\]/) : null;
         if (closeMatch) {
-          const span = document.createElement('span');
-          span.className = classes.join(' ');
-          span.appendChild(mid);
-          el.insertBefore(span, next);
+          const { alignClasses, regularClasses } = splitAlignmentClasses(classes);
+          if (alignClasses.length) el.classList.add(...alignClasses);
           prev.nodeValue = prev.nodeValue.slice(0, -openMatch[0].length);
           next.nodeValue = next.nodeValue.slice(closeMatch[0].length);
+          if (regularClasses.length) {
+            const span = document.createElement('span');
+            span.className = regularClasses.join(' ');
+            span.appendChild(mid);
+            el.insertBefore(span, next);
+          }
         }
       }
     } else if (!isPrevText && mid.nodeType === Node.TEXT_NODE && !isNextText && next.children.length === 0) {
       // Pattern B: <inline>prefix[[</inline> "classes" <inline>]content]</inline>
-      // eslint-disable-next-line secure-coding/detect-object-injection
       const isPrevInline = prev.nodeType === Node.ELEMENT_NODE && SPLIT_INLINE_TAGS.has(prev.nodeName);
-      // eslint-disable-next-line secure-coding/detect-object-injection
       const isNextInline = next.nodeType === Node.ELEMENT_NODE && SPLIT_INLINE_TAGS.has(next.nodeName);
       const openerText = prev.textContent;
       const closerText = next.textContent;
       const classes = parseSplitClasses(mid.nodeValue);
       if (isPrevInline && isNextInline && openerText.endsWith('[[') && classes.length
         && closerText.startsWith(']') && closerText.endsWith(']')) {
-        const insertRef = next.nextSibling;
-        const span = document.createElement('span');
-        span.className = classes.join(' ');
+        const { alignClasses, regularClasses } = splitAlignmentClasses(classes);
+        if (alignClasses.length) el.classList.add(...alignClasses);
         next.textContent = closerText.slice(1, -1);
-        span.appendChild(next);
-        el.insertBefore(span, insertRef);
+        if (regularClasses.length) {
+          const insertRef = next.nextSibling;
+          const span = document.createElement('span');
+          span.className = regularClasses.join(' ');
+          span.appendChild(next);
+          el.insertBefore(span, insertRef);
+        }
         if (openerText === '[[') el.removeChild(prev);
         else prev.textContent = openerText.slice(0, -2);
         el.removeChild(mid);
@@ -613,8 +656,8 @@ function applySplitBoundaryPass(el) {
 }
 
 export function applySpanTags(text) {
-  // eslint-disable-next-line sonarjs/slow-regex
-  return text.replace(/\[\[([^\]]+)\]([^\]]*)\]/g, (match, raw, content) => {
+  SPAN_TAG_RE.lastIndex = 0;
+  return text.replace(SPAN_TAG_RE, (match, raw, content) => {
     const classes = parseClasses(raw);
     if (!classes.length) return match;
     // eslint-disable-next-line secure-coding/no-improper-sanitization
@@ -628,17 +671,16 @@ export function applySpanTags(text) {
   });
 }
 
-function replaceTextNode(textNode) {
+function replaceTextNode(textNode, containingEl) {
   const text = textNode.nodeValue;
   const frag = document.createDocumentFragment();
   let lastIndex = 0;
   let match;
 
-  // eslint-disable-next-line sonarjs/slow-regex
-  const re = /\[\[([^\]]+)\]([^\]]*)\]/g;
+  SPAN_TAG_RE.lastIndex = 0;
 
   // eslint-disable-next-line no-cond-assign
-  while ((match = re.exec(text)) !== null) {
+  while ((match = SPAN_TAG_RE.exec(text)) !== null) {
     const [full, raw, content] = match;
     const classes = parseClasses(raw);
 
@@ -649,10 +691,16 @@ function replaceTextNode(textNode) {
     if (!classes.length) {
       frag.appendChild(document.createTextNode(full));
     } else {
-      const span = document.createElement('span');
-      span.className = classes.join(' ');
-      span.textContent = content;
-      frag.appendChild(span);
+      const { alignClasses, regularClasses } = splitAlignmentClasses(classes);
+      if (alignClasses.length && containingEl) containingEl.classList.add(...alignClasses);
+      if (regularClasses.length) {
+        const span = document.createElement('span');
+        span.className = regularClasses.join(' ');
+        span.textContent = content;
+        frag.appendChild(span);
+      } else {
+        frag.appendChild(document.createTextNode(content));
+      }
     }
 
     lastIndex = match.index + full.length;
@@ -670,12 +718,12 @@ function replaceTextNode(textNode) {
 function cleanAttributes(element) {
   element.querySelectorAll('a').forEach((a) => {
     if (a.hasAttribute('title')) {
-      const cleaned = a.getAttribute('title').replace(BRACKET_RE, '$1');
+      const cleaned = a.getAttribute('title').replace(SPAN_TAG_RE, '$2');
       if (cleaned !== a.getAttribute('title')) a.setAttribute('title', cleaned);
     }
     if (a.hasAttribute('aria-label')) {
       const cleaned = a.getAttribute('aria-label')
-        .replace(BRACKET_RE, (_, content) => content)
+        .replace(SPAN_TAG_RE, (_, raw, content) => content)
         .replace(/\s+/g, ' ')
         .trim();
       if (cleaned !== a.getAttribute('aria-label')) a.setAttribute('aria-label', cleaned);
@@ -692,23 +740,199 @@ function cleanAttributes(element) {
   });
 }
 
-export function decorateSpanTags(element) {
-  element.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li').forEach((el) => {
-    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    const nodes = [];
-    let node = walker.nextNode();
-    while (node) {
-      if (node.nodeValue.includes('[[')) nodes.push(node);
-      node = walker.nextNode();
+function hoistAlignmentAcrossInlines(el) {
+  // Handles [[alignment-class]content] where content spans inline elements,
+  // causing the opening [[class] and closing ] to land in different text nodes.
+  const textNodes = collectTextNodes(el);
+
+  for (let i = 0; i < textNodes.length - 1; i += 1) {
+    const node = textNodes[i];
+    const text = node.nodeValue;
+    const openIdx = text.lastIndexOf('[[');
+    if (openIdx === -1) continue; // eslint-disable-line no-continue
+
+    const tail = text.slice(openIdx);
+    // If the bracket expression is fully contained in this node, replaceTextNode handles it
+    if (/^\[\[[^\]]+\][^\]]*\]/.test(tail)) continue; // eslint-disable-line no-continue
+
+    const classMatch = tail.match(/^\[\[([a-zA-Z0-9_,-]+)\]/);
+    if (!classMatch) continue; // eslint-disable-line no-continue
+
+    const classes = parseClasses(classMatch[1]);
+    const { alignClasses } = splitAlignmentClasses(classes);
+    // Only handle pure-alignment spanning patterns; mixed (alignment + span classes) needs Range API
+    if (!alignClasses.length || classes.length !== alignClasses.length) continue; // eslint-disable-line no-continue
+
+    for (let j = i + 1; j < textNodes.length; j += 1) {
+      const closeNode = textNodes[j];
+      const closeText = closeNode.nodeValue;
+      const closeIdx = closeText.indexOf(']');
+      if (closeIdx === -1) continue; // eslint-disable-line no-continue
+
+      el.classList.add(...alignClasses);
+      node.nodeValue = text.slice(0, openIdx) + tail.slice(classMatch[0].length);
+      closeNode.nodeValue = closeText.slice(0, closeIdx) + closeText.slice(closeIdx + 1);
+      break;
     }
-    nodes.forEach(replaceTextNode);
+  }
+}
+
+export function decorateSpanTags(element) {
+  element.querySelectorAll(SPAN_TAG_SELECTOR).forEach((el) => {
+    if (el.textContent.includes('[[')) hoistAlignmentAcrossInlines(el);
+
+    const nodes = collectTextNodes(el, '[[');
+    nodes.forEach((n) => replaceTextNode(n, el));
     applySplitBoundaryPass(el);
   });
 
   cleanAttributes(element);
 }
 
-/* === END SPAN TAGS === */
+function collectNestedSectionIds(nodes) {
+  const sectionIds = new Set();
+  nodes.forEach((node) => {
+    let match;
+    NESTED_SECTION_RE.lastIndex = 0;
+    // eslint-disable-next-line no-cond-assign
+    while ((match = NESTED_SECTION_RE.exec(node.nodeValue)) !== null) {
+      const sectionId = normalizeNestedSectionId(match[1]);
+      if (sectionId) sectionIds.add(sectionId);
+    }
+  });
+  return sectionIds;
+}
+
+function getNestedSectionIds(section) {
+  const ids = [
+    normalizeNestedSectionId(section.dataset.id),
+    normalizeNestedSectionId(section.id),
+  ].filter(Boolean);
+
+  section.classList.forEach((className) => {
+    if (className.startsWith('id-')) {
+      const sectionId = normalizeNestedSectionId(className.slice(3));
+      if (sectionId) ids.push(sectionId);
+    }
+  });
+
+  return [...new Set(ids)];
+}
+
+function buildNestedSectionMap(main, sectionIds) {
+  const sectionMap = new Map();
+
+  main.querySelectorAll('.section').forEach((section) => {
+    getNestedSectionIds(section).forEach((sectionId) => {
+      if (!sectionIds.has(sectionId) || sectionMap.has(sectionId)) return;
+
+      const content = document.createElement('div');
+      [...section.children].forEach((child) => {
+        content.appendChild(child.cloneNode(true));
+      });
+      sectionMap.set(sectionId, { content, element: section });
+    });
+  });
+
+  return sectionMap;
+}
+
+function appendNestedSectionContent(fragment, sectionData) {
+  const content = sectionData.content.cloneNode(true);
+  const elements = [...content.children];
+
+  elements.forEach((el) => {
+    const blocks = el.classList.contains('block') ? [el] : [];
+    blocks.push(...el.querySelectorAll('.block'));
+    blocks.forEach((block) => block.classList.add('nested-block'));
+    fragment.appendChild(el);
+  });
+}
+
+function replaceNestedSectionNode(textNode, sectionMap, usedSectionIds) {
+  const text = textNode.nodeValue;
+  const parent = textNode.parentElement;
+  const onlyMatch = text.trim().match(NESTED_SECTION_ONLY_RE);
+
+  if (parent && onlyMatch && parent.textContent.trim() === text.trim()) {
+    const sectionId = normalizeNestedSectionId(onlyMatch[1]);
+    const sectionData = sectionMap.get(sectionId);
+    if (!sectionData) return;
+
+    const fragment = document.createDocumentFragment();
+    appendNestedSectionContent(fragment, sectionData);
+    parent.before(fragment);
+    parent.remove();
+    usedSectionIds.add(sectionId);
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  let changed = false;
+  let lastIndex = 0;
+  let match;
+
+  NESTED_SECTION_RE.lastIndex = 0;
+  // eslint-disable-next-line no-cond-assign
+  while ((match = NESTED_SECTION_RE.exec(text)) !== null) {
+    const [fullMatch, rawSectionId] = match;
+    const sectionId = normalizeNestedSectionId(rawSectionId);
+    const sectionData = sectionMap.get(sectionId);
+
+    if (match.index > lastIndex) {
+      fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+    }
+
+    if (sectionData) {
+      appendNestedSectionContent(fragment, sectionData);
+      usedSectionIds.add(sectionId);
+      changed = true;
+    } else {
+      fragment.appendChild(document.createTextNode(fullMatch));
+    }
+
+    lastIndex = match.index + fullMatch.length;
+  }
+
+  if (!changed) return;
+
+  if (lastIndex < text.length) {
+    fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+  }
+
+  textNode.replaceWith(fragment);
+}
+
+/**
+ * Decorates nested sections by replacing [#section-id] placeholders
+ * with the content of sections that have matching IDs in their section-metadata.
+ * Only sections that are actually used as placeholders are removed from the page.
+ * Runs after decorateSections and decorateBlocks so content is already decorated.
+ * @param {Element} main The container element
+ */
+function decorateNestedSections(main) {
+  const nodesToProcess = collectTextNodes(main, '[#');
+  if (!nodesToProcess.length) return;
+
+  const sectionIds = collectNestedSectionIds(nodesToProcess);
+  if (!sectionIds.size) return;
+
+  const sectionMap = buildNestedSectionMap(main, sectionIds);
+  if (!sectionMap.size) return;
+
+  const usedSectionIds = new Set();
+  nodesToProcess.forEach((node) => {
+    if (node.isConnected) {
+      replaceNestedSectionNode(node, sectionMap, usedSectionIds);
+    }
+  });
+
+  usedSectionIds.forEach((sectionId) => {
+    sectionMap.get(sectionId)?.element.remove();
+  });
+}
+
+/* === END BRACKET TAGS === */
 
 /**
  * Decorates the main element.
@@ -721,6 +945,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateNestedSections(main);
   decorateButtons(main);
   a11yLinks(main);
   decorateSpanTags(main);
