@@ -25,6 +25,7 @@
   --brand-teal-light: #81c6cc;
   --brand-green: #729533;
   --brand-green-dark: #556f26;
+  --brand-green-light: #7fa73a;
   --brand-yellow: #ffd212;
 
   /* brand semantic aliases */
@@ -165,13 +166,13 @@
   --button-secondary-hover-color: var(--brand-primary-dark);
   --button-secondary-hover-border-color: var(--brand-primary-dark);
 
-  /* accent — yellow high-impact CTA (.btn-primary on source) */
+  /* accent — yellow high-impact CTA (.btn-primary on source): green text */
   --button-accent-background: var(--brand-yellow);
   --button-accent-hover-background: var(--brand-yellow);
-  --button-accent-color: var(--brand-teal);
+  --button-accent-color: var(--brand-green);
   --button-accent-border-color: var(--brand-yellow);
   --button-accent-hover-border-color: var(--brand-yellow);
-  --button-accent-hover-color: var(--brand-teal);
+  --button-accent-hover-color: var(--brand-green);
 
   /* disabled (native button elements) */
   --button-disabled-background: var(--light-color);
@@ -254,6 +255,22 @@ h1 {
   max-width: var(--h1-max-width);
 }
 
+/* Page-title h1 (default content, not the hero) — the source renders these in
+   the light heading cut at a smaller size with breathing room above and below.
+   Mobile-first: 22px like the source; steps up on desktop. */
+main .section > .default-content-wrapper > h1 {
+  margin-top: 20px;
+  margin-bottom: 32px;
+  font-size: 22px;
+}
+
+/* The authored title is wrapped in <strong>; the source shows it light, not in
+   the Heavy bold cut, so keep the heading font here. */
+main .section > .default-content-wrapper > h1 strong {
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+}
+
 h2 {
   font-size: var(--heading-font-size-xl);
 }
@@ -282,6 +299,10 @@ pre,
 blockquote {
   margin-top: 0;
   margin-bottom: 10px;
+}
+
+ul {
+  padding: 0;
 }
 
 /* superscript — the ® mark and numbered citations appear site-wide (headings +
@@ -350,6 +371,18 @@ a:hover {
   text-decoration: underline;
 }
 
+/* button paragraph wrapper — spacing below CTAs */
+.button-wrapper {
+  margin-bottom: 45px;
+}
+
+/* Center all buttons on mobile. */
+@media (width < 768px) {
+  main .button-wrapper {
+    text-align: center;
+  }
+}
+
 /* buttons — shared structure */
 a.button,
 button {
@@ -367,10 +400,8 @@ button {
   line-height: var(--button-line-height);
   text-align: center;
   text-decoration: none;
-  white-space: nowrap;
+  white-space: normal;
   cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
   transition: var(--button-transition);
 }
 
@@ -430,7 +461,7 @@ button:disabled:hover {
   width: 200px;
   max-width: 200px;
   background: #000;
-  color: #fff;
+  color: var(--background-color);
   font-family: var(--body-font-family);
   font-weight: 200;
   padding: 4px 14px;
@@ -486,11 +517,20 @@ button.secondary:focus {
   cursor: pointer;
 }
 
-/* accent — yellow high-impact CTA */
+/* accent — yellow high-impact CTA. Source shape: rounded, larger bold text. */
 a.button.accent {
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 700;
   background-color: var(--button-accent-background);
   border-color: var(--button-accent-border-color);
   color: var(--button-accent-color);
+}
+
+/* No trailing arrow on accent buttons (source CTAs have no icon). */
+a.button.accent::after {
+  content: none;
 }
 
 a.button.accent:hover,
@@ -573,7 +613,7 @@ main ul:not(.icon-bullets, :has(> li > .icon, > li > :is(strong, em, a) > .icon)
   content: "•";
   position: absolute;
   left: 0;
-  color: var(--brand-teal);
+  color: var(--brand-green-light);
 }
 
 /* icon bullet lists — :has() prevents FOUC before JS adds .icon-bullets */
@@ -611,6 +651,18 @@ main .icon.icon-bullet {
 /* sections — full-bleed; inner div constrains content to 1170px */
 main > .section {
   margin: 0;
+}
+
+/* Sections with a custom background color (set via section metadata) establish
+   a block formatting context so the first/last child's margin stays inside the
+   colored box instead of collapsing out through the top/bottom edge. */
+main > .section[data-background-color] {
+  display: flow-root;
+}
+
+/* Green headings on the light-green section (matches source). */
+main > .section[data-background-color="#e8efdc"] :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--brand-green);
 }
 
 main > .section.divider > div:last-child {
@@ -719,6 +771,14 @@ main .section.dark {
   padding: var(--section-padding-vertical) 0;
 }
 
+/* Center dark-section content on mobile. */
+@media (width < 768px) {
+  main .section.dark,
+  main .section.dark :is(h1, h2, h3, h4, h5, h6, p) {
+    text-align: center;
+  }
+}
+
 main .section.dark h1,
 main .section.dark h2,
 main .section.dark h3,
@@ -728,17 +788,37 @@ main .section.dark h6 {
   color: var(--background-color);
 }
 
-main .section.dark a {
+main .section.dark a:not(.button.accent) {
   color: var(--background-color);
 }
 
-main .section.dark a:hover {
+main .section.dark a:not(.button.accent):hover {
   color: var(--brand-teal-light);
 }
 
+/* On dark sections the accent button uses teal text (source), not green, and
+   the source's tighter uniform padding. */
+main .section.dark a.button.accent {
+  width: 70%;
+  padding: 15px;
+  color: var(--brand-teal);
+}
+
+/* Hover: text turns white, background stays full yellow (no dim). */
+main .section.dark a.button.accent:hover,
+main .section.dark a.button.accent:focus {
+  color: var(--background-color);
+  opacity: 1;
+}
+
+/* "Get yours now" wrapper (dark section) uses tighter vertical margins. */
+main .section.dark .button-wrapper {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 main .section.dark a.button.primary,
-main .section.dark a.button.accent,
-main .section.dark a.button:not(.secondary) {
+main .section.dark a.button:not(.secondary, .accent) {
   background-color: var(--button-on-dark-background);
   border-color: var(--button-on-dark-border-color);
   color: var(--button-on-dark-color);
@@ -746,10 +826,8 @@ main .section.dark a.button:not(.secondary) {
 
 main .section.dark a.button.primary:hover,
 main .section.dark a.button.primary:focus,
-main .section.dark a.button.accent:hover,
-main .section.dark a.button.accent:focus,
-main .section.dark a.button:not(.secondary):hover,
-main .section.dark a.button:not(.secondary):focus {
+main .section.dark a.button:not(.secondary, .accent):hover,
+main .section.dark a.button:not(.secondary, .accent):focus {
   background-color: var(--button-on-dark-background);
   border-color: var(--button-on-dark-border-color);
   color: var(--button-on-dark-color);
@@ -795,6 +873,11 @@ main .section.dark a.button.secondary:focus {
 
   main > .section > div {
     max-width: var(--max-width-tablet);
+  }
+
+  /* page-title h1 steps up to the source's desktop size */
+  main .section > .default-content-wrapper > h1 {
+    font-size: 36px;
   }
 }
 

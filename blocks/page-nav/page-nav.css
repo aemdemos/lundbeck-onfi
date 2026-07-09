@@ -1,4 +1,8 @@
-/* Page nav: in-flow list on mobile, fixed sidebar on desktop. */
+/* Page nav: hidden on mobile/tablet, fixed sidebar on desktop (matches source). */
+main .page-nav {
+  display: none;
+}
+
 main .page-nav nav ul.page-nav-items {
   list-style: none;
   margin: 0;
@@ -54,6 +58,7 @@ main .page-nav nav a.active {
 /* Desktop: fixed sidebar beneath the logo that pushes content to the right. */
 @media (width >= 900px) {
   main .page-nav {
+    display: block;
     position: fixed;
     top: calc(var(--header-height, 0px) + 16px);
     left: max(15px, calc((100vw - var(--max-width-site)) / 2 + var(--header-logo-left-offset, 5px)));

@@ -17,6 +17,20 @@
   display: block; /* @boilerplate */
 }
 
+/* thumbnail variant — resource/community cards: small content-sized image
+   beside wide text (source keeps the image at its natural ~96-120px, not
+   stretched to half the row). Mobile: image centered on top. */
+main .columns.thumbnail > div > .columns-img-col {
+  flex: 0 0 auto;
+  max-width: 130px;
+  margin: 0 auto;
+}
+
+main .columns.thumbnail > div > .columns-img-col img {
+  width: 100%;
+  height: auto;
+}
+
 /* stats-callout variant — vyepti study/survey results callouts.
    Teal headings, large red italic "X fewer" numbers, centered copy. */
 main .columns.stats-callout > div > div {
@@ -111,6 +125,30 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
     padding-inline-start: var(--columns-divider-spacing);
   }
   
+  /* thumbnail: small fixed-width image left, text fills the rest */
+  main .columns.thumbnail > div {
+    align-items: flex-start;
+  }
+
+  main .columns.thumbnail > div > .columns-img-col {
+    margin: 0;
+  }
+
+  main .columns.thumbnail > div > div:not(.columns-img-col) {
+    flex: 1;
+  }
+
+  /* Align content to the top: drop the leading heading's top margin so the
+     text starts flush with the top of the thumbnail image. */
+  main .columns.thumbnail > div > div > :first-child {
+    margin-top: 0;
+  }
+
+  /* reversed: image column on the right (free-trial voucher) */
+  main .columns.reversed > div > .columns-img-col {
+    order: 1;
+  }
+
   main .columns.stats-callout > div {
     flex-direction: row;
     align-items: flex-start;
