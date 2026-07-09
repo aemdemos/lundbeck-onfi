@@ -17,6 +17,14 @@
   display: block; /* @boilerplate */
 }
 
+/* reversed variant fine print — the trailing eligibility footnote in the
+   free-trial card renders smaller than body copy (source treats it as fine
+   print). Targets the last paragraph of the text column so authors keep a
+   plain paragraph in the document (no inline <small> markup needed). */
+main .columns.reversed > div > div:not(.columns-img-col) > p:last-child {
+  font-size: 0.83em;
+}
+
 /* thumbnail variant — resource/community cards: small content-sized image
    beside wide text (source keeps the image at its natural ~96-120px, not
    stretched to half the row). Mobile: image centered on top. */
