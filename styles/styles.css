@@ -822,6 +822,29 @@ main .section.dark .button-wrapper {
   margin-bottom: 15px;
 }
 
+/* Spacing that was previously authored with trailing <br> tags in the document
+   (stripped by Document Authoring on publish), now reproduced structurally:
+   - the page title sits well above the teal box (was 3 <br> after the title) */
+main > .section:has(+ .section.dark) > .default-content-wrapper > h1 {
+  margin-bottom: 111px;
+}
+
+/* - the teal "Need help?" label sits on its own line (was a <br> after it) ... */
+main .section.dark .default-content-wrapper > p > strong:first-child {
+  display: block;
+}
+
+/* ... and the box keeps breathing room below that closing line (was 2 <br>) */
+main .section.dark .default-content-wrapper > p:last-child {
+  margin-bottom: 33px;
+}
+
+/* Top breathing room for the terms section that follows the teal box (was an
+   empty &nbsp; paragraph at the top of the document, stripped on publish). */
+main .section.dark + .section > .default-content-wrapper {
+  padding-top: 36px;
+}
+
 main .section.dark a.button.primary,
 main .section.dark a.button:not(.secondary, .accent) {
   background-color: var(--button-on-dark-background);
