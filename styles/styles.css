@@ -673,7 +673,7 @@ main > .section.divider > div:last-child {
 main > .section > div {
   max-width: 100%;
   margin: auto;
-  padding: 0 15px;
+  padding-inline: 30px;
 }
 
 main > .section:first-of-type {
@@ -768,7 +768,10 @@ main .section.dark {
   background-color: var(--brand-teal);
   color: var(--background-color);
   margin: 0;
-  padding: var(--section-padding-vertical) 0;
+
+  /* source runs the free-trial card body copy one step down from the global
+     18px (footnote then resolves to ~13px via its 0.83em rule) */
+  font-size: 16px;
 }
 
 /* Center dark-section content on mobile. */
@@ -854,6 +857,14 @@ main .section.dark a.button.secondary:focus {
   body {
     font-size: var(--body-font-size-s);
   }
+
+  /* page-title h1 centered on mobile — clear the global h1 max-width so the box
+     spans the wrapper; otherwise the narrower left-pinned box makes the centered
+     text look off-center */
+  main .section > .default-content-wrapper > h1 {
+    max-width: none;
+    text-align: center;
+  }
 }
 
 /* wider mobile (≥472px): the header textbar intro wraps to 2 lines instead of 3,
@@ -881,6 +892,13 @@ main .section.dark a.button.secondary:focus {
   main .section > .default-content-wrapper > h1 {
     font-size: 36px;
   }
+
+  /* narrow-heading section-style variant — constrains the intro heading width
+     (authored via the section metadata "style" keyword, so it's independent of
+     heading text/id and doesn't affect other h3s or sections). Desktop only. */
+  main .section.narrow-heading > .default-content-wrapper > h3 {
+    width: 83.3333%;
+  }
 }
 
 /* small desktop (≥992px): Bootstrap-3 container 970px */
@@ -891,6 +909,7 @@ main .section.dark a.button.secondary:focus {
 
   main > .section > div {
     max-width: 970px;
+    margin-right: 16.5%;
   }
 }
 
