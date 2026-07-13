@@ -1035,17 +1035,15 @@ main .section.dark a.button.secondary:focus {
     --fact-line-height: 28px;
     --fact-emphasis-font-size: 30px;
     --fact-emphasis-line-height: 32px;
+
+    /* display heading (.headline-2) scales up to 28px/1.2em and left-aligns from
+       tablet up (22px/centered on mobile) */
+    --display-heading-font-size: 28px;
+    --display-heading-line-height: 1.2;
   }
 
   main > .section > div {
     max-width: var(--max-width-tablet);
-  }
-
-  /* display heading (.headline-2) scales up to 28px/1.2em and left-aligns from
-     tablet up (22px/centered on mobile) */
-  :root {
-    --display-heading-font-size: 28px;
-    --display-heading-line-height: 1.2;
   }
 
   main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
