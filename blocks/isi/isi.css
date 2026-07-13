@@ -208,23 +208,10 @@
 
 /* ── Full in-flow ISI ────────────────────────────────────────── */
 
-/* The ISI may be authored inside a max-width content wrapper, but its header
-   band must span the full BODY width (capped at --max-width-outer, centered)
-   like the source — NOT the whole browser window. This breaks the ISI out of
-   any constraining ancestor to exactly the body box.
-
-   The breakout uses `50%` (the parent's own horizontal centre) as the anchor,
-   which only lands on the content box's centre when the parent is itself
-   centred. Two situations shift the parent off-centre: a page-nav sidebar
-   (which pads `main > .section` asymmetrically to reserve the sidebar column)
-   and a fragment-embedded ISI (whose section nests inside the host page's
-   `.default-content-wrapper`, whose `margin: auto` resolves asymmetrically —
-   this is why the homepage ISI rendered shifted left). In both cases isi.js
-   measures how far the parent's centre has drifted from the content box centre
-   and publishes it as --isi-parent-offset here; subtracting/adding it pulls the
-   breakout back to the true content-box edges. The var() fallback of 0px makes
-   this a no-op whenever the parent is genuinely centred, so pages with a
-   well-behaved layout are unaffected. */
+/* Full-bleed teal band, capped to the body box (not the window), centred like
+   the source. The `50%` anchors on the parent's centre; --isi-parent-offset
+   (set by isi.js) corrects for an off-centre parent — page-nav sidebar or a
+   fragment-embedded ISI — and is 0 (no-op) when the parent is centred. */
 .isi-full {
   width: min(100vw, var(--max-width-outer));
   margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
@@ -232,13 +219,9 @@
   background: var(--isi-peek-bg);
 }
 
-/* Anchor-jump landing offset. The "Important Safety Information" nav link points
-   at #isi-full and relies on the global `scroll-behavior: smooth` (styles.css)
-   for the smooth scroll, matching the source. On desktop the header is sticky
-   (≥768px, see header.css), so without an offset the ISI would land BEHIND it;
-   scroll-margin-top clears the header height so the teal ISI bar lands flush
-   just below it, exactly like the source. Mobile header is static/scrolls away,
-   so no offset is needed (and would leave a gap) below 768px. */
+/* Anchor-jump landing (nav link → #isi-full, smooth-scrolled via the global
+   scroll-behavior). Clears the sticky desktop header so the teal bar lands
+   flush below it; mobile header is static, so the offset only applies ≥768px. */
 @media (width >= 768px) {
   .isi-full {
     scroll-margin-top: var(--header-height);

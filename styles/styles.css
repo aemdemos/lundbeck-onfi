@@ -901,14 +901,10 @@ main .section.dark a.button.secondary:focus {
 
 /* tablet (≥768px): Bootstrap-3 container 750px */
 @media (width >= 768px) {
-  /* header switches to the horizontal desktop layout here; the logo tab is
-     absolutely positioned, so the reserved bar height drops to match the nav's
-     real content height. The desktop nav rows sum to 158px (textbar 46 +
-     eyebrow 62 + main-list 42 + progress 8); using 159 over-reserved the box by
-     ~1px, and since the header background is transparent that leftover strip
-     showed the white page behind it — the 1px seam under the sticky header when
-     the ISI anchor landed. 158px makes the reserved box equal the content, so
-     the ISI teal bar lands flush against real header pixels. */
+  /* desktop bar = the nav rows' real content height (textbar 46 + eyebrow 62 +
+     main-list 42 + progress 8 = 158). 159 over-reserved by ~1px, and the
+     transparent header let that strip show white — the seam under the sticky
+     header where the ISI anchor lands. */
   :root {
     --nav-height: 158px;
   }
