@@ -18,24 +18,39 @@
 const FULL_ID = 'isi-full';
 
 /**
- * On pages with a `body.has-page-nav` sidebar, .isi-full's parent is shifted
- * asymmetrically (narrowed + pushed right) to make room for the sidebar
- * column, so the CSS breakout formula's `50%` (which assumes a centered
- * parent) no longer lands on the viewport's true center. This measures how
- * far the parent's horizontal CENTER has drifted from the viewport's center
- * — not the parent's raw left edge, which would overcorrect — and publishes
- * that delta as --isi-parent-offset for isi.css to subtract back out.
+ * The .isi-full band breaks out of its parent to span the full body width,
+ * anchored on the parent's own horizontal center (the CSS `50%`). That only
+ * lands on the content box's center when the parent is itself centered.
+ * Two layouts push the parent off-center: a `body.has-page-nav` sidebar (which
+ * pads `main > .section` asymmetrically to reserve the sidebar column) and a
+ * fragment-embedded ISI (whose section nests inside the host page's
+ * `.default-content-wrapper`, whose `margin: auto` resolves asymmetrically —
+ * e.g. the homepage). This measures how far the parent's horizontal CENTER has
+ * drifted from the content box's center — not the parent's raw left edge, which
+ * would overcorrect — and publishes that delta as --isi-parent-offset for
+ * isi.css to subtract back out. When the parent is genuinely centered the
+ * delta is 0, so this is a no-op on well-behaved pages.
  * @param {HTMLElement} full the .isi-full element
  */
-function updatePageNavOffset(full) {
-  if (!document.body.classList.contains('has-page-nav')) {
+function updateParentOffset(full) {
+  const parentRect = full.parentElement.getBoundingClientRect();
+  // A detached/off-document copy (e.g. before fragment.js splices the ISI in)
+  // reads all zeros; skip until it has a real box so we don't publish a bogus
+  // offset. The load/scroll/resize/ResizeObserver triggers re-run this once the
+  // fragment is attached and laid out.
+  if (parentRect.width === 0) {
     full.style.removeProperty('--isi-parent-offset');
     return;
   }
-  const parentRect = full.parentElement.getBoundingClientRect();
   const parentCenter = parentRect.left + (parentRect.width / 2);
-  const viewportCenter = window.innerWidth / 2;
-  full.style.setProperty('--isi-parent-offset', `${parentCenter - viewportCenter}px`);
+  // Measure against clientWidth (the layout content box), NOT innerWidth: the
+  // .isi-peek band centers on `100%` and the .isi-full margins resolve against
+  // `%`, both of which exclude a classic scrollbar. innerWidth INCLUDES it, so
+  // referencing it here would leave a ~half-scrollbar-width offset between the
+  // fixed peek and the in-flow band on browsers with a classic (non-overlay)
+  // scrollbar. clientWidth keeps the offset in the same space the margins use.
+  const contentCenter = document.documentElement.clientWidth / 2;
+  full.style.setProperty('--isi-parent-offset', `${parentCenter - contentCenter}px`);
 }
 
 /**
@@ -146,13 +161,14 @@ export default function decorate(block) {
      real content occupies the same pixels. Scrolling back up re-shows it.
      Default is visible, so it appears on load without needing a scroll.
 
-     updatePageNavOffset rides the same triggers: when the ISI is loaded via
-     the `fragment` block (e.g. embedded on /about-onfi), this whole function
-     first runs on a detached, off-document copy before fragment.js splices it
-     into the live page, so an immediate getBoundingClientRect() reads all
-     zeros. Re-running on load/scroll/resize/ResizeObserver — the same signals
-     that already self-heal the peek hand-off once the fragment is attached
-     and images above it settle — self-heals the offset the same way. */
+     updateParentOffset rides the same triggers: when the ISI is loaded via
+     the `fragment` block (e.g. embedded on the homepage or /about-onfi), this
+     whole function first runs on a detached, off-document copy before
+     fragment.js splices it into the live page, so an immediate
+     getBoundingClientRect() reads all zeros. Re-running on
+     load/scroll/resize/ResizeObserver — the same signals that already
+     self-heal the peek hand-off once the fragment is attached and images above
+     it settle — self-heals the offset the same way. */
   let ticking = false;
   const updateLayout = () => {
     ticking = false;
@@ -161,7 +177,7 @@ export default function decorate(block) {
     const peekTop = window.innerHeight - peek.offsetHeight;
     // Hand off once the in-flow ISI has risen to (or above) the docked strip.
     peek.style.visibility = inflowTop <= peekTop ? 'hidden' : 'visible';
-    updatePageNavOffset(full);
+    updateParentOffset(full);
   };
   const onScroll = () => {
     if (!ticking) {
