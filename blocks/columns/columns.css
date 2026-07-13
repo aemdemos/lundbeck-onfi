@@ -63,15 +63,6 @@ main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
   padding-inline: var(--columns-fact-text-padding-inline);
 }
 
-/* The desktop line arrangement is authored with per-line <br>s (matching the
-   source). Below 768 the wider strip should read as natural prose, so the breaks
-   are hidden and the text reflows. Each authored <br> carries a real space on at
-   least one side (see content), so hiding it leaves words correctly separated.
-   The ≥768 rule restores the breaks. */
-main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div > p br {
-  display: none;
-}
-
 /* reversed variant fine print — the trailing eligibility footnote in the
    free-trial card renders smaller than body copy (source treats it as fine
    print). Targets the last paragraph of the text column so authors keep a
@@ -197,11 +188,6 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
     min-height: var(--columns-fact-min-height);
     padding-block: 0;
     border-radius: var(--columns-fact-radius);
-  }
-
-  /* restore the authored per-line breaks now that the cards are narrow again */
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div > p br {
-    display: revert;
   }
 
   /* drop the mobile-only inline text padding — narrow columns use the full cell */
