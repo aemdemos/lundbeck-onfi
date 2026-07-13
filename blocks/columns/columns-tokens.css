@@ -15,6 +15,13 @@
   --columns-fact-padding-inline: 10px;
   --columns-fact-radius: 10px;
 
+  /* mobile only: extra inline padding on the fact-cell copy (on top of the cell's
+     10px) so the text sits inset ~42px from the full-bleed stripe edges — the most
+     breathing room that still keeps a short line like "LGS is a severe type of
+     epilepsy" on one line down to 360px (at 46px+ it wraps). Reset to 0 from 768px
+     up, where the cards become narrow fixed-width columns and use the full width. */
+  --columns-fact-text-padding-inline: 32px;
+
   /* Source constrains the grid so each of the 3 cards lands at ~297px:
      3 × 297 + 2 × 8px column gaps = 907px. Capping the grid keeps the cards
      from stretching full content width, which changed how the text wrapped. */
