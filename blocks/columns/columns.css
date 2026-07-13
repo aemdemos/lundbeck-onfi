@@ -22,15 +22,19 @@
    3 cells; `display: contents` on the row wrappers lets all 9 cells participate in
    one CSS grid so they wrap responsively. Scoped via :has() to the bg-* cells (this
    grid only). Colors / type are set elsewhere and intentionally untouched here.
-   Mobile-first: single column, cards hug their content (no fixed height). */
+   Mobile-first: single column, cards hug their content (no fixed height). Below 768
+   the source renders the cards as full-bleed edge-to-edge colour strips — no gap
+   between them, spanning the full viewport width (the section's 15px side padding is
+   negated). The ≥768 rules below restore the capped, gapped multi-column layout. */
 main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--columns-fact-row-gap) var(--columns-fact-col-gap);
+  gap: 0;
+  max-width: none;
 
-  /* cap the grid so the 3 cards land at the source's ~268px, but left-align it
-     under the (left-aligned) section title rather than centering it */
-  max-width: var(--columns-fact-max-width);
+  /* negate the section inner's 15px side padding to reach the viewport edges */
+  width: calc(100% + 30px);
+  margin-inline: -15px;
 }
 
 /* dissolve the authored row wrappers so their 9 cells become direct grid items */
@@ -44,8 +48,8 @@ main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 var(--columns-fact-padding-inline);
-  border-radius: var(--columns-fact-radius);
+  padding: 1em var(--columns-fact-padding-inline);
+  border-radius: 0;
 }
 
 /* single centered paragraph per cell — drop the default bottom margin so the
@@ -54,34 +58,13 @@ main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
   margin: 0;
 }
 
-/* mobile (<768): source renders the cards as full-bleed edge-to-edge colour strips
-   — no gap between them, square corners, spanning the full viewport width (the
-   section's 15px side padding is negated). Cards hug their content (no fixed
-   height, set on the base rule above; the ≥768 min-height override handles wider). */
-@media (width <= 767px) {
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
-    gap: 0;
-    max-width: none;
-
-    /* negate the section inner's 15px side padding to reach the viewport edges */
-    width: calc(100% + 30px);
-    margin-inline: -15px;
-  }
-
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green-light,
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal-dark {
-    border-radius: 0;
-    padding-block: 1em;
-  }
-
-  /* The desktop line arrangement is authored with per-line <br>s (matching the
-     source). On mobile the wider strip should read as natural prose, so the breaks
-     are hidden and the text reflows. Each authored <br> carries a real space on at
-     least one side (see content), so hiding it leaves words correctly separated. */
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div > p br {
-    display: none;
-  }
+/* The desktop line arrangement is authored with per-line <br>s (matching the
+   source). Below 768 the wider strip should read as natural prose, so the breaks
+   are hidden and the text reflows. Each authored <br> carries a real space on at
+   least one side (see content), so hiding it leaves words correctly separated.
+   The ≥768 rule restores the breaks. */
+main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div > p br {
+  display: none;
 }
 
 /* stats-callout variant — vyepti study/survey results callouts.
@@ -165,15 +148,28 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
   }
 
   /* fact grid — tablet (768–991): 2 columns with fixed-height cards (source
-     col-sm-6). Fixed row height returns here since cards sit side by side. */
+     col-sm-6). The grid is capped and left-aligned under the section title, gets
+     its row/col gap back, and drops the mobile full-bleed negative margins. Fixed
+     row height returns here since cards sit side by side. */
   main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
     grid-template-columns: 1fr 1fr;
+    gap: var(--columns-fact-row-gap) var(--columns-fact-col-gap);
+    max-width: var(--columns-fact-max-width);
+    width: auto;
+    margin-inline: 0;
   }
 
   main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
   main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal-dark,
   main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green-light {
     min-height: var(--columns-fact-min-height);
+    padding-block: 0;
+    border-radius: var(--columns-fact-radius);
+  }
+
+  /* restore the authored per-line breaks now that the cards are narrow again */
+  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div > p br {
+    display: revert;
   }
 
   .columns.divider.columns-2-cols > div {

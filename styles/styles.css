@@ -124,6 +124,13 @@
   --heading-font-size-s: 16px;
   --heading-font-size-xs: 14px;
 
+  /* Display-heading scale — the source's ".headline-2" light-display treatment
+     (Avenir Light, teal by default). Responsive: 22px on mobile → 28px from the
+     768px breakpoint up. Used for section titles like "What is LGS?" and
+     "Facts About LGS". Mobile value is the base; the ≥768 media query bumps it. */
+  --display-heading-font-size: 22px;
+  --display-heading-line-height: 1.28;
+
   /* layout — source content container is 1100px wide inside a 1400px body cap;
      tablet (768–991px) constrains content to 750px (Bootstrap-3 grid) */
   --max-width-site: 1100px;
@@ -798,6 +805,27 @@ main .section:not([data-background-color]):has(+ .section[data-background-color]
   padding-bottom: var(--section-padding-vertical);
 }
 
+/* Display heading — the source's reusable ".headline-2" treatment: Avenir Light
+   at the responsive display size (22px mobile → 28px desktop, bumped in the ≥768
+   media query), centered on mobile and left-aligned from tablet up. Teal by
+   default; authors add a color span-tag class for variants (e.g.
+   [[headline-2,color-green]…] → green). Applied via the span-tag system on the
+   heading text, matching how the source markup nests the class on an inner span.
+   Reused across pages (e.g. "What is LGS?", "Facts About LGS") — do NOT add
+   page-specific heading overrides; extend this class instead. */
+.headline-2 {
+  font-family: var(--light-font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--display-heading-font-size);
+  line-height: var(--display-heading-line-height);
+}
+
+/* alignment lives on the block heading that wraps a .headline-2 span (centered
+   on mobile; the ≥768 rule flips it left) */
+main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
+  text-align: center;
+}
+
 /* section metadata - light */
 main .section.light,
 main .section.highlight {
@@ -896,6 +924,17 @@ main .section.dark a.button.secondary:focus {
 
   main > .section > div {
     max-width: var(--max-width-tablet);
+  }
+
+  /* display heading (.headline-2) scales up to 28px/1.2em and left-aligns from
+     tablet up (22px/centered on mobile) */
+  :root {
+    --display-heading-font-size: 28px;
+    --display-heading-line-height: 1.2;
+  }
+
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
+    text-align: left;
   }
 }
 
