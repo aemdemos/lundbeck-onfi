@@ -938,7 +938,6 @@ function decorateNestedSections(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateIconsAndBullets(main);
@@ -1124,7 +1123,6 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
   const importDelayed = () => import('./delayed.js');
 
   if ('requestIdleCallback' in window) {
@@ -1156,7 +1154,6 @@ export async function loadPage() {
 
 // DA UE Editor support before page load
 if (window.location.hostname.includes('ue.da.live')) {
-  // eslint-disable-next-line import/no-unresolved
   await import(`${window.hlx.codeBasePath}/ue/scripts/ue.js`).then(({ default: ue }) => ue());
 }
 loadPage();
