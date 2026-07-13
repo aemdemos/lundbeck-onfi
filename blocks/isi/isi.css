@@ -1,221 +1,301 @@
 @import url('./isi-tokens.css');
 
-/* ── In-page ISI section (matches vyepti.com full-width divider) ─ */
-main .section.isi-container { /* @boilerplate */
-  border-top: var(--isi-section-border-width) solid var(--isi-section-border-color); /* @boilerplate */
+/* =====================================================================
+   ISI (Important Safety Information) — shared structural / layout styles
+   ---------------------------------------------------------------------
+   This file is SITE-AGNOSTIC. It contains only structure, layout, and
+   default behaviour, written to be driven by the design tokens defined
+   in isi-tokens.css. To adapt the ISI for a new site, you should only
+   need to edit isi-tokens.css — not this file.
+
+   Two copies share the same markup (built by isi.js from two authored
+   rows):
+   - .isi-full  → the full ISI in normal flow (toggle "– LESS")
+   - .isi-peek  → the fixed peek banner docked to the viewport bottom
+                  ("+ MORE")
+   ===================================================================== */
+
+/* ── Shared: teal header bar ─────────────────────────────────── */
+.isi-header {
+  position: relative;
+  background-color: var(--isi-header-bg);
+  min-height: var(--isi-header-height);
+  padding: 0;
 }
 
-/* ── In-page inline content (Row 2) ───────────────────────────── */
-main .isi .isi-inline { /* @boilerplate */
-  display: block; /* @boilerplate */
-  padding-bottom: var(--isi-inline-padding-bottom); /* @boilerplate */
+.isi-header .isi-title {
+  margin: 0;
+  color: var(--isi-title-color);
+  font-family: var(--isi-title-font-family);
+  font-size: var(--isi-title-font-size);
+  font-weight: var(--isi-title-font-weight);
+  line-height: var(--isi-header-height);
 }
 
-main .isi .isi-inline > div { /* @boilerplate */
-  padding: 0; /* @boilerplate */
+/* MORE / LESS toggle — floats right on the header bar */
+.isi-header .isi-toggle {
+  float: right;
+  display: flex;
+  align-items: center;
+  gap: var(--isi-toggle-gap);
+  color: var(--isi-toggle-color);
+  font-family: var(--isi-toggle-font-family);
+  font-size: var(--isi-toggle-font-size);
+  font-weight: var(--isi-toggle-font-weight);
+  line-height: var(--isi-toggle-line-height);
+  text-decoration: none;
 }
 
-main .isi p,
-main .isi li {
+.isi-header .isi-toggle:hover {
+  text-decoration: none;
+}
+
+/* glyph on a circular badge */
+.isi-header .isi-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--isi-toggle-icon-size);
+  height: var(--isi-toggle-icon-size);
+  border-radius: 50%;
+  background: var(--isi-toggle-icon-bg);
+  color: var(--isi-toggle-icon-color);
+  font-family: var(--isi-toggle-icon-font-family);
+  font-size: var(--isi-toggle-icon-glyph-size);
+  font-weight: var(--isi-toggle-icon-font-weight);
+  font-style: normal;
+  line-height: 1;
+}
+
+/* ── Shared: ISI body typography ─────────────────────────────── */
+.isi-body {
+  color: var(--isi-body-color);
+}
+
+.isi-body p {
+  color: var(--isi-body-color);
+  font-family: var(--body-font-family);
   font-size: var(--isi-body-font-size);
-  color: var(--isi-text-color); /* @boilerplate */
-  line-height: var(--isi-line-height); /* @boilerplate */
+  line-height: var(--isi-body-line-height);
+  margin: var(--isi-body-paragraph-margin);
 }
 
-main .isi li { /* @boilerplate */
-  line-height: var(--isi-list-line-height); /* @boilerplate */
-  margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
-  padding-top: var(--isi-list-item-padding-y);
-  padding-bottom: var(--isi-list-item-padding-y);
+/* Some list items wrap their text in a <p> (authoring artefact). The source
+   renders these flush like plain list text, so the paragraph must not add its
+   block margins — that's what inflates the gaps between list rows. */
+.isi-body li p {
+  margin: 0;
 }
 
-/* ISI lists use the global teal "•" bullet (styles/styles.css) — the source
-   renders the same teal markers here as in the rest of the body. */
-
-main .isi h3 { /* @boilerplate */
-  color: var(--isi-heading-color); /* @boilerplate */
-  font-size: var(--isi-heading-font-size); /* @boilerplate */
-  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
-  line-height: var(--isi-heading-line-height); /* @boilerplate */
-  margin-bottom: var(--isi-heading-margin-bottom); /* @boilerplate */
+.isi-body h3 {
+  color: var(--isi-body-color);
+  font-family: var(--bold-font-family);
+  font-size: var(--isi-body-font-size);
+  font-weight: var(--isi-body-heading-font-weight);
+  line-height: var(--isi-body-heading-line-height);
+  margin: var(--isi-body-heading-margin);
 }
 
-main .isi a { /* @boilerplate */
-  text-decoration: underline; /* @boilerplate */
+.isi-body a {
+  color: var(--isi-link-color);
+  text-decoration: none;
 }
 
-main .isi a:hover { /* @boilerplate */
-  text-decoration: underline; /* @boilerplate */
+/* Links default to --isi-link-color. To render an individual link in the
+   alternate colour instead, authors wrap it with the span bracket syntax in
+   the document: [[isi-link-teal]link text]. The <strong> case covers links
+   whose label is bold. Keep this in sync with --isi-link-color-alt. */
+.isi-body .isi-link-teal a,
+.isi-body .isi-link-teal a strong {
+  color: var(--isi-link-color-alt);
 }
 
-/* ── Fixed bottom bar (abbreviated content – Row 1) ──────────── */
-.isi-bar { /* @boilerplate */
-  position: fixed; /* @boilerplate */
-  bottom: 0; /* @boilerplate */
-  left: 0; /* @boilerplate */
-  right: 0; /* @boilerplate */
-  z-index: var(--isi-bar-z-index); /* @boilerplate */
-  background-color: var(--isi-bar-background); /* @boilerplate */
-  border-top: var(--isi-bar-border-width) solid var(--isi-bar-border-color); /* @boilerplate */
-  height: var(--isi-bar-height); /* @boilerplate */
-  overflow: hidden; /* @boilerplate */
-  padding: var(--isi-bar-padding); /* @boilerplate */
-  transition: height var(--isi-bar-height-transition-duration) var(--isi-bar-height-transition-easing); /* @boilerplate */
-  color: var(--isi-text-color); /* @boilerplate */
-  cursor: pointer; /* @boilerplate */
+.isi-body strong,
+.isi-body b {
+  font-family: var(--bold-font-family);
+  font-weight: var(--isi-body-bold-font-weight);
 }
 
-.isi-bar.isi-bar-hidden { /* @boilerplate */
-  display: none; /* @boilerplate */
+/* Lists — custom square bullets via ::before (source uses no native markers);
+   nested lists indent a further step. */
+.isi-body ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
 }
 
-/* Expanded state */
-.isi-bar.full { /* @boilerplate */
-  height: auto; /* @boilerplate */
-  max-height: var(--isi-bar-expanded-max-height); /* @boilerplate */
-  overflow-y: auto; /* @boilerplate */
-  z-index: var(--isi-bar-expanded-z-index); /* @boilerplate */
-  cursor: default; /* @boilerplate */
+.isi-body li {
+  position: relative;
+  padding: var(--isi-list-item-gap) 0 var(--isi-list-item-gap) var(--isi-list-indent);
+  margin: 0;
+  font-size: var(--isi-body-font-size);
+  line-height: var(--isi-body-line-height);
+  color: var(--isi-body-color);
 }
 
-/* Inner content wrapper – two-column on desktop */
-.isi-bar-content { /* @boilerplate */
-  max-width: var(--isi-content-max-width); /* @boilerplate */
-  margin: 0 auto; /* @boilerplate */
-  display: flex; /* @boilerplate */
-  flex-wrap: wrap; /* @boilerplate */
-  gap: var(--isi-bar-content-gap); /* @boilerplate */
+/* Top-level statements get extra separation (source); nested sub-points stay
+   tight (only their padding). */
+.isi-body > ul > li {
+  margin-bottom: var(--isi-list-top-gap);
 }
 
-.isi-bar-col { /* @boilerplate */
-  flex: 1 1 var(--isi-bar-col-flex-basis); /* @boilerplate */
-  min-width: 0; /* @boilerplate */
+/* Round bullet — only on NESTED items. In the source, the top-level
+   statements of the ISI list carry no bullet (they read as indented
+   statements); only their sub-points are bulleted. A nested item is any <li>
+   that has an ancestor <li> (i.e. `li li`). The extra `.isi-full`/`.isi-peek`
+   class raises specificity above the global `main ul:not(...) > li::before`
+   rule in styles.css (0,1,4) so our rules win over the global bullet glyph. */
+.isi-full .isi-body li li::before,
+.isi-peek .isi-body li li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--isi-bullet-offset-top);
+  width: var(--isi-bullet-size);
+  height: var(--isi-bullet-size);
+  background: var(--isi-bullet-color);
+  border-radius: 50%;
 }
 
-.isi-bar-col h3 { /* @boilerplate */
-  color: var(--isi-bar-heading-color, var(--isi-heading-color)); /* @boilerplate */
-  font-size: var(--isi-heading-font-size); /* @boilerplate */
-  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
-  line-height: var(--isi-heading-line-height); /* @boilerplate */
-  padding-bottom: var(--isi-bar-heading-padding-bottom); /* @boilerplate */
-  margin: 0; /* @boilerplate */
+/* Top-level list statements have no bullet (source). This also overrides the
+   global `main ul:not(...) > li::before` glyph for those top-level items. */
+.isi-full .isi-body > ul > li::before,
+.isi-peek .isi-body > ul > li::before {
+  content: none;
 }
 
-.isi-bar-col p { /* @boilerplate */
-  font-size: var(--body-font-size-s); /* @boilerplate */
-  line-height: var(--isi-bar-paragraph-line-height); /* @boilerplate */
-  padding-bottom: var(--isi-bar-paragraph-padding-bottom); /* @boilerplate */
-  margin: 0; /* @boilerplate */
+.isi-body li > ul {
+  margin-top: var(--isi-list-item-gap);
+  padding-left: var(--isi-list-indent);
 }
 
-.isi-bar-col p b,
-.isi-bar-col p strong { /* @boilerplate */
-  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
+/* ── WARNING box + indented safety statement. ──
+   In the source these share one table cell inset from the body column: the
+   warning lines are centred, the statement below them is left-aligned. The
+   AEM pipeline only keeps ONE paragraph inside a <blockquote> (any following
+   paragraph is hoisted out to a sibling), so the warning stays in the centred
+   blockquote and the trailing statement is the paragraph right after it —
+   indented to line up with the warning, matching the source. The indent is
+   visible because that following paragraph is left-aligned. */
+.isi-body blockquote {
+  margin: var(--isi-body-paragraph-margin);
+  padding: var(--isi-warning-padding);
+  text-align: center;
 }
 
-.isi-bar-col ul { /* @boilerplate */
-  padding-left: var(--isi-bar-list-padding-left); /* @boilerplate */
-  margin: 0 0 var(--isi-bar-list-margin-bottom); /* @boilerplate */
+.isi-body blockquote p {
+  margin: var(--isi-warning-text-margin);
+  text-align: center;
 }
 
-.isi-bar-col li { /* @boilerplate */
-  font-size: var(--body-font-size-s); /* @boilerplate */
-  line-height: var(--isi-list-line-height); /* @boilerplate */
-  margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
+.isi-body blockquote + p {
+  padding-left: var(--isi-warning-statement-indent);
 }
 
-.isi-bar-col a { /* @boilerplate */
-  color: var(--link-color); /* @boilerplate */
-  font-weight: var(--isi-bar-link-font-weight); /* @boilerplate */
-  font-size: var(--body-font-size-s); /* @boilerplate */
-  text-decoration: underline; /* @boilerplate */
+/* NOTE for libs: rendering <em> in italic (and cancelling any inherited bold)
+   is treated as a structural default of the WARNING box rather than a
+   site-tunable value — every site's regulatory copy uses <em> the same way. */
+.isi-body blockquote em {
+  font-style: italic;
+  font-weight: normal;
 }
 
-.isi-bar-col a:hover { /* @boilerplate */
-  color: var(--link-hover-color); /* @boilerplate */
-  text-decoration: underline; /* @boilerplate */
+/* The peek copy shows the bordered warning box (source border=1 on the sticky
+   version); the full in-flow copy is borderless. */
+.isi-peek .isi-body blockquote {
+  border: var(--isi-warning-border);
 }
 
-/* ── Toggle button (+/−) ─────────────────────────────────────── */
-.isi-bar-toggle { /* @boilerplate */
-  position: absolute; /* @boilerplate */
-  right: var(--isi-toggle-right); /* @boilerplate */
-  top: var(--isi-toggle-top); /* @boilerplate */
-  background: none; /* @boilerplate */
-  border: var(--isi-toggle-border-width) solid var(--isi-toggle-color); /* @boilerplate */
-  border-radius: 50%; /* @boilerplate */
-  width: var(--isi-toggle-size); /* @boilerplate */
-  height: var(--isi-toggle-size); /* @boilerplate */
-  padding: 0; /* @boilerplate */
-  cursor: pointer; /* @boilerplate */
-  display: flex; /* @boilerplate */
-  align-items: center; /* @boilerplate */
-  justify-content: center; /* @boilerplate */
-  color: var(--isi-toggle-color); /* @boilerplate */
-  transition: color var(--isi-toggle-transition-duration), border-color var(--isi-toggle-transition-duration); /* @boilerplate */
-  z-index: var(--isi-toggle-z-index); /* @boilerplate */
+/* ── Full in-flow ISI ────────────────────────────────────────── */
+
+/* The ISI may be authored inside a max-width content wrapper, but its header
+   band must span the full BODY width (capped at --max-width-outer, centered)
+   like the source — NOT the whole browser window. This breaks the ISI out of
+   any constraining ancestor to exactly the body box. Because the content
+   wrapper is always horizontally centred within the body, `50%` equals the
+   body centre, so `50% − min(50vw, bodyMax/2)` lands the edge on the body
+   edge (or the window edge when the viewport is narrower than the body cap). */
+.isi-full {
+  width: min(100vw, var(--max-width-outer));
+  margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2));
+  margin-right: calc(50% - min(50vw, var(--max-width-outer) / 2));
+  background: var(--isi-peek-bg);
 }
 
-.isi-bar-toggle:hover { /* @boilerplate */
-  color: var(--isi-toggle-hover-color); /* @boilerplate */
-  border-color: var(--isi-toggle-hover-color); /* @boilerplate */
-  background: none; /* @boilerplate */
+/* On pages with a page-nav sidebar, .isi-full's parent is shifted
+   asymmetrically to make room for the sidebar column, so the `50%` above no
+   longer lands on the viewport's true center. isi.js measures how far the
+   parent's center has drifted from the viewport's center and publishes it as
+   --isi-parent-offset on this element; subtracting/adding it here pulls the
+   breakout back to the true viewport edges. The var() fallback of 0px makes
+   this a no-op wherever the property isn't set (every page without the
+   sidebar), so normal-page behavior is unchanged. */
+body.has-page-nav .isi-full {
+  margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
+  margin-right: calc(50% - min(50vw, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
 }
 
-/* Plus icon (collapsed) */
-.isi-bar-toggle-icon { /* @boilerplate */
-  display: block; /* @boilerplate */
-  width: var(--isi-toggle-icon-size); /* @boilerplate */
-  height: var(--isi-toggle-icon-size); /* @boilerplate */
-  position: relative; /* @boilerplate */
+/* Header spans the full body-width bar; its title/toggle stay aligned to the
+   centred content column via a responsive side inset. */
+.isi-full .isi-header {
+  padding-left: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-right: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
 }
 
-.isi-bar-toggle-icon::before,
-.isi-bar-toggle-icon::after { /* @boilerplate */
-  content: ''; /* @boilerplate */
-  position: absolute; /* @boilerplate */
-  background-color: currentcolor; /* @boilerplate */
-  border-radius: var(--isi-toggle-icon-bar-radius); /* @boilerplate */
+/* Body copy stays contained to the centered content column. */
+.isi-full .isi-body {
+  max-width: var(--isi-content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 15px var(--isi-full-body-padding-bottom);
 }
 
-/* Horizontal bar (always visible) */
-.isi-bar-toggle-icon::before { /* @boilerplate */
-  top: 50%; /* @boilerplate */
-  left: 0; /* @boilerplate */
-  width: 100%; /* @boilerplate */
-  height: var(--isi-toggle-icon-bar-thickness); /* @boilerplate */
-  transform: translateY(-50%); /* @boilerplate */
+/* ── Fixed peek banner ───────────────────────────────────────────
+   Pinned to the viewport bottom, inset to the body box (capped so it never
+   exceeds the body max-width). Uses 100% (not 100vw) so the inset is
+   measured in the same scrollbar-excluded space the in-flow full ISI lays
+   out in — otherwise, on a browser with a classic scrollbar, 100vw includes
+   the scrollbar width and the fixed band ends up wider/offset from the full
+   ISI band during the scroll hand-off. No box-shadow (source has none). The
+   visible strip (header + top of the warning box) peeks above the fold; the
+   rest is clipped by overflow. */
+.isi-peek {
+  position: fixed;
+  left: max(0px, calc((100% - var(--max-width-outer)) / 2));
+  right: max(0px, calc((100% - var(--max-width-outer)) / 2));
+  bottom: 0;
+  z-index: var(--isi-peek-z-index);
+  max-height: 60vh;
+  overflow: hidden;
+  background: var(--isi-peek-bg);
 }
 
-/* Vertical bar (hidden when expanded → becomes minus) */
-.isi-bar-toggle-icon::after { /* @boilerplate */
-  left: 50%; /* @boilerplate */
-  top: 0; /* @boilerplate */
-  width: var(--isi-toggle-icon-bar-thickness); /* @boilerplate */
-  height: 100%; /* @boilerplate */
-  transform: translateX(-50%); /* @boilerplate */
-  transition: opacity var(--isi-toggle-transition-duration); /* @boilerplate */
+/* The peek's docked strip height must match the source: header + intro
+   heading + one-sentence description. The description paragraph's own
+   bottom margin supplies the gap to the fold, so the body adds no extra
+   bottom padding (which would otherwise inflate the strip). */
+.isi-peek .isi-body {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-.isi-bar.full .isi-bar-toggle-icon::after { /* @boilerplate */
-  opacity: 0; /* @boilerplate */
+/* the peek banner's header/body align its title/toggle to the content column
+   (same responsive inset as the full copy); on mobile it's full-bleed */
+.isi-peek .isi-header,
+.isi-peek .isi-body {
+  padding-left: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-right: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
 }
 
-/* ── Mobile ≤ 768px ──────────────────────────────────────────── */
-@media (width <= 768px) { /* @boilerplate */
-  .isi-bar-content { /* @boilerplate */
-    flex-direction: column; /* @boilerplate */
-    padding: 0 var(--isi-bar-content-padding-x-mobile); /* @boilerplate */
-  }
-
-  .isi-bar-col { /* @boilerplate */
-    flex: 1 1 100%; /* @boilerplate */
-  }
-}
-
-/* ── Desktop ≥ 900px ─────────────────────────────────────────── */
-@media (width >= 992px) { /* @boilerplate */
-  .isi-bar-content { /* @boilerplate */
-    padding: 0 var(--isi-bar-content-padding-x-desktop); /* @boilerplate */
+/* ── Mobile: hide the MORE/LESS label, keep just the +/− glyph ──
+   NOTE for libs: 768px is kept as a literal breakpoint (matching the rest of
+   this block and isi-tokens.css) rather than one of the project's standard
+   600/900/1200 breakpoints, to preserve the existing onfi.com hand-off point
+   pixel-for-pixel. CSS custom properties cannot be used inside a media query
+   condition, so this value can't be tokenized either — flagging in case libs
+   wants to standardize it when porting. */
+@media (width <= 768px) {
+  .isi-header .isi-toggle-label {
+    display: none;
   }
 }

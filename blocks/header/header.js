@@ -96,8 +96,13 @@ export default async function decorate(block) {
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
   // production (DA/EDS) serves the nav at navPath; local aem-up serves it under
-  // /content. Try production first, then fall back to the local path.
-  const fragment = (await loadFragment(navPath)) || (await loadFragment('/content/nav'));
+  // /content (and proxies navPath to the published site). Locally prefer the
+  // /content fragment so unpublished local edits are picked up; production uses
+  // navPath first and falls back to /content.
+  const isLocal = window.location.hostname === 'localhost';
+  const fragment = isLocal
+    ? (await loadFragment('/content/nav')) || (await loadFragment(navPath))
+    : (await loadFragment(navPath)) || (await loadFragment('/content/nav'));
 
   block.textContent = '';
   const nav = document.createElement('nav');
@@ -132,7 +137,7 @@ export default async function decorate(block) {
   if (eyebrowSection) {
     const brand = document.createElement('div');
     brand.className = 'nav-brand';
-    const logoLink = eyebrowSection.querySelector('p a');
+    const logoLink = eyebrowSection.querySelector('a:has(picture, img)') || eyebrowSection.querySelector('p a');
     if (logoLink) brand.append(logoLink);
 
     brandControls = document.createElement('div');
