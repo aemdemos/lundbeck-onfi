@@ -208,31 +208,24 @@
 
 /* ── Full in-flow ISI ────────────────────────────────────────── */
 
-/* The ISI may be authored inside a max-width content wrapper, but its header
-   band must span the full BODY width (capped at --max-width-outer, centered)
-   like the source — NOT the whole browser window. This breaks the ISI out of
-   any constraining ancestor to exactly the body box. Because the content
-   wrapper is always horizontally centred within the body, `50%` equals the
-   body centre, so `50% − min(50vw, bodyMax/2)` lands the edge on the body
-   edge (or the window edge when the viewport is narrower than the body cap). */
+/* Full-bleed teal band, capped to the body box (not the window), centred like
+   the source. The `50%` anchors on the parent's centre; --isi-parent-offset
+   (set by isi.js) corrects for an off-centre parent — page-nav sidebar or a
+   fragment-embedded ISI — and is 0 (no-op) when the parent is centred. */
 .isi-full {
   width: min(100vw, var(--max-width-outer));
-  margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2));
-  margin-right: calc(50% - min(50vw, var(--max-width-outer) / 2));
+  margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
+  margin-right: calc(50% - min(50vw, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
   background: var(--isi-peek-bg);
 }
 
-/* On pages with a page-nav sidebar, .isi-full's parent is shifted
-   asymmetrically to make room for the sidebar column, so the `50%` above no
-   longer lands on the viewport's true center. isi.js measures how far the
-   parent's center has drifted from the viewport's center and publishes it as
-   --isi-parent-offset on this element; subtracting/adding it here pulls the
-   breakout back to the true viewport edges. The var() fallback of 0px makes
-   this a no-op wherever the property isn't set (every page without the
-   sidebar), so normal-page behavior is unchanged. */
-body.has-page-nav .isi-full {
-  margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
-  margin-right: calc(50% - min(50vw, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
+/* Anchor-jump landing (nav link → #isi-full, smooth-scrolled via the global
+   scroll-behavior). Clears the sticky desktop header so the teal bar lands
+   flush below it; mobile header is static, so the offset only applies ≥768px. */
+@media (width >= 768px) {
+  .isi-full {
+    scroll-margin-top: var(--header-height);
+  }
 }
 
 /* Header spans the full body-width bar; its title/toggle stay aligned to the

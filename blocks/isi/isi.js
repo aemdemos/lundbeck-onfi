@@ -18,24 +18,23 @@
 const FULL_ID = 'isi-full';
 
 /**
- * On pages with a `body.has-page-nav` sidebar, .isi-full's parent is shifted
- * asymmetrically (narrowed + pushed right) to make room for the sidebar
- * column, so the CSS breakout formula's `50%` (which assumes a centered
- * parent) no longer lands on the viewport's true center. This measures how
- * far the parent's horizontal CENTER has drifted from the viewport's center
- * — not the parent's raw left edge, which would overcorrect — and publishes
- * that delta as --isi-parent-offset for isi.css to subtract back out.
+ * Publishes --isi-parent-offset: how far .isi-full's parent centre has drifted
+ * from the content-box centre, so isi.css can correct the full-bleed breakout
+ * when the parent isn't centred (page-nav sidebar or a fragment-embedded ISI).
  * @param {HTMLElement} full the .isi-full element
  */
-function updatePageNavOffset(full) {
-  if (!document.body.classList.contains('has-page-nav')) {
+function updateParentOffset(full) {
+  const parentRect = full.parentElement.getBoundingClientRect();
+  // Detached fragment copy (before fragment.js attaches it) reads 0; skip.
+  if (parentRect.width === 0) {
     full.style.removeProperty('--isi-parent-offset');
     return;
   }
-  const parentRect = full.parentElement.getBoundingClientRect();
   const parentCenter = parentRect.left + (parentRect.width / 2);
-  const viewportCenter = window.innerWidth / 2;
-  full.style.setProperty('--isi-parent-offset', `${parentCenter - viewportCenter}px`);
+  // clientWidth (not innerWidth) — excludes the scrollbar, matching the space
+  // the peek's 100% and .isi-full's % margins use; avoids a ~½-scrollbar shift.
+  const contentCenter = document.documentElement.clientWidth / 2;
+  full.style.setProperty('--isi-parent-offset', `${parentCenter - contentCenter}px`);
 }
 
 /**
@@ -146,7 +145,7 @@ export default function decorate(block) {
      real content occupies the same pixels. Scrolling back up re-shows it.
      Default is visible, so it appears on load without needing a scroll.
 
-     updatePageNavOffset rides the same triggers: when the ISI is loaded via
+     updateParentOffset rides the same triggers: when the ISI is loaded via
      the `fragment` block (e.g. embedded on /about-onfi), this whole function
      first runs on a detached, off-document copy before fragment.js splices it
      into the live page, so an immediate getBoundingClientRect() reads all
@@ -161,7 +160,7 @@ export default function decorate(block) {
     const peekTop = window.innerHeight - peek.offsetHeight;
     // Hand off once the in-flow ISI has risen to (or above) the docked strip.
     peek.style.visibility = inflowTop <= peekTop ? 'hidden' : 'visible';
-    updatePageNavOffset(full);
+    updateParentOffset(full);
   };
   const onScroll = () => {
     if (!ticking) {

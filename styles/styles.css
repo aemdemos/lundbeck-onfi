@@ -1025,12 +1025,14 @@ main .section.dark a.button.secondary:focus {
 
 /* tablet (≥768px): Bootstrap-3 container 750px */
 @media (width >= 768px) {
-  /* header switches to the horizontal desktop layout here; the logo tab is
-     absolutely positioned, so the reserved bar height drops to 159px.
+ /* desktop bar = the nav rows' real content height (textbar 46 + eyebrow 62 +
+     main-list 42 + progress 8 = 158). 159 over-reserved by ~1px, and the
+     transparent header let that strip show white — the seam under the sticky
+     header where the ISI anchor lands.
      Facts grid type scales back up to the source's larger tablet/desktop sizes
      (cell 22/28, emphasis 30/32) now that cards sit in 2–3 fixed-height columns. */
   :root {
-    --nav-height: 159px;
+    --nav-height: 158px;
     --fact-font-size: 22px;
     --fact-line-height: 28px;
     --fact-emphasis-font-size: 30px;
