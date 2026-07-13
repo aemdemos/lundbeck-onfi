@@ -70,6 +70,8 @@ main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
    The ≥768 rule restores the breaks. */
 main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div > p br {
   display: none;
+}
+
 /* reversed variant fine print — the trailing eligibility footnote in the
    free-trial card renders smaller than body copy (source treats it as fine
    print). Targets the last paragraph of the text column so authors keep a
