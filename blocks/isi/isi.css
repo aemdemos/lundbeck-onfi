@@ -232,6 +232,19 @@
   background: var(--isi-peek-bg);
 }
 
+/* Anchor-jump landing offset. The "Important Safety Information" nav link points
+   at #isi-full and relies on the global `scroll-behavior: smooth` (styles.css)
+   for the smooth scroll, matching the source. On desktop the header is sticky
+   (≥768px, see header.css), so without an offset the ISI would land BEHIND it;
+   scroll-margin-top clears the header height so the teal ISI bar lands flush
+   just below it, exactly like the source. Mobile header is static/scrolls away,
+   so no offset is needed (and would leave a gap) below 768px. */
+@media (width >= 768px) {
+  .isi-full {
+    scroll-margin-top: var(--header-height);
+  }
+}
+
 /* Header spans the full body-width bar; its title/toggle stay aligned to the
    centred content column via a responsive side inset. */
 .isi-full .isi-header {
