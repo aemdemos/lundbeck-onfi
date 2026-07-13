@@ -29,6 +29,24 @@
   --brand-yellow: #ffd212;
   --brand-yellow-light: #ffdc45;
 
+  /* Facts About LGS colors (LGS page stat grid) */
+  --fact-teal-dark: #1e6a71;
+  --fact-green: #7fa73a;
+  --fact-cyan: #01c6d8;
+  --fact-green-bright: #abda5a;
+  --fact-teal-deep: #04656e;
+
+  /* Facts About LGS type scale (LGS page stat grid — source-exact, non-standard
+     to this grid so kept as feature tokens rather than added to the global scale).
+     Mobile-first: source shrinks the fact text on small screens (cell 18.33/20,
+     emphasis 25/32) so 1-col cards stay compact; desktop values restored ≥768px. */
+  --fact-font-size: 18.33px;
+  --fact-font-weight: 200;
+  --fact-line-height: 20px;
+  --fact-emphasis-font-size: 25px;
+  --fact-emphasis-font-weight: 800;
+  --fact-emphasis-line-height: 32px;
+
   /* brand semantic aliases */
   --brand-primary: var(--brand-teal);
   --brand-primary-light: var(--brand-teal-light);
@@ -68,8 +86,11 @@
      is the portable substitute that actually renders for visitors without Avenir
      — same approach used by the header. The avenir-*-fallback faces (size-adjusted
      local Avenir/Arial) sit after Nunito Sans to reduce CLS for users who happen
-     to have a local Avenir installed. */
-  --body-font-family: "Avenir LT W01_55 Roman", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+     to have a local Avenir installed.
+     Body copy uses the Light (35) cut — the consumer pages (LGS/About/Savings)
+     render body paragraphs in Avenir Light on the source; Roman looked too heavy.
+     (The dense HCP page uses Roman for body — handled as a per-page override there.) */
+  --body-font-family: "Avenir LT W01_35 Light", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
 
   /* Source content headings (H2–H4) use the Avenir Roman cut at weight 500 — a
      lighter "Medium" look, NOT the Heavy 800 cut. Keep the Roman name first so a
@@ -104,6 +125,13 @@
   --heading-font-size-m: 20px;
   --heading-font-size-s: 16px;
   --heading-font-size-xs: 14px;
+
+  /* Display-heading scale — the source's ".headline-2" light-display treatment
+     (Avenir Light, teal by default). Responsive: 22px on mobile → 28px from the
+     768px breakpoint up. Used for section titles like "What is LGS?" and
+     "Facts About LGS". Mobile value is the base; the ≥768 media query bumps it. */
+  --display-heading-font-size: 22px;
+  --display-heading-line-height: 1.28;
 
   /* layout — source content container is 1100px wide inside a 1400px body cap;
      tablet (768–991px) constrains content to 750px (Bootstrap-3 grid) */
@@ -218,6 +246,59 @@ html {
   color: var(--brand-secondary);
 
   --link-color: var(--brand-secondary);
+}
+
+/* Facts About LGS colors — LGS stat-grid cell backgrounds + emphasis text.
+   Cell background classes apply via [classname] cell code; the white cell text
+   is inherited by the paragraphs, then emphasis words override via [[classname]]. */
+div.bg-teal {
+  background-color: var(--brand-teal);
+  color: var(--background-color);
+}
+
+div.bg-teal-dark {
+  background-color: var(--fact-teal-dark);
+  color: var(--background-color);
+}
+
+div.bg-green-light {
+  background-color: var(--fact-green);
+  color: var(--background-color);
+}
+
+.color-cyan {
+  color: var(--fact-cyan);
+}
+
+.color-green-bright {
+  color: var(--fact-green-bright);
+}
+
+.color-teal-deep {
+  color: var(--fact-teal-deep);
+}
+
+.color-green {
+  color: var(--brand-green);
+}
+
+/* Facts About LGS type scale — source renders each fact cell at 22px/200 with the
+   emphasis words bumped to 30px/800. Scoped to the stat-grid cells (their bg-*
+   classes only appear in this grid); color-only classes above are untouched. */
+main .columns div.bg-teal p,
+main .columns div.bg-teal-dark p,
+main .columns div.bg-green-light p {
+  font-size: var(--fact-font-size);
+  font-weight: var(--fact-font-weight);
+  line-height: var(--fact-line-height);
+}
+
+main .columns div.bg-teal p strong,
+main .columns div.bg-teal-dark p strong,
+main .columns div.bg-green-light p strong {
+  font-size: var(--fact-emphasis-font-size);
+  font-weight: var(--fact-emphasis-font-weight);
+  line-height: var(--fact-emphasis-line-height);
 }
 
 header {
@@ -755,6 +836,48 @@ main .section.accent img {
   height: 54px;
 }
 
+/* Any section given a background color (via section-metadata) gets vertical
+   breathing room so its content isn't flush against the adjacent white sections.
+   Applies to all colored sections, including .dark, for consistent spacing. */
+main .section[data-background-color] {
+  padding-block: 22px;
+}
+
+/* the first content element (e.g. a heading) carries its own top margin, which
+   would stack on top of the section padding and make the top gap larger than the
+   bottom. Collapse it so the section padding alone controls the top spacing. */
+main .section[data-background-color] > div:first-child > :first-child {
+  margin-top: 0;
+}
+
+/* a plain (uncolored) section that sits directly above a colored one gets extra
+   bottom breathing room, so the white content isn't cramped against the colored
+   band that follows (matches the source's generous gap before colored sections). */
+main .section:not([data-background-color]):has(+ .section[data-background-color]) {
+  padding-bottom: var(--section-padding-vertical);
+}
+
+/* Display heading — the source's reusable ".headline-2" treatment: Avenir Light
+   at the responsive display size (22px mobile → 28px desktop, bumped in the ≥768
+   media query), centered on mobile and left-aligned from tablet up. Teal by
+   default; authors add a color span-tag class for variants (e.g.
+   [[headline-2,color-green]…] → green). Applied via the span-tag system on the
+   heading text, matching how the source markup nests the class on an inner span.
+   Reused across pages (e.g. "What is LGS?", "Facts About LGS") — do NOT add
+   page-specific heading overrides; extend this class instead. */
+.headline-2 {
+  font-family: var(--light-font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--display-heading-font-size);
+  line-height: var(--display-heading-line-height);
+}
+
+/* alignment lives on the block heading that wraps a .headline-2 span (centered
+   on mobile; the ≥768 rule flips it left) */
+main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
+  text-align: center;
+}
+
 /* section metadata - light */
 main .section.light,
 main .section.highlight {
@@ -768,6 +891,7 @@ main .section.dark {
   background-color: var(--brand-teal);
   color: var(--background-color);
   margin: 0;
+  padding: 22px 0;
 
   /* source runs the free-trial card body copy one step down from the global
      18px (footnote then resolves to ~13px via its 0.83em rule) */
@@ -901,16 +1025,31 @@ main .section.dark a.button.secondary:focus {
 
 /* tablet (≥768px): Bootstrap-3 container 750px */
 @media (width >= 768px) {
-  /* desktop bar = the nav rows' real content height (textbar 46 + eyebrow 62 +
+ /* desktop bar = the nav rows' real content height (textbar 46 + eyebrow 62 +
      main-list 42 + progress 8 = 158). 159 over-reserved by ~1px, and the
      transparent header let that strip show white — the seam under the sticky
-     header where the ISI anchor lands. */
+     header where the ISI anchor lands.
+     Facts grid type scales back up to the source's larger tablet/desktop sizes
+     (cell 22/28, emphasis 30/32) now that cards sit in 2–3 fixed-height columns. */
   :root {
     --nav-height: 158px;
+    --fact-font-size: 22px;
+    --fact-line-height: 28px;
+    --fact-emphasis-font-size: 30px;
+    --fact-emphasis-line-height: 32px;
+
+    /* display heading (.headline-2) scales up to 28px/1.2em and left-aligns from
+       tablet up (22px/centered on mobile) */
+    --display-heading-font-size: 28px;
+    --display-heading-line-height: 1.2;
   }
 
   main > .section > div {
     max-width: var(--max-width-tablet);
+  }
+
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
+    text-align: left;
   }
 
   /* page-title h1 steps up to the source's desktop size */

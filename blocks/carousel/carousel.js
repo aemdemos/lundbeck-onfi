@@ -76,8 +76,10 @@ export default async function decorate(block) {
   if (!isSingleSlide) {
     initSlider(block);
     slidesWrapper.addEventListener('keydown', (e) => {
+      // eslint-disable-next-line secure-coding/no-insecure-comparison -- comparing KeyboardEvent.key names, not secrets
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       const current = parseInt(block.dataset.activeSlide, 10) || 0;
+      // eslint-disable-next-line secure-coding/no-insecure-comparison -- comparing KeyboardEvent.key names, not secrets
       const next = e.key === 'ArrowLeft' ? current - 1 : current + 1;
       e.preventDefault();
       showSlide(block, next, 'smooth');
