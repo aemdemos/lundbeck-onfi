@@ -1026,6 +1026,15 @@ main .section.dark .columns a.button.accent {
   main .section.dark :is(h1, h2, h3, h4, h5, h6, p) {
     text-align: center;
   }
+
+  /* The promo icon is a block image (unaffected by text-align); center it so it
+     sits above the centered copy like the source's stacked mobile layout. The
+     source also renders it larger on mobile (~190px) than the 100px desktop cap. */
+  main .section.dark .columns .columns-img-col img {
+    width: 190px;
+    margin-block: 10px 20px;
+    margin-inline: auto;
+  }
 }
 
 main .section.dark h1,
@@ -1115,12 +1124,8 @@ main .section.dark a.button.secondary:focus {
   color: var(--button-on-dark-secondary-hover-color);
 }
 
-/* mobile (≤767px): source drops body text to 14px */
+/* mobile (≤767px) */
 @media (width <= 767px) {
-  body {
-    font-size: var(--body-font-size-s);
-  }
-
   /* page-title h1 centered on mobile — clear the global h1 max-width so the box
      spans the wrapper; otherwise the narrower left-pinned box makes the centered
      text look off-center */

@@ -17,6 +17,15 @@
   display: block; /* @boilerplate */
 }
 
+/* Center content-sized images that are narrower than their column (e.g. LGS
+   "Sign #3" EEG thumbnails), matching the source. The block image is pinned left
+   by default; auto inline margins center it. Scoped away from the promo (dark),
+   thumbnail, stats-callout and reversed variants, which manage their own image
+   placement. */
+main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > div > .columns-img-col img {
+  margin-inline: auto;
+}
+
 /* Promo-card image (icon + text + CTA inside a green .dark section, e.g. LGS
    "Start the conversation", about-onfi "Thinking about adding ONFI?"): the
    source renders the icon at a fixed 100px, not stretched to the column width. */
@@ -98,12 +107,6 @@ main .columns > div > div:has(.video.nested-block) p {
   line-height: 1.43;
 }
 
-/* Top-align the seizure video cards so every video sits at the same vertical
-   level (the base columns rule centers cells, which floats videos in cards with
-   shorter descriptions to a different height than their neighbors). */
-main .columns:has(.video.nested-block) > div {
-  align-items: flex-start;
-}
 
 /* thumbnail variant — resource/community cards: small content-sized image
    beside wide text (source keeps the image at its natural ~96-120px, not
@@ -197,6 +200,14 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
     align-items: center; /* @boilerplate */
     flex-direction: unset; /* @boilerplate */
     gap: var(--columns-gap); /* @boilerplate */
+  }
+
+  /* Top-align the seizure video cards (row layout only) so every video sits at
+     the same vertical level; cards with shorter descriptions would otherwise
+     center and float their videos to a different height than their neighbors.
+     Below 768 the cards stack full-width, so this must not apply there. */
+  main .columns:has(.video.nested-block) > div {
+    align-items: flex-start;
   }
 
   .columns > div > div { /* @boilerplate */
