@@ -102,6 +102,28 @@ export function getVimeoEmbedHtml(url, autoplay = false, background = false) {
 </div>`;
 }
 
+/**
+ * Parses a players.brightcove.net URL into its account, player and video id so the
+ * player can be embedded in-page (as a <video-js> element) rather than in an iframe.
+ * This lets the page style the player controls (e.g. the big play button) to match
+ * the source, which an iframe embed cannot.
+ * Supported forms:
+ *   https://players.brightcove.net/{account}/{player}_default/index.html?videoId={id}
+ *   https://players.brightcove.net/{account}/{player}/index.html?videoId={id}
+ * @param {URL} url
+ * @returns {{account: string, player: string, embed: string, videoId: string}|null}
+ */
+export function parseBrightcoveUrl(url) {
+  const [account, playerSegment] = url.pathname.split('/').filter(Boolean);
+  if (!account || !playerSegment) return null;
+  const underscore = playerSegment.indexOf('_');
+  const player = underscore === -1 ? playerSegment : playerSegment.slice(0, underscore);
+  const embed = underscore === -1 ? 'default' : playerSegment.slice(underscore + 1);
+  const videoId = url.searchParams.get('videoId') || '';
+  if (!player || !videoId) return null;
+  return { account, player, embed, videoId };
+}
+
 /* -------------------------------------------------------------------------- */
 /* Responsive picture: up to 5 images per cell (art-direction <picture>) */
 /* -------------------------------------------------------------------------- */

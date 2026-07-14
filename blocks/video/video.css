@@ -57,6 +57,31 @@
   padding: 0; /* @boilerplate */
 }
 
+/* Brightcove in-page player — match the source's big play button: a solid black
+   circle at 0.5 opacity that darkens on hover (the player default is a green,
+   rounded-rectangle button that turns brighter green on hover). */
+.video .video-js .vjs-big-play-button {
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgb(0 0 0 / 50%);
+  margin-top: -1em;
+  margin-left: -1em;
+  top: 50%;
+  left: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.video .video-js:hover .vjs-big-play-button,
+.video .video-js:active .vjs-big-play-button,
+.video .video-js .vjs-big-play-button:hover,
+.video .video-js .vjs-big-play-button:focus,
+.video .video-js .vjs-big-play-button:active {
+  background-color: rgb(0 0 0 / 70%);
+}
+
 .video .video-placeholder-play button::before { /* @boilerplate */
   content: ''; /* @boilerplate */
   display: block; /* @boilerplate */
