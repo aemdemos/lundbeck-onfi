@@ -70,11 +70,12 @@
 /* ── Shared: ISI body typography ─────────────────────────────── */
 .isi-body {
   color: var(--isi-body-color);
+  font-family: var(--isi-body-font-family);
 }
 
 .isi-body p {
   color: var(--isi-body-color);
-  font-family: var(--body-font-family);
+  font-family: var(--isi-body-font-family);
   font-size: var(--isi-body-font-size);
   line-height: var(--isi-body-line-height);
   margin: var(--isi-body-paragraph-margin);
