@@ -10,7 +10,7 @@
 .back-to-top.block button {
   position: fixed;
   right: var(--back-to-top-offset-right);
-  top: var(--back-to-top-top);
+  bottom: var(--back-to-top-bottom);
   z-index: var(--back-to-top-z-index);
   width: var(--back-to-top-width);
   height: var(--back-to-top-height);
@@ -19,10 +19,11 @@
   border-radius: 0;
   overflow: visible;
   background-color: transparent;
-  background-image: url('/icons/toptobottom.svg');
+  background-image: url('/icons/scroll-to-top-icon.png');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
+  background-size: auto;
+  cursor: pointer;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
@@ -35,14 +36,6 @@
 
 .back-to-top.block button:hover,
 .back-to-top.block button:focus {
-  cursor: default;
   background-color: transparent;
   border-color: transparent;
-}
-
-@media (width >= 768px) {
-  .back-to-top.block button {
-    top: auto;
-    bottom: var(--back-to-top-bottom);
-  }
 }
