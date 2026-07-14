@@ -8,4 +8,55 @@
   --embed-placeholder-play-border-radius: 20px; /* @boilerplate */
   --embed-placeholder-play-triangle-width: 6px; /* @boilerplate */
   --embed-placeholder-play-triangle-height: 10px; /* @boilerplate */
+
+  /* Brightcove in-page player big play button — source renders a solid black
+     circle at 0.5 opacity that darkens to 0.7 on hover/focus/active (the player
+     default is a green rounded-rectangle that turns brighter green on hover). */
+  --embed-brightcove-play-bg: rgb(0 0 0 / 50%);
+  --embed-brightcove-play-bg-hover: rgb(0 0 0 / 70%);
+}
+
+/* =====================================================================
+   Onfi embed rules (kept here, not in embed.css, so the shared block
+   structure stays token-only-editable per the libs convention).
+   ===================================================================== */
+
+/* Responsive 16:9 iframe wrapper for the default embed (YouTube/Vimeo carry
+   their own inline sizing from the shared embed-HTML builders). */
+.embed .iframe-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+}
+
+.embed .iframe-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Brightcove in-page player — style the big play button to match the source
+   (see token comments above). */
+.embed.embed-brightcove .vjs-big-play-button {
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--embed-brightcove-play-bg);
+  margin-top: -1em;
+  margin-left: -1em;
+  top: 50%;
+  left: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.embed.embed-brightcove .video-js:hover .vjs-big-play-button,
+.embed.embed-brightcove .video-js:active .vjs-big-play-button,
+.embed.embed-brightcove .vjs-big-play-button:hover,
+.embed.embed-brightcove .vjs-big-play-button:focus,
+.embed.embed-brightcove .vjs-big-play-button:active {
+  background-color: var(--embed-brightcove-play-bg-hover);
 }
