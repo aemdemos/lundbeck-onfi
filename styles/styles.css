@@ -133,6 +133,15 @@
   --display-heading-font-size: 22px;
   --display-heading-line-height: 1.28;
 
+  /* Additional source heading treatments (LGS page + reusable):
+     - onfi-quote: Avenir Light pull-quote heading (green), 22→24px
+     - headline-5: Avenir Heavy uppercase "Sign #" heading, 18→26px
+     - headline-6: Avenir Roman video-card mini-heading, 13.33→16px
+     All step up at the 768px breakpoint. */
+  --onfi-quote-font-size: 22px;
+  --headline-5-font-size: 18px;
+  --headline-6-font-size: 13.33px;
+
   /* layout — source content container is 1100px wide inside a 1400px body cap;
      tablet (768–991px) constrains content to 750px (Bootstrap-3 grid) */
   --max-width-site: 1100px;
@@ -280,6 +289,25 @@ div.bg-green-light {
 
 .color-green {
   color: var(--brand-green);
+}
+
+/* the source's lighter green (#7fa73a) — distinct from .color-green (#729533).
+   Used on the ".onfi-quote" pull-quote heading (e.g. "WHAT YOU SHOULD KNOW").
+   Composed with a typography class via brackets: [[onfi-quote,color-green-light]…]. */
+.color-green-light {
+  color: var(--brand-green-light);
+}
+
+/* black heading color — the source's ".txt-black" (#000), used on the HCP page
+   ("Increased efficacy with increased dosage"). Composed via [[color-black]…]. */
+.color-black {
+  color: #000;
+}
+
+/* grey heading color — the source's default #333 on non-teal HCP headings
+   ("ONFI safety results", "Key enrollment criteria"). Composed via [[color-grey]…]. */
+.color-grey {
+  color: var(--text-color);
 }
 
 /* Facts About LGS type scale — source renders each fact cell at 22px/200 with the
@@ -878,6 +906,52 @@ main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
   text-align: center;
 }
 
+/* Pull-quote heading — the source's ".onfi-quote": the visible text sits in a
+   nested <b> that the global `b,strong` rule renders in the Avenir Heavy cut, so
+   this heading is Heavy (not Light), 22px mobile → 24px desktop. Our authored
+   markup has no <b>, so the Heavy cut is applied by the class itself. Centered on
+   mobile, left from tablet up. Typography only — color is composed via a color-*
+   bracket class (source renders it light-green: [[onfi-quote,color-green-light]…]);
+   teal is the inherited default. */
+.onfi-quote {
+  font-family: var(--bold-font-family);
+  font-weight: 700;
+  font-size: var(--onfi-quote-font-size);
+  line-height: 1.1;
+}
+
+main :is(h1, h2, h3, h4, h5, h6):has(> .onfi-quote) {
+  text-align: center;
+}
+
+/* "Sign #" heading — the source's ".headline-5.txt-weight-800": Avenir Heavy,
+   uppercase, teal, 18px mobile → 26px desktop. Centered on mobile, left from
+   tablet up. */
+.headline-5 {
+  font-family: var(--bold-font-family);
+  font-weight: 400;
+  font-size: var(--headline-5-font-size);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+main :is(h1, h2, h3, h4, h5, h6):has(> .headline-5) {
+  text-align: center;
+}
+
+/* Video-card mini-heading — the source's ".headline-6.txt-teal": Avenir Roman,
+   teal, 13.33px mobile → 16px desktop. Centered on mobile. */
+.headline-6 {
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  font-size: var(--headline-6-font-size);
+  line-height: 1.1;
+}
+
+main :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
+  text-align: center;
+}
+
 /* section metadata - light */
 main .section.light,
 main .section.highlight {
@@ -1042,13 +1116,21 @@ main .section.dark a.button.secondary:focus {
        tablet up (22px/centered on mobile) */
     --display-heading-font-size: 28px;
     --display-heading-line-height: 1.2;
+
+    /* other source heading treatments step up at tablet (see mobile base) */
+    --onfi-quote-font-size: 24px;
+    --headline-5-font-size: 26px;
+    --headline-6-font-size: 16px;
   }
 
   main > .section > div {
     max-width: var(--max-width-tablet);
   }
 
-  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2),
+  main :is(h1, h2, h3, h4, h5, h6):has(> .onfi-quote),
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-5),
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
     text-align: left;
   }
 
