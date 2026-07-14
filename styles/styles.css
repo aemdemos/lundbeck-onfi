@@ -221,13 +221,14 @@
   /* accent — yellow high-impact CTA (source .btn-primary): yellow #ffd212 bg,
      teal #008c99 text, Avenir Medium 22px, 16px/20px padding, 10px radius.
      Verified identical on LGS ("Download the doctor discussion guide") and
-     about-onfi ("Paying for ONFI"). Hover keeps full yellow, text → white. */
+     about-onfi ("Paying for ONFI"). Hover (source .btn-primary:hover): only the
+     yellow lightens to #ffdc45 — text stays teal, no color change. */
   --button-accent-background: var(--brand-yellow);
-  --button-accent-hover-background: var(--brand-yellow);
+  --button-accent-hover-background: var(--brand-yellow-light);
   --button-accent-color: var(--brand-teal);
   --button-accent-border-color: var(--brand-yellow);
-  --button-accent-hover-border-color: var(--brand-yellow);
-  --button-accent-hover-color: var(--background-color);
+  --button-accent-hover-border-color: var(--brand-yellow-light);
+  --button-accent-hover-color: var(--brand-teal);
   --button-accent-font-family: "Avenir LT W01_65 Medium", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --button-accent-font-size: 22px;
   --button-accent-padding: 16px 20px;
@@ -1056,17 +1057,6 @@ main .section.dark a:not(.button.accent) {
 
 main .section.dark a:not(.button.accent):hover {
   color: var(--brand-teal-light);
-}
-
-/* Accent button base already matches the source on dark sections (yellow bg,
-   teal text, Medium 22px, 16/20 padding). Hover keeps full yellow, text → white
-   (no dim). */
-main .section.dark a.button.accent:hover,
-main .section.dark a.button.accent:focus {
-  background-color: var(--brand-yellow);
-  border-color: var(--brand-yellow);
-  color: var(--background-color);
-  opacity: 1;
 }
 
 /* "Get yours now" wrapper (dark section) uses tighter vertical margins. */
