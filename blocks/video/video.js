@@ -5,58 +5,15 @@
  */
 
 import { ensureDOMPurify } from '../../scripts/scripts.js';
-import { getYoutubeEmbedHtml, getVimeoEmbedHtml, parseBrightcoveUrl } from '../../scripts/utils.js';
+import { DOMPURIFY } from '../../scripts/aem.js';
+import { getYoutubeEmbedHtml, getVimeoEmbedHtml } from '../../scripts/utils.js';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-// Cache the Brightcove player <script> load per account/player so multiple video
-// blocks on a page share a single loader promise.
-const brightcoveLoaders = new Map();
-
-function loadBrightcovePlayer(account, player) {
-  const key = `${account}/${player}`;
-  if (!brightcoveLoaders.has(key)) {
-    brightcoveLoaders.set(key, new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = `https://players.brightcove.net/${account}/${player}_default/index.min.js`;
-      script.async = true;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.append(script);
-    }));
-  }
-  return brightcoveLoaders.get(key);
-}
-
-// Embeds the Brightcove player in-page (as a <video-js> element) so the page can
-// style its controls (e.g. the big play button) to match the source design — an
-// iframe embed keeps the player's default green button in a cross-origin frame.
-async function loadBrightcoveEmbed(block, info, autoplay) {
-  const videoEl = document.createElement('video-js');
-  videoEl.setAttribute('data-account', info.account);
-  videoEl.setAttribute('data-player', info.player);
-  videoEl.setAttribute('data-embed', info.embed);
-  videoEl.setAttribute('data-video-id', info.videoId);
-  videoEl.setAttribute('controls', '');
-  if (autoplay) videoEl.setAttribute('autoplay', '');
-  videoEl.classList.add('vjs-fluid');
-  block.append(videoEl);
-  await loadBrightcovePlayer(info.account, info.player);
-  if (window.bc) window.bc(videoEl);
-  block.dataset.embedLoaded = true;
-}
-
-// Video embeds are trusted iframe players (YouTube/Vimeo/Brightcove); allow the iframe
-// tag and its player attributes, which the default HTML profile strips.
-const EMBED_SANITIZE = {
-  ADD_TAGS: ['iframe'],
-  ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling', 'loading', 'title'],
-};
 
 async function htmlToElement(html) {
   await ensureDOMPurify();
   const temp = document.createElement('div');
-  temp.innerHTML = window.DOMPurify.sanitize(html, EMBED_SANITIZE);
+  temp.innerHTML = window.DOMPurify.sanitize(html, DOMPURIFY);
   return temp.firstElementChild;
 }
 
@@ -90,7 +47,6 @@ const loadVideoEmbed = async (block, link, autoplay, background) => {
 
   const isYoutube = link.includes('youtube') || link.includes('youtu.be');
   const isVimeo = link.includes('vimeo');
-  const brightcove = link.includes('players.brightcove.net') ? parseBrightcoveUrl(url) : null;
 
   if (isYoutube) {
     const embedWrapper = await htmlToElement(getYoutubeEmbedHtml(url, autoplay, background));
@@ -98,8 +54,6 @@ const loadVideoEmbed = async (block, link, autoplay, background) => {
     embedWrapper.querySelector('iframe').addEventListener('load', () => {
       block.dataset.embedLoaded = true;
     });
-  } else if (brightcove) {
-    await loadBrightcoveEmbed(block, brightcove, autoplay);
   } else if (isVimeo) {
     const embedWrapper = await htmlToElement(getVimeoEmbedHtml(url, autoplay, background));
     block.append(embedWrapper);
