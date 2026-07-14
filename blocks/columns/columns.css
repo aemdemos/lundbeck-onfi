@@ -215,28 +215,6 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
     order: unset; /* @boilerplate */
   }
 
-  /* Column-width system — a column authored with a [size-N] code marker (e.g.
-     [size-20]) gets class `size-N` (via decorateCellClass) and takes N% of the
-     row width; the sibling(s) share the rest. Reusable across any columns block.
-     Desktop only — columns stack full-width on mobile. */
-  .columns > div > div[class*="size-"] {
-    flex: 0 0 auto;
-  }
-
-  .columns > div > div.size-15 { width: 15%; }
-  .columns > div > div.size-20 { width: 20%; }
-  .columns > div > div.size-25 { width: 25%; }
-  .columns > div > div.size-30 { width: 30%; }
-  .columns > div > div.size-33 { width: 33.3333%; }
-  .columns > div > div.size-40 { width: 40%; }
-  .columns > div > div.size-50 { width: 50%; }
-  .columns > div > div.size-60 { width: 60%; }
-  .columns > div > div.size-67 { width: 66.6667%; }
-  .columns > div > div.size-70 { width: 70%; }
-  .columns > div > div.size-75 { width: 75%; }
-  .columns > div > div.size-80 { width: 80%; }
-  .columns > div > div.size-85 { width: 85%; }
-
   /* fact grid — tablet (768–991): 2 columns with fixed-height cards (source
      col-sm-6). The grid is capped and left-aligned under the section title, gets
      its row/col gap back, and drops the mobile full-bleed negative margins. Fixed

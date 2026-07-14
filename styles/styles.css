@@ -122,6 +122,10 @@
      10px). Override per context by redefining this token on a scope. */
   --paragraph-margin-bottom: 23px;
 
+  /* column width classes (width-*) — shared naming convention from lundbeck-libs */
+  --div-width-margin: auto;
+  --div-width-align-items: flex-start;
+
   /* body sizes — source body copy renders at 18px (Avenir) */
   --body-font-size-m: 18px;
   --body-font-size-ms: 18px;
@@ -1192,6 +1196,52 @@ main .section.dark a.button.secondary:focus {
   main .section.narrow-heading > .default-content-wrapper > h3 {
     width: 83.3333%;
   }
+
+  /* ==== Start widths ==== */
+  /* Column width classes (shared naming convention from lundbeck-libs). A column
+     authored with a [width-N] code marker (e.g. [width-25]) gets class `width-N`
+     via decorateCellClass and takes a fixed fraction of the row; siblings share
+     the rest. Desktop only — columns stack full-width on mobile. */
+  div[class^="width-"], div[class*=" width-"] {
+    margin: var(--div-width-margin);
+  }
+
+  .width-83 {
+    width: 81.5%;
+  }
+
+  .width-75 {
+    width: 73.5%;
+  }
+
+  .width-66 {
+    width: 64.5%;
+  }
+
+  .width-50 {
+    width: 48.5%;
+  }
+
+  .width-33 {
+    width: 31.5%;
+  }
+
+  .width-25 {
+    width: 23.5%;
+  }
+
+  .width-16 {
+    width: 15%;
+  }
+
+  .columns > div:has(> div[class^="width-"],> div[class*=" width-"]) {
+    align-items: var(--div-width-align-items);
+
+    > div[class^="width-"],> div[class*=" width-"] {
+      flex: none;
+    }
+  }
+  /* ==== End widths ==== */
 }
 
 /* small desktop (≥992px): Bootstrap-3 container 970px */
