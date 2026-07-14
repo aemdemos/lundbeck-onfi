@@ -40,47 +40,73 @@ const embedTwitter = (url) => {
   return embedHTML;
 };
 
-/* Brightcove: the players.brightcove.net player page is itself iframe-able
-   (https://players.brightcove.net/{account}/{player}_default/index.html?videoId={id}),
-   so it embeds as an iframe with the player's own controls. */
-const embedBrightcove = (url) => `<div class="iframe-wrapper">
-    <iframe src="${url.href}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-      allowfullscreen="" scrolling="no" title="Content from Brightcove" loading="lazy">
-    </iframe>
-  </div>`;
+/* Parse a players.brightcove.net URL into account / player / videoId.
+   Form: https://players.brightcove.net/{account}/{player}_default/index.html?videoId={id} */
+const parseBrightcove = (url) => {
+  const [account, playerSegment] = url.pathname.split('/').filter(Boolean);
+  if (!account || !playerSegment) return null;
+  const player = playerSegment.includes('_') ? playerSegment.slice(0, playerSegment.indexOf('_')) : playerSegment;
+  const videoId = url.searchParams.get('videoId') || '';
+  if (!player || !videoId) return null;
+  return { account, player, videoId };
+};
+
+/* Brightcove: embed the player in-page (load its player script + render a
+   <video-js> element) rather than via iframe, so the page's own CSS can style
+   the controls (e.g. the big play button) to match the source. */
+const embedBrightcove = (block, info, autoplay) => {
+  const videoEl = document.createElement('video-js');
+  videoEl.setAttribute('data-account', info.account);
+  videoEl.setAttribute('data-player', info.player);
+  videoEl.setAttribute('data-embed', 'default');
+  videoEl.setAttribute('data-video-id', info.videoId);
+  videoEl.setAttribute('controls', '');
+  if (autoplay) videoEl.setAttribute('autoplay', '');
+  videoEl.classList.add('vjs-fluid');
+  block.append(videoEl);
+  loadScript(
+    `https://players.brightcove.net/${info.account}/${info.player}_default/index.min.js`,
+    () => { if (window.bc) window.bc(videoEl); },
+  );
+};
 
 const loadEmbed = (block, link, autoplay) => {
   if (block.classList.contains('embed-is-loaded')) {
     return;
   }
 
+  const url = new URL(link);
+
+  // Brightcove uses an in-page player (special-cased: it inserts a <video-js>
+  // element and loads the player script, rather than returning embed HTML).
+  const brightcove = link.includes('players.brightcove.net') ? parseBrightcove(url) : null;
+  if (brightcove) {
+    block.classList = 'block embed embed-brightcove';
+    embedBrightcove(block, brightcove, autoplay);
+    block.classList.add('embed-is-loaded');
+    return;
+  }
+
   const EMBEDS_CONFIG = [
     {
       match: ['youtube', 'youtu.be'],
-      embed: (url, play) => getYoutubeEmbedHtml(url, play),
+      embed: (u, play) => getYoutubeEmbedHtml(u, play),
     },
     {
       match: ['vimeo'],
-      embed: (url, play) => getVimeoEmbedHtml(url, play),
+      embed: (u, play) => getVimeoEmbedHtml(u, play),
     },
     {
       match: ['twitter', 'x.com'],
       embed: embedTwitter,
     },
-    {
-      match: ['players.brightcove.net'],
-      embed: embedBrightcove,
-    },
   ];
   const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
-  const url = new URL(link);
   if (config) {
     const embedHtml = config.embed(url, autoplay);
     block.innerHTML = (window.DOMPurify?.sanitize(embedHtml, EMBED_SANITIZE))
       ?? embedHtml;
-    // first match token → CSS-safe modifier (e.g. "players.brightcove.net" → brightcove)
-    const variant = config.match[0].replace(/^players\./, '').replace(/\.[a-z]+$/, '').replace(/[^a-z0-9]+/g, '-');
-    block.classList = `block embed embed-${variant}`;
+    block.classList = `block embed embed-${config.match[0]}`;
   } else {
     const defaultHtml = getDefaultEmbed(url);
     block.innerHTML = (window.DOMPurify?.sanitize(defaultHtml, EMBED_SANITIZE))
