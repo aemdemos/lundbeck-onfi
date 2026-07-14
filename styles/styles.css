@@ -1198,6 +1198,7 @@ main .section.dark a.button.secondary:focus {
   }
 
   /* ==== Start widths ==== */
+
   /* Column width classes (shared naming convention from lundbeck-libs). A column
      authored with a [width-N] code marker (e.g. [width-25]) gets class `width-N`
      via decorateCellClass and takes a fixed fraction of the row; siblings share
@@ -1241,6 +1242,7 @@ main .section.dark a.button.secondary:focus {
       flex: none;
     }
   }
+
   /* ==== End widths ==== */
 }
 
