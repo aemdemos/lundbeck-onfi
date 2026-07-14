@@ -33,13 +33,15 @@
    structure stays token-only-editable per the libs convention).
    ===================================================================== */
 
-/* Center content-sized images that are narrower than their column (e.g. LGS
-   "Sign #3" EEG thumbnails), matching the source. The block image is pinned left
-   by default; auto inline margins center it. Scoped away from the promo (dark),
-   thumbnail, stats-callout and reversed variants, which manage their own image
-   placement. */
+/* Content-sized images in a columns cell (e.g. LGS "Sign #3" EEG thumbnails):
+   center images narrower than their column (the block image is pinned left by
+   default) and give them the source's 20px trailing gap — matching the source's
+   general `.img-responsive` image spacing rather than a per-section override.
+   Scoped away from the promo (dark), thumbnail, stats-callout and reversed
+   variants, which manage their own image placement. */
 main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > div > .columns-img-col img {
   margin-inline: auto;
+  margin-bottom: 20px;
 }
 
 /* Promo-card image (icon + text + CTA inside a green .dark section, e.g. LGS
@@ -57,6 +59,12 @@ main .columns > div > div:has(.embed) p {
   font-family: var(--heading-font-family);
   font-size: 16px;
   line-height: 1.43;
+}
+
+/* Breathing room below the seizure video before its description, matching the
+   source's ~10px gap (the embed block has no bottom margin of its own). */
+main .columns > div > div .embed {
+  margin-bottom: 10px;
 }
 
 /* Facts About LGS stat grid — 9 stat cards that reflow 3 → 2 → 1 columns like the
