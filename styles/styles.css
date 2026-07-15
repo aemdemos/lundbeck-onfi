@@ -1067,9 +1067,12 @@ main .section.dark .button-wrapper {
 
 /* Spacing that was previously authored with trailing <br> tags in the document
    (stripped by Document Authoring on publish), now reproduced structurally:
-   - the page title sits well above the teal box (was 3 <br> after the title) */
+   - the page title sits above the teal box. Combined with the 40px plain→colored
+     padding-bottom and the band's 22px top padding, this lands the title→box gap
+     at ~113px and title→offer-heading at ~135px, matching the source at both
+     mobile and ≥1920px desktop. */
 main > .section:has(+ .section.dark) > .default-content-wrapper > h1 {
-  margin-bottom: 111px;
+  margin-bottom: 73px;
 }
 
 /* - the teal "Need help?" label sits on its own line (was a <br> after it) ... */
