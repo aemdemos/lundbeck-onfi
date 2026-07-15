@@ -72,6 +72,12 @@
   --text-color-light: #484848;
   --link-color: #729533;
   --link-hover-color: #556f26;
+
+  /* default body-list bullet color — teal on the source (e.g. LGS "WHAT YOU
+     SHOULD KNOW"). Override per context by redefining this token on a scope
+     (e.g. a colored section or a block). The ISI block sets its own green
+     bullet independently via --isi-bullet-color. */
+  --list-bullet-color: var(--brand-teal);
   --overlay-background-color: #cce8eb;
   --error-color: #c02c57;
   --footer-background-color: #d4d5d5;
@@ -112,6 +118,14 @@
   --block-margin-top: 0.67em;
   --block-margin-bottom: 0.5em;
 
+  /* spacing below body paragraphs/lists — source uses 23px (not the boilerplate
+     10px). Override per context by redefining this token on a scope. */
+  --paragraph-margin-bottom: 23px;
+
+  /* column width classes (width-*) — shared naming convention from lundbeck-libs */
+  --div-width-margin: auto;
+  --div-width-align-items: flex-start;
+
   /* body sizes — source body copy renders at 18px (Avenir) */
   --body-font-size-m: 18px;
   --body-font-size-ms: 18px;
@@ -132,6 +146,15 @@
      "Facts About LGS". Mobile value is the base; the ≥768 media query bumps it. */
   --display-heading-font-size: 22px;
   --display-heading-line-height: 1.28;
+
+  /* Additional source heading treatments (LGS page + reusable):
+     - onfi-quote: Avenir Light pull-quote heading (green), 22→24px
+     - headline-5: Avenir Heavy uppercase "Sign #" heading, 18→26px
+     - headline-6: Avenir Roman video-card mini-heading, 13.33→16px
+     All step up at the 768px breakpoint. */
+  --onfi-quote-font-size: 22px;
+  --headline-5-font-size: 18px;
+  --headline-6-font-size: 13.33px;
 
   /* layout — source content container is 1100px wide inside a 1400px body cap;
      tablet (768–991px) constrains content to 750px (Bootstrap-3 grid) */
@@ -195,13 +218,20 @@
   --button-secondary-hover-color: var(--brand-primary-dark);
   --button-secondary-hover-border-color: var(--brand-primary-dark);
 
-  /* accent — yellow high-impact CTA (.btn-primary on source): green text */
+  /* accent — yellow high-impact CTA (source .btn-primary): yellow #ffd212 bg,
+     teal #008c99 text, Avenir Medium 22px, 16px/20px padding, 10px radius.
+     Verified identical on LGS ("Download the doctor discussion guide") and
+     about-onfi ("Paying for ONFI"). Hover (source .btn-primary:hover): only the
+     yellow lightens to #ffdc45 — text stays teal, no color change. */
   --button-accent-background: var(--brand-yellow);
   --button-accent-hover-background: var(--brand-yellow-light);
-  --button-accent-color: var(--brand-green);
+  --button-accent-color: var(--brand-teal);
   --button-accent-border-color: var(--brand-yellow);
   --button-accent-hover-border-color: var(--brand-yellow-light);
-  --button-accent-hover-color: var(--brand-green);
+  --button-accent-hover-color: var(--brand-teal);
+  --button-accent-font-family: "Avenir LT W01_65 Medium", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  --button-accent-font-size: 22px;
+  --button-accent-padding: 16px 20px;
 
   /* disabled (native button elements) */
   --button-disabled-background: var(--light-color);
@@ -280,6 +310,32 @@ div.bg-green-light {
 
 .color-green {
   color: var(--brand-green);
+}
+
+/* text-size utility — matches the source's ".txt-size-24" (e.g. the LGS "Start
+   the conversation" promo lead, which is 24px while the line below stays 18px).
+   Composed on inline text via brackets: [[txt-size-24]Start the conversation]. */
+.txt-size-24 {
+  font-size: 24px;
+}
+
+/* the source's lighter green (#7fa73a) — distinct from .color-green (#729533).
+   Used on the ".onfi-quote" pull-quote heading (e.g. "WHAT YOU SHOULD KNOW").
+   Composed with a typography class via brackets: [[onfi-quote,color-green-light]…]. */
+.color-green-light {
+  color: var(--brand-green-light);
+}
+
+/* black heading color — the source's ".txt-black" (#000), used on the HCP page
+   ("Increased efficacy with increased dosage"). Composed via [[color-black]…]. */
+.color-black {
+  color: #000;
+}
+
+/* grey heading color — the source's default #333 on non-teal HCP headings
+   ("ONFI safety results", "Key enrollment criteria"). Composed via [[color-grey]…]. */
+.color-grey {
+  color: var(--text-color);
 }
 
 /* Facts About LGS type scale — source renders each fact cell at 22px/200 with the
@@ -380,7 +436,7 @@ ul,
 pre,
 blockquote {
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: var(--paragraph-margin-bottom);
 }
 
 ul {
@@ -599,12 +655,14 @@ button.secondary:focus {
   cursor: pointer;
 }
 
-/* accent — yellow high-impact CTA. Source shape: rounded, larger bold text. */
+/* accent — yellow high-impact CTA. Source shape: rounded, Avenir Medium 22px,
+   teal text on yellow. */
 a.button.accent {
-  padding: 15px 20px;
+  padding: var(--button-accent-padding);
   border-radius: 10px;
-  font-size: 20px;
-  font-weight: 700;
+  font-family: var(--button-accent-font-family);
+  font-size: var(--button-accent-font-size);
+  font-weight: 500;
   background-color: var(--button-accent-background);
   border-color: var(--button-accent-border-color);
   color: var(--button-accent-color);
@@ -694,7 +752,7 @@ main ul:not(.icon-bullets, :has(> li > .icon, > li > :is(strong, em, a) > .icon)
   content: "•";
   position: absolute;
   left: 0;
-  color: var(--brand-green-light);
+  color: var(--list-bullet-color);
 }
 
 /* icon bullet lists — :has() prevents FOUC before JS adds .icon-bullets */
@@ -878,6 +936,52 @@ main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
   text-align: center;
 }
 
+/* Pull-quote heading — the source's ".onfi-quote": the visible text sits in a
+   nested <b> that the global `b,strong` rule renders in the Avenir Heavy cut, so
+   this heading is Heavy (not Light), 22px mobile → 24px desktop. Our authored
+   markup has no <b>, so the Heavy cut is applied by the class itself. Centered on
+   mobile, left from tablet up. Typography only — color is composed via a color-*
+   bracket class (source renders it light-green: [[onfi-quote,color-green-light]…]);
+   teal is the inherited default. */
+.onfi-quote {
+  font-family: var(--bold-font-family);
+  font-weight: 700;
+  font-size: var(--onfi-quote-font-size);
+  line-height: 1.1;
+}
+
+main :is(h1, h2, h3, h4, h5, h6):has(> .onfi-quote) {
+  text-align: center;
+}
+
+/* "Sign #" heading — the source's ".headline-5.txt-weight-800": Avenir Heavy,
+   uppercase, teal, 18px mobile → 26px desktop. Centered on mobile, left from
+   tablet up. */
+.headline-5 {
+  font-family: var(--bold-font-family);
+  font-weight: 400;
+  font-size: var(--headline-5-font-size);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+main :is(h1, h2, h3, h4, h5, h6):has(> .headline-5) {
+  text-align: center;
+}
+
+/* Video-card mini-heading — the source's ".headline-6.txt-teal": Avenir Roman,
+   teal, 13.33px mobile → 16px desktop. Centered on mobile. */
+.headline-6 {
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  font-size: var(--headline-6-font-size);
+  line-height: 1.1;
+}
+
+main :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
+  text-align: center;
+}
+
 /* section metadata - light */
 main .section.light,
 main .section.highlight {
@@ -898,11 +1002,43 @@ main .section.dark {
   font-size: 16px;
 }
 
+/* Promo-card text (columns block inside a dark section, e.g. LGS "Start the
+   conversation", about-onfi "Thinking about adding ONFI?") — source renders the
+   copy in Avenir Roman at the full 18px, not the 16px free-trial-card size.
+   Source paragraph spacing here is 10px (not the global 23px), which keeps the
+   green band compact. */
+main .section.dark .columns p {
+  font-family: var(--heading-font-family); /* Avenir 55 Roman */
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Promo-card row: source uses a tight ~15px gutter between the icon and text
+   columns (not the default 24px columns gap). */
+main .section.dark .columns > div {
+  gap: 15px;
+}
+
+/* Promo-card accent button: source line-height is 16px (button height ~50px);
+   the global 1.25 line-height made ours read too tall/thick. */
+main .section.dark .columns a.button.accent {
+  line-height: 16px;
+}
+
 /* Center dark-section content on mobile. */
 @media (width < 768px) {
   main .section.dark,
   main .section.dark :is(h1, h2, h3, h4, h5, h6, p) {
     text-align: center;
+  }
+
+  /* The promo icon is a block image (unaffected by text-align); center it so it
+     sits above the centered copy like the source's stacked mobile layout. The
+     source also renders it larger on mobile (~190px) than the 100px desktop cap. */
+  main .section.dark .columns .columns-img-col img {
+    width: 190px;
+    margin-block: 10px 20px;
+    margin-inline: auto;
   }
 }
 
@@ -921,23 +1057,6 @@ main .section.dark a:not(.button.accent) {
 
 main .section.dark a:not(.button.accent):hover {
   color: var(--brand-teal-light);
-}
-
-/* On dark sections the accent button uses teal text (source), not green, and
-   the source's tighter uniform padding. */
-main .section.dark a.button.accent {
-  width: 70%;
-  padding: 15px;
-  color: var(--brand-teal);
-}
-
-/* Hover: text turns white, background stays full yellow (no dim, no lightening). */
-main .section.dark a.button.accent:hover,
-main .section.dark a.button.accent:focus {
-  background-color: var(--brand-yellow);
-  border-color: var(--brand-yellow);
-  color: var(--background-color);
-  opacity: 1;
 }
 
 /* "Get yours now" wrapper (dark section) uses tighter vertical margins. */
@@ -999,12 +1118,8 @@ main .section.dark a.button.secondary:focus {
   color: var(--button-on-dark-secondary-hover-color);
 }
 
-/* mobile (≤767px): source drops body text to 14px */
+/* mobile (≤767px) */
 @media (width <= 767px) {
-  body {
-    font-size: var(--body-font-size-s);
-  }
-
   /* page-title h1 centered on mobile — clear the global h1 max-width so the box
      spans the wrapper; otherwise the narrower left-pinned box makes the centered
      text look off-center */
@@ -1042,13 +1157,21 @@ main .section.dark a.button.secondary:focus {
        tablet up (22px/centered on mobile) */
     --display-heading-font-size: 28px;
     --display-heading-line-height: 1.2;
+
+    /* other source heading treatments step up at tablet (see mobile base) */
+    --onfi-quote-font-size: 24px;
+    --headline-5-font-size: 26px;
+    --headline-6-font-size: 16px;
   }
 
   main > .section > div {
     max-width: var(--max-width-tablet);
   }
 
-  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2) {
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-2),
+  main :is(h1, h2, h3, h4, h5, h6):has(> .onfi-quote),
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-5),
+  main :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
     text-align: left;
   }
 
@@ -1063,6 +1186,54 @@ main .section.dark a.button.secondary:focus {
   main .section.narrow-heading > .default-content-wrapper > h3 {
     width: 83.3333%;
   }
+
+  /* ==== Start widths ==== */
+
+  /* Column width classes (shared naming convention from lundbeck-libs). A column
+     authored with a [width-N] code marker (e.g. [width-25]) gets class `width-N`
+     via decorateCellClass and takes a fixed fraction of the row; siblings share
+     the rest. Desktop only — columns stack full-width on mobile. */
+  div[class^="width-"], div[class*=" width-"] {
+    margin: var(--div-width-margin);
+  }
+
+  .width-83 {
+    width: 81.5%;
+  }
+
+  .width-75 {
+    width: 73.5%;
+  }
+
+  .width-66 {
+    width: 64.5%;
+  }
+
+  .width-50 {
+    width: 48.5%;
+  }
+
+  .width-33 {
+    width: 31.5%;
+  }
+
+  .width-25 {
+    width: 23.5%;
+  }
+
+  .width-16 {
+    width: 15%;
+  }
+
+  .columns > div:has(> div[class^="width-"],> div[class*=" width-"]) {
+    align-items: var(--div-width-align-items);
+
+    > div[class^="width-"],> div[class*=" width-"] {
+      flex: none;
+    }
+  }
+
+  /* ==== End widths ==== */
 }
 
 /* small desktop (≥992px): Bootstrap-3 container 970px */

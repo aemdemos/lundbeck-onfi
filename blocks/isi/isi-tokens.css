@@ -57,8 +57,9 @@
   --isi-toggle-icon-font-weight: 900;
 
   /* ---- body typography --------------------------------------------------
-     base paragraph font comes from --body-font-family (shared site var),
-     consumed directly in isi.css. */
+     ISI body copy uses Avenir Roman (55), NOT the page's Light (35) body font.
+     Scoped to .isi-body only via this token; the rest of the page is untouched. */
+  --isi-body-font-family: var(--heading-font-family); /* Avenir LT W01_55 Roman */
   --isi-body-color: #333;
   --isi-body-font-size: 16px;
   --isi-body-line-height: 22.857px;

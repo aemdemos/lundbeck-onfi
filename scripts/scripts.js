@@ -177,6 +177,19 @@ function buildAutoBlocks(main) {
       });
     }
 
+    // auto-embed Brightcove video links (same pattern as fragments: replace the
+    // link that contains brightcove.net with an embed block that loads the player).
+    // These often sit inside a columns cell — deeper than decorateBlocks' selector
+    // reaches — so decorate + load each one explicitly here.
+    const videoLinks = [...main.querySelectorAll('a[href*="players.brightcove.net"]')]
+      .filter((a) => !a.closest('.embed'));
+    videoLinks.forEach((a) => {
+      const block = buildBlock('embed', { elems: [a.cloneNode(true)] });
+      (a.closest('p') || a).replaceWith(block);
+      decorateBlock(block);
+      loadBlock(block);
+    });
+
     // buildHeroBlock(main); uncomment if autoblocking the hero
   } catch (error) {
     // eslint-disable-next-line no-console

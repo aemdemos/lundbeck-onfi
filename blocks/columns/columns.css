@@ -17,79 +17,6 @@
   display: block; /* @boilerplate */
 }
 
-/* Facts About LGS stat grid — 9 stat cards that reflow 3 → 2 → 1 columns like the
-   source (Bootstrap col-md-4 / col-sm-6 / col-xs-12). The authored DOM is 3 rows of
-   3 cells; `display: contents` on the row wrappers lets all 9 cells participate in
-   one CSS grid so they wrap responsively. Scoped via :has() to the bg-* cells (this
-   grid only). Colors / type are set elsewhere and intentionally untouched here.
-   Mobile-first: single column, cards hug their content (no fixed height). Below 768
-   the source renders the cards as full-bleed edge-to-edge colour strips — no gap
-   between them, spanning the full viewport width (the section's 15px side padding is
-   negated). The ≥768 rules below restore the capped, gapped multi-column layout. */
-main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  max-width: none;
-
-  /* negate the section inner's 15px side padding to reach the viewport edges */
-  width: calc(100% + 30px);
-  margin-inline: -15px;
-}
-
-/* dissolve the authored row wrappers so their 9 cells become direct grid items */
-main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div {
-  display: contents;
-}
-
-main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
-main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal-dark,
-main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green-light {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1em var(--columns-fact-padding-inline);
-  border-radius: 0;
-}
-
-/* single centered paragraph per cell — drop the default bottom margin so the
-   copy sits optically centered within the card. Mobile: extra inline padding
-   insets the copy from the full-bleed stripe edges for breathing room while
-   still keeping short lines (e.g. "LGS is a severe type of epilepsy") on one
-   line; long copy wraps to short centered rows. The ≥768 rule zeroes this once
-   cards become narrow columns. */
-main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
-  margin: 0;
-  padding-inline: var(--columns-fact-text-padding-inline);
-}
-
-/* reversed variant fine print — the trailing eligibility footnote in the
-   free-trial card renders smaller than body copy (source treats it as fine
-   print). Targets the last paragraph of the text column so authors keep a
-   plain paragraph in the document (no inline <small> markup needed). */
-main .columns.reversed > div > div:not(.columns-img-col) > p:last-child {
-  font-size: 0.83em;
-}
-
-/* thumbnail variant — resource/community cards: small content-sized image
-   beside wide text (source keeps the image at its natural ~96-120px, not
-   stretched to half the row). Mobile: image centered on top. */
-main .columns.thumbnail > div > .columns-img-col {
-  flex: 0 0 auto;
-  max-width: 130px;
-  margin: 0 auto;
-}
-
-main .columns.thumbnail > div > .columns-img-col img {
-  width: 100%;
-  height: auto;
-}
-
-/* source sets these resource-card headings one step below the section h3 (26px) */
-main .columns.thumbnail h3 {
-  font-size: 26px;
-}
-
 /* stats-callout variant — vyepti study/survey results callouts.
    Teal headings, large red italic "X fewer" numbers, centered copy. */
 main .columns.stats-callout > div > div {
@@ -170,31 +97,6 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
     order: unset; /* @boilerplate */
   }
 
-  /* fact grid — tablet (768–991): 2 columns with fixed-height cards (source
-     col-sm-6). The grid is capped and left-aligned under the section title, gets
-     its row/col gap back, and drops the mobile full-bleed negative margins. Fixed
-     row height returns here since cards sit side by side. */
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--columns-fact-row-gap) var(--columns-fact-col-gap);
-    max-width: var(--columns-fact-max-width);
-    width: auto;
-    margin-inline: 0;
-  }
-
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal-dark,
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green-light {
-    min-height: var(--columns-fact-min-height);
-    padding-block: 0;
-    border-radius: var(--columns-fact-radius);
-  }
-
-  /* drop the mobile-only inline text padding — narrow columns use the full cell */
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
-    padding-inline: 0;
-  }
-
   .columns.divider.columns-2-cols > div {
     align-items: stretch;
     gap: 0;
@@ -209,44 +111,6 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
     padding-inline-start: var(--columns-divider-spacing);
   }
   
-  /* thumbnail: small fixed-width image left, text fills the rest */
-  main .columns.thumbnail > div {
-    align-items: flex-start;
-  }
-
-  main .columns.thumbnail > div > .columns-img-col {
-    margin: 0;
-  }
-
-  main .columns.thumbnail > div > div:not(.columns-img-col) {
-    flex: 1;
-  }
-
-  /* Align content to the top: drop the leading heading's top margin so the
-     text starts flush with the top of the thumbnail image. */
-  main .columns.thumbnail > div > div > :first-child {
-    margin-top: 0;
-  }
-
-  /* reversed: text column left (41.66%), image column right (50%); columns
-     pack to the left with the remaining ~8.33% empty on the right (source
-     Bootstrap grid: col-md-5 text + col-md-6 image). */
-  main .columns.reversed > div {
-    justify-content: flex-start;
-    gap: 0;
-  }
-
-  main .columns.reversed > div > div:not(.columns-img-col) {
-    flex: 0 0 41.6667%;
-    max-width: 41.6667%;
-  }
-
-  main .columns.reversed > div > .columns-img-col {
-    order: 1;
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-
   main .columns.stats-callout > div {
     flex-direction: row;
     align-items: flex-start;
@@ -270,12 +134,5 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
 
   main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) {
     text-align: left;
-  }
-}
-
-/* fact grid — desktop (≥992): 3 columns (source col-md-4) */
-@media (width >= 992px) {
-  main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
-    grid-template-columns: 1fr 1fr 1fr;
   }
 }
