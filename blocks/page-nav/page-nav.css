@@ -80,13 +80,13 @@ main .page-nav nav a.active {
     padding-left: 0;
   }
 
-  /* The section padding-left above already reserves the sidebar gutter, so the
-     inner content wrapper must fill the remaining width (up to the site cap) and
-     drop the boilerplate's legacy 16.5% right margin / 970px cap — otherwise the
-     content is double-offset (sidebar on the left + 16.5% on the right), which
-     narrows two-column rows and shrinks their images vs. the source. */
+  /* The section padding-left above already reserves the sidebar gutter on the
+     left, so the inner content wrapper must NOT also apply the boilerplate's
+     legacy 16.5% right margin (a pre-page-nav Bootstrap centering offset) — that
+     double-offset shrinks the usable content width by ~65px, which is why the
+     source's 488px offer voucher couldn't fit beside its 431px text column. Drop
+     the right margin so content fills to the source's width beside the sidebar. */
   body.has-page-nav main > .section > div {
-    max-width: var(--max-width-site);
     margin-right: 0;
   }
 }
