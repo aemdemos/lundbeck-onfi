@@ -173,6 +173,21 @@ export default function decorate(block) {
     });
   };
 
+  // Lower boundary: the fixed sidebar must not hang over the ISI area. Like the
+  // source, the nav is pinned only while the article scrolls past; once the ISI
+  // section reaches it, the nav rides up with the page (clamped by translateY)
+  // instead of overlaying the safety copy. The ISI arrives as a late fragment,
+  // so resolve its section lazily on each pass.
+  const clampToArticle = () => {
+    const isiSection = main.querySelector('.isi')?.closest('main > .section');
+    block.style.transform = '';
+    if (!isiSection) return;
+    const navRect = block.getBoundingClientRect();
+    const boundary = isiSection.getBoundingClientRect().top - 20;
+    const overflow = navRect.bottom - boundary;
+    if (overflow > 0) block.style.transform = `translateY(${-overflow}px)`;
+  };
+
   const spy = () => {
     // Sections may render after this block; keep late headings id'd so their
     // targets resolve.
@@ -200,6 +215,7 @@ export default function decorate(block) {
         setActive(current);
       }
     }
+    clampToArticle();
     adaptColor();
   };
 
