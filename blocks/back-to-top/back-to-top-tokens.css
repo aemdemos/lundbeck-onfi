@@ -1,9 +1,8 @@
 /* back-to-top design tokens */
 :root {
-  --back-to-top-width: 35px;
-  --back-to-top-height: 55px;
-  --back-to-top-offset-right: 0;
-  --back-to-top-top: 300px;
-  --back-to-top-bottom: 140px;
+  --back-to-top-width: 64px;
+  --back-to-top-height: 64px;
+  --back-to-top-offset-right: 5px;
+  --back-to-top-bottom: 26%;
   --back-to-top-z-index: 100;
 }
