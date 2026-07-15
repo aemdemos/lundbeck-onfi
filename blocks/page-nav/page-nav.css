@@ -30,13 +30,13 @@ main .page-nav nav ul.page-nav-items > li::before {
 
 main .page-nav nav a {
   display: inline-block;
-  color: var(--brand-primary);
+  color: var(--fact-teal-dark);
   font-family: var(--body-font-family);
   font-size: 16px;
   font-weight: 700;
   line-height: 1.43;
   text-decoration: none;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
 /* Flipped to white where a link overlaps a dark-colored section. */
@@ -60,9 +60,12 @@ main .page-nav nav a.active {
   main .page-nav {
     display: block;
     position: fixed;
-    top: calc(var(--header-height, 0px) + 16px);
+    top: calc(var(--header-height, 0px) + 30px);
     left: max(15px, calc((100vw - var(--max-width-site)) / 2 + var(--header-logo-left-offset, 5px)));
-    width: 185px;
+    /* Fixed column width tuned so the longest labels across pages wrap to at
+       most 2 lines (matching the source) — e.g. "Ask for ONFI by name" and
+       "Medical information inquiries" both break to 2 lines rather than 3. */
+    width: 150px;
     z-index: 5;
   }
 
