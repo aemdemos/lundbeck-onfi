@@ -1032,11 +1032,12 @@ main .section.dark .columns a.button.accent {
     text-align: center;
   }
 
-  /* The promo icon is a block image (unaffected by text-align); center it so it
-     sits above the centered copy like the source's stacked mobile layout. The
-     source also renders it larger on mobile (~190px) than the 100px desktop cap. */
+  /* Dark-section card images are block images (unaffected by text-align); center
+     them so they sit above the centered copy like the source's stacked mobile
+     layout, with the source's trailing gap. The image fills its column naturally
+     (capped at its intrinsic size), so a small icon stays icon-sized while a
+     larger card image spans the column — no per-image width hardcode. */
   main .section.dark .columns .columns-img-col img {
-    width: 190px;
     margin-block: 10px 20px;
     margin-inline: auto;
   }
@@ -1214,6 +1215,10 @@ main .section.dark a.button.secondary:focus {
 
   .width-50 {
     width: 48.5%;
+  }
+
+  .width-42 {
+    width: 40.5%;
   }
 
   .width-33 {
