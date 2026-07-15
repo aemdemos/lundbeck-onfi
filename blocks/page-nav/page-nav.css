@@ -79,4 +79,14 @@ main .page-nav nav a.active {
   body.has-page-nav main > .section:has(.page-nav) {
     padding-left: 0;
   }
+
+  /* The section padding-left above already reserves the sidebar gutter, so the
+     inner content wrapper must fill the remaining width (up to the site cap) and
+     drop the boilerplate's legacy 16.5% right margin / 970px cap — otherwise the
+     content is double-offset (sidebar on the left + 16.5% on the right), which
+     narrows two-column rows and shrinks their images vs. the source. */
+  body.has-page-nav main > .section > div {
+    max-width: var(--max-width-site);
+    margin-right: 0;
+  }
 }
