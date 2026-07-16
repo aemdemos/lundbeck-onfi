@@ -346,8 +346,19 @@ main .section.hcp-body ul li {
 }
 
 main .section.hcp-body ol li {
+  font-family: var(--heading-font-family);
   font-size: 13px;
   line-height: 1.43;
+}
+
+/* inline body links stay regular weight (source), not the global bold link */
+main .section.hcp-body p a:any-link {
+  font-weight: 400;
+}
+
+/* Safety Profile heading: source shows 33px gap to next section */
+main .section.section-spaced {
+  margin-bottom: 33px;
 }
 
 /* Facts About LGS type scale — source renders each fact cell at 22px/200 with the
