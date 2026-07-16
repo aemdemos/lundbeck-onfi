@@ -686,16 +686,17 @@ a.button.accent:focus {
   cursor: pointer;
 }
 
-/* Primary high-impact CTA variant (source `.btn-primary`): square-ish corners and
-   uppercase label. Opted into by wrapping the link text in the [[cta-primary]]
-   span in the document, so it stays author-controlled and reusable site-wide. */
+/* Primary high-impact CTA variant (source `.btn-primary`): square-ish 4px corners,
+   20px label in sentence case (the source markup carries `text-transform: uppercase`
+   but overrides it back with a `.txt-normalcase` inner span, so it reads sentence
+   case). Opted into by wrapping the link text in the [[cta-primary]] span in the
+   document, so it stays author-controlled and reusable site-wide. */
 a.button.accent:has(.cta-primary),
 a.button.accent:has(.cta-primary):hover,
 a.button.accent:has(.cta-primary):focus {
   border-radius: 4px;
   padding: 15px;
   font-size: 20px;
-  text-transform: uppercase;
 }
 
 /* arrow icon on link buttons */
@@ -1284,5 +1285,16 @@ main .section.dark a.button.secondary:focus {
 @media (width >= 1200px) {
   main > .section > div {
     max-width: var(--max-width-site);
+  }
+}
+
+/* On page-nav pages the fixed sidebar already offsets content from the left (via
+   the section padding-left in page-nav.css), so the boilerplate's 16.5% right
+   margin above just double-offsets and shrinks the usable content width. Zero it
+   so content fills the space beside the sidebar and matches the source's content
+   row width (this is a global content-layout concern, not a page-nav-block one). */
+@media (width >= 992px) {
+  body.has-page-nav main > .section > div {
+    margin-right: 0;
   }
 }
