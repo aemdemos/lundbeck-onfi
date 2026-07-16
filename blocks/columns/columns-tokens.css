@@ -64,6 +64,25 @@ main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > d
   }
 }
 
+/* Offer/voucher card body copy: the source renders this card's dense supporting
+   text a step smaller than the 18px site body — 16px body/list at line-height
+   1.43, with 13px fine print. Scoped to the offer card's text column (the
+   width-42 cell paired with the width-50 voucher image in a dark band) so simpler
+   promo cards (e.g. the LGS "Start the conversation" card, which keeps 18px body)
+   are unaffected. The `sup`-wrapped footnote gets the smaller fine-print size. */
+main .section.dark .columns > div > .width-42 p,
+main .section.dark .columns > div > .width-42 li {
+  font-size: 16px;
+  line-height: 1.43;
+}
+
+main .section.dark .columns > div > .width-42 sup {
+  font-size: 13px;
+  line-height: 1.43;
+  top: 0;
+  vertical-align: baseline;
+}
+
 /* Seizure video-card description (LGS "Sign #1"): the source renders these
    captions in Avenir Roman 16px (not the site body Avenir Light 18px). Scoped to
    the cell that holds the auto-embedded video so no other page copy is affected. */

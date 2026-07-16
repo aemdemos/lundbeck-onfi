@@ -79,14 +79,4 @@ main .page-nav nav a.active {
   body.has-page-nav main > .section:has(.page-nav) {
     padding-left: 0;
   }
-
-  /* The section padding-left above already reserves the sidebar gutter on the
-     left, so the inner content wrapper must NOT also apply the boilerplate's
-     legacy 16.5% right margin (a pre-page-nav Bootstrap centering offset) — that
-     double-offset shrinks the usable content width by ~65px, which is why the
-     source's 488px offer voucher couldn't fit beside its 431px text column. Drop
-     the right margin so content fills to the source's width beside the sidebar. */
-  body.has-page-nav main > .section > div {
-    margin-right: 0;
-  }
 }

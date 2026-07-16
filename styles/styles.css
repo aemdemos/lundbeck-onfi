@@ -225,10 +225,10 @@
      yellow lightens to #ffdc45 — text stays teal, no color change. */
   --button-accent-background: var(--brand-yellow);
   --button-accent-hover-background: var(--brand-yellow-light);
-  --button-accent-color: var(--brand-teal);
+  --button-accent-color: var(--brand-green);
   --button-accent-border-color: var(--brand-yellow);
   --button-accent-hover-border-color: var(--brand-yellow-light);
-  --button-accent-hover-color: var(--brand-teal);
+  --button-accent-hover-color: var(--brand-green);
   --button-accent-font-family: "Avenir LT W01_65 Medium", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --button-accent-font-size: 22px;
   --button-accent-padding: 16px 20px;
@@ -655,8 +655,12 @@ button.secondary:focus {
   cursor: pointer;
 }
 
-/* accent — yellow high-impact CTA. Source shape: rounded, Avenir Medium 22px,
-   teal text on yellow. */
+/* accent — yellow CTA on yellow. Two source variants share this base:
+   (1) the DEFAULT resource/community button (source `.btn-primary.btn-sm`):
+       rounded 10px, sentence-case, Avenir Medium; GREEN text on light card
+       backgrounds (flips to teal inside .dark bands — see below).
+   (2) the high-impact PRIMARY CTA (source `.btn-primary`, e.g. "Get yours now"):
+       square-ish 4px, UPPERCASE, teal — opted into via the [[cta-primary]] span. */
 a.button.accent {
   padding: var(--button-accent-padding);
   border-radius: 10px;
@@ -680,6 +684,18 @@ a.button.accent:focus {
   color: var(--button-accent-hover-color);
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Primary high-impact CTA variant (source `.btn-primary`): square-ish corners and
+   uppercase label. Opted into by wrapping the link text in the [[cta-primary]]
+   span in the document, so it stays author-controlled and reusable site-wide. */
+a.button.accent:has(.cta-primary),
+a.button.accent:has(.cta-primary):hover,
+a.button.accent:has(.cta-primary):focus {
+  border-radius: 4px;
+  padding: 15px;
+  font-size: 20px;
+  text-transform: uppercase;
 }
 
 /* arrow icon on link buttons */
@@ -1019,10 +1035,18 @@ main .section.dark .columns > div {
   gap: 15px;
 }
 
-/* Promo-card accent button: source line-height is 16px (button height ~50px);
-   the global 1.25 line-height made ours read too tall/thick. */
+/* Promo-card accent button on a dark band (LGS "Download the guide", Savings
+   "Get yours now"): source line-height 16px (button height ~50px; the global 1.25
+   read too tall) and TEAL text (the default accent is green for light-card
+   resource buttons; the source flips to teal on the colored promo bands). */
 main .section.dark .columns a.button.accent {
   line-height: 16px;
+  color: var(--brand-teal);
+}
+
+main .section.dark .columns a.button.accent:hover,
+main .section.dark .columns a.button.accent:focus {
+  color: var(--brand-teal);
 }
 
 /* Center dark-section content on mobile. */
