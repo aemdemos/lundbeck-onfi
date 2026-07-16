@@ -393,3 +393,31 @@ main .section.resource-cards .columns a {
   font-size: 20px;
   line-height: 26px;
 }
+
+/* Mobile: the source centers the resource-card thumbnail in its stacked cell and
+   gives it ~25px of breathing room above (image margin-top: 25px, bottom 0).
+   Ours was left-aligned and flush to the top. Center the image and add the top
+   gap. The desktop `@media (width >= 768px)` block below re-aligns it to the top
+   right of the cell (per the source's row layout). */
+main .section.resource-cards .columns > div > .width-16.columns-img-col {
+  margin-top: 25px;
+}
+
+main .section.resource-cards .columns > div > .width-16.columns-img-col img {
+  margin-inline: auto;
+}
+
+/* Desktop: restore the top-right alignment for resource-card thumbnails. These
+   selectors match the mobile ones above (higher specificity than the generic
+   .width-16 rules in the first media block), so they must be re-stated here or
+   the mobile centering would leak to desktop. */
+@media (width >= 768px) {
+  main .section.resource-cards .columns > div > .width-16.columns-img-col {
+    margin-top: 22px;
+  }
+
+  main .section.resource-cards .columns > div > .width-16.columns-img-col img {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
