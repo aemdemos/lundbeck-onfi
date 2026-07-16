@@ -1034,8 +1034,8 @@ main :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
 /* HCP "PRIMARY ENDPOINT" tab label — the source renders it as a teal pill badge
    (`.nav-tabs > li.active > a`): white 16px Avenir Roman on the teal brand color,
    10px/15px padding, square corners. Authored via [[accent]…] on a heading; the
-   span is styled as an inline-block badge and the wrapping heading left-aligns it
-   (the source tab sits flush-left above the results card). */
+   span is styled as an inline-block badge. Alignment is controlled by the authored
+   section/heading class (the source centers it via `[[accent,center]]`). */
 main :is(h1, h2, h3, h4, h5, h6) > .accent {
   display: inline-block;
   padding: 10px 15px;
@@ -1046,10 +1046,6 @@ main :is(h1, h2, h3, h4, h5, h6) > .accent {
   line-height: 1.1;
   color: var(--background-color);
   text-transform: none;
-}
-
-main :is(h1, h2, h3, h4, h5, h6):has(> .accent) {
-  text-align: left;
 }
 
 /* section metadata - light */
@@ -1286,6 +1282,14 @@ main .section.dark a.button.secondary:focus {
   /* page-title h1 steps up to the source's desktop size */
   main .section > .default-content-wrapper > h1 {
     font-size: 36px;
+  }
+
+  /* When an h1 uses the .headline-2 Light-display treatment (e.g. the HCP page
+     title), the font-size lives on the inner span, which would otherwise clamp
+     the title to the 28px display size. The source keeps the h1 at 36px, so let
+     the span inherit the h1's 36px rather than the smaller display size. */
+  main h1 > .headline-2 {
+    font-size: inherit;
   }
 
   /* narrow-heading section-style variant — constrains the intro heading width
