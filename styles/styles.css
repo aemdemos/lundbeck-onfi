@@ -700,6 +700,16 @@ a.button.accent:has(.cta-primary):focus {
   font-size: 20px;
 }
 
+/* Primary CTA hover: the source flips the label to WHITE (the default accent /
+   dark-band promo button keeps its teal text on hover — this variant is distinct).
+   Scoped to .cta-primary so the LGS "Download the guide" hover is unaffected. The
+   `.section.dark .columns` prefix matches the specificity of the dark-band teal
+   hover rule so this white override wins. */
+main .section.dark .columns a.button.accent:has(.cta-primary):hover,
+main .section.dark .columns a.button.accent:has(.cta-primary):focus {
+  color: #fff;
+}
+
 /* arrow icon on link buttons */
 a.button::after {
   content: "";
@@ -1110,6 +1120,14 @@ main .section.dark a:not(.button.accent):hover {
 main .section.dark .button-wrapper {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+/* Offer card: the source leaves a larger 26px gap between the "Access…" title and
+   the primary CTA (vs the 15px above). Scoped to the offer band's cta-primary
+   button-wrapper so the LGS "Download the guide" promo (no title directly above
+   its button) keeps the tighter 15px. */
+main .section.dark .button-wrapper:has(a.button.accent .cta-primary) {
+  margin-top: 26px;
 }
 
 /* Spacing that was previously authored with trailing <br> tags in the document
