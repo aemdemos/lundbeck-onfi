@@ -338,6 +338,18 @@ div.bg-green-light {
   color: var(--text-color);
 }
 
+/* HCP sections (authored `style: hcp-body`): source body copy is 16px, refs 13px */
+main .section.hcp-body p,
+main .section.hcp-body ul li {
+  font-size: 16px;
+  line-height: 1.43;
+}
+
+main .section.hcp-body ol li {
+  font-size: 13px;
+  line-height: 1.43;
+}
+
 /* Facts About LGS type scale — source renders each fact cell at 22px/200 with the
    emphasis words bumped to 30px/800. Scoped to the stat-grid cells (their bg-*
    classes only appear in this grid); color-only classes above are untouched. */
