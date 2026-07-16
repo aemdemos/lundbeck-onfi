@@ -1279,17 +1279,35 @@ main .section.dark a.button.secondary:focus {
     text-align: left;
   }
 
+  /* centered section keeps display headings centered on desktop */
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .headline-2),
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .onfi-quote),
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .headline-5),
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
+    text-align: center;
+  }
+
+  /* …but the page-title H1 stays left, full width (2-line wrap like source) */
+  main .section.center h1:has(> .headline-2) {
+    max-width: none;
+    text-align: left;
+  }
+
   /* page-title h1 steps up to the source's desktop size */
   main .section > .default-content-wrapper > h1 {
     font-size: 36px;
   }
 
-  /* When an h1 uses the .headline-2 Light-display treatment (e.g. the HCP page
-     title), the font-size lives on the inner span, which would otherwise clamp
-     the title to the 28px display size. The source keeps the h1 at 36px, so let
-     the span inherit the h1's 36px rather than the smaller display size. */
+  /* .headline-2 h1: size lives on the span; inherit the h1's 36px */
   main h1 > .headline-2 {
     font-size: inherit;
+  }
+
+  /* HCP endpoint: title + graph share the graph's 672px column (732 = 672 + 30px×2 gutter) */
+  main .section.endpoint > .default-content-wrapper:first-child,
+  main .section.endpoint > .columns-wrapper:has(.graph1) {
+    max-width: 732px;
+    margin-inline: 0;
   }
 
   /* narrow-heading section-style variant — constrains the intro heading width
