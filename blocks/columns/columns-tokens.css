@@ -78,15 +78,6 @@ main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > d
     margin-inline: 0;
   }
 
-  /* Primary CTA in the offer card matches the source's `.tab-content a.btn`
-     (width: 70% of the text column) with the global `.btn` 170px min-width floor,
-     so the yellow "Get yours now" button spans most of the column rather than
-     hugging its label. Scoped to the offer band's cta-primary button. */
-  main .section.dark .columns > div > .width-42 a.button.accent:has(.cta-primary) {
-    width: 70%;
-    min-width: 170px;
-  }
-
   /* Promo-card icon (LGS "Start the conversation", about-onfi "Thinking about
      adding ONFI?"): the source renders this circular icon at 100px on desktop,
      but the authored .width-16 cell (~150px) makes `img { width: 100% }` overflow
@@ -112,15 +103,16 @@ main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > d
 }
 
 /* Offer/voucher card body copy: the source renders this card's dense supporting
-   text a step smaller than the 18px site body — 16px body/list at line-height
-   1.43, with 13px fine print. Scoped to the offer card's text column (the
-   width-42 cell paired with the width-50 voucher image in a dark band) so simpler
-   promo cards (e.g. the LGS "Start the conversation" card, which keeps 18px body)
-   are unaffected. The `sup`-wrapped footnote gets the smaller fine-print size. */
+   text a step smaller than the site body. Mobile-first: 14px/20px on phones, then
+   16px/1.43 from 768px up (the source scales this card's type down on mobile).
+   Scoped to the offer card's text column (the width-42 cell paired with the
+   width-50 voucher image in a dark band) so simpler promo cards (e.g. the LGS
+   "Start the conversation" card, which keeps 18px body) are unaffected. The
+   `sup`-wrapped footnote gets the smaller fine-print size. */
 main .section.dark .columns > div > .width-42 p,
 main .section.dark .columns > div > .width-42 li {
-  font-size: 16px;
-  line-height: 1.43;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 main .section.dark .columns > div > .width-42 sup {
@@ -128,6 +120,27 @@ main .section.dark .columns > div > .width-42 sup {
   line-height: 1.43;
   top: 0;
   vertical-align: baseline;
+}
+
+/* Offer-card heading sizes step down on mobile like the source (h3 28→25px,
+   h4 20→18px); the ≥768px block below restores the desktop sizes. Scoped to the
+   dark offer band's own headings. */
+main .section.dark > .default-content-wrapper > h3 {
+  font-size: 25px;
+}
+
+main .section.dark .columns > div > .width-42 h4 {
+  font-size: 18px;
+}
+
+/* Primary CTA in the offer card matches the source's `.tab-content a.btn`
+   (width: 70% of the text column) with the global `.btn` 170px min-width floor,
+   so the yellow "Get yours now" button spans most of the column rather than
+   hugging its label — at ALL widths (the source keeps this sizing on mobile too,
+   where it renders ~231px). Scoped to the offer band's cta-primary button. */
+main .section.dark .columns > div > .width-42 a.button.accent:has(.cta-primary) {
+  width: 70%;
+  min-width: 170px;
 }
 
 /* Offer card list is bulletless in the source (plain indented lines, no teal
@@ -246,6 +259,24 @@ main .columns.thumbnail h3 {
 }
 
 @media (width >= 768px) {
+  /* Restore the offer card's desktop typography — the mobile-first base scales it
+     down (body 14→16px, h3 25→28px, h4 18→20px) to match the source, which uses
+     larger type on desktop. Placed here (after the base rules) so these win at
+     desktop despite equal specificity. */
+  main .section.dark .columns > div > .width-42 p,
+  main .section.dark .columns > div > .width-42 li {
+    font-size: 16px;
+    line-height: 1.43;
+  }
+
+  main .section.dark > .default-content-wrapper > h3 {
+    font-size: 28px;
+  }
+
+  main .section.dark .columns > div > .width-42 h4 {
+    font-size: 20px;
+  }
+
   /* Top-align the seizure video cards (row layout only) so every video sits at
      the same vertical level; cards with shorter descriptions would otherwise
      center and float their videos to a different height than their neighbors.
