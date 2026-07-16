@@ -45,22 +45,69 @@ main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > d
 }
 
 /* Offer-card band (Savings "14-day free trial", a green .dark columns row):
-   the source packs its two columns flush (col-md-5 text + col-md-6 image, no
-   gutter between them, ~1/12 empty on the right). Drop the boilerplate 24px
-   inter-column gap and left-justify so the authored width-42/width-50 cells sit
-   flush like the source, instead of spreading apart with a gap. Desktop only —
+   the source lays out col-md-5 text + col-md-6 image with the standard 30px
+   Bootstrap gutter between them (~1/12 empty on the right). Replace the auto
+   side-margins on the width-* cells (which resolve to an uneven ~27px each side)
+   with a fixed 30px inter-column gap, left-justified, so the text column keeps a
+   consistent gutter from the voucher image like the source. Desktop only —
    mobile keeps the stacked full-width layout. */
 @media (width >= 768px) {
   main .section.dark .columns > div {
-    gap: 0;
+    gap: 30px;
     justify-content: flex-start;
   }
 
+  /* Offer card vertical positioning vs the "If you qualify…" heading. The source
+     does NOT push the whole row down uniformly: the TEXT column starts ~62px
+     below the heading, while the voucher IMAGE starts high (~11px below the
+     heading, i.e. ~51px above the text column's h4). Reproduce by pushing only
+     the text cell down and pulling the image cell up, rather than a uniform top
+     margin on the whole columns block. Scoped to the offer band, desktop only. */
+  main .section.dark .columns > div > .width-42 {
+    margin-top: 34px;
+  }
+
+  main .section.dark .columns > div > .width-50.columns-img-col {
+    margin-top: -3px;
+  }
+
   /* the shared width-* cells carry auto side-margins (`--div-width-margin`),
-     which here resolve to ~27px each side and open a gap between the two
-     columns; zero them so the text + image sit flush like the source. */
+     which here resolve to ~27px each side and open an uneven gap between the two
+     columns; zero them so the fixed 30px gap above controls the gutter. */
   main .section.dark .columns > div > div[class*="width-"] {
     margin-inline: 0;
+  }
+
+  /* Primary CTA in the offer card matches the source's `.tab-content a.btn`
+     (width: 70% of the text column) with the global `.btn` 170px min-width floor,
+     so the yellow "Get yours now" button spans most of the column rather than
+     hugging its label. Scoped to the offer band's cta-primary button. */
+  main .section.dark .columns > div > .width-42 a.button.accent:has(.cta-primary) {
+    width: 70%;
+    min-width: 170px;
+  }
+
+  /* Promo-card icon (LGS "Start the conversation", about-onfi "Thinking about
+     adding ONFI?"): the source renders this circular icon at 100px on desktop,
+     but the authored .width-16 cell (~150px) makes `img { width: 100% }` overflow
+     it to 150px. Cap it to the source's 100px on desktop only; mobile keeps the
+     larger centered icon (the ≥768px scope leaves the < 768px size untouched). */
+  /* The icon is a block image, so push it to the right of its cell (toward the
+     copy) with `margin-left: auto` — `text-align` on the cell has no effect on a
+     block child. */
+  main .section.dark .columns > div > .width-16.columns-img-col img {
+    width: 100px;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  /* Top-align the promo icon with the heading like the source (desktop): the
+     shared width-* cell carries `--div-width-margin: auto`, whose vertical part
+     centers the icon ~23px below the heading top. Zero the block margin so the
+     icon sits flush with the top of the card. */
+  main .section.dark .columns > div > .width-16.columns-img-col {
+    align-self: flex-start;
+    margin-block: 0;
   }
 }
 
@@ -92,6 +139,15 @@ main .section.dark .columns > div > .width-42 ul > li {
 
 main .section.dark .columns > div > .width-42 ul > li::before {
   content: none;
+}
+
+/* Offer card vertical rhythm: the source runs a tight ~10-11px gap between every
+   block (h4, button, paragraphs, list) rather than the site's 23px paragraph
+   rhythm. The global list carries the 23px --paragraph-margin-bottom; trim it to
+   match the source's 11px so the enrollment list doesn't open an oversized gap
+   before the "Once enrolled" paragraph. Scoped to the offer text cell. */
+main .section.dark .columns > div > .width-42 ul {
+  margin-bottom: 11px;
 }
 
 /* Offer voucher image fills its column (source `.tab-content img { width: 100% }`).

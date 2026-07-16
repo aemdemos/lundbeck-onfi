@@ -1012,11 +1012,22 @@ main .section.dark {
   background-color: var(--brand-teal);
   color: var(--background-color);
   margin: 0;
-  padding: 22px 0;
+
+  /* Source teal band is asymmetric: 22px top inset, a tight ~10px bottom (the
+     band ends just below the trailing "Need help?" line rather than adding a
+     full matching bottom inset). */
+  padding: 22px 0 10px;
 
   /* source runs the free-trial card body copy one step down from the global
      18px (footnote then resolves to ~13px via its 0.83em rule) */
   font-size: 16px;
+}
+
+/* Collapse the trailing content block's own bottom margin inside the dark band
+   so the section's tight 10px bottom padding alone controls the gap below the
+   last line ("Need help?"), matching the source. */
+main .section.dark > .default-content-wrapper:last-child > :last-child {
+  margin-bottom: 0;
 }
 
 /* Promo-card text (columns block inside a dark section, e.g. LGS "Start the
@@ -1101,15 +1112,6 @@ main > .section:has(+ .section.dark) > .default-content-wrapper > h1 {
   margin-bottom: 73px;
 }
 
-/* - the teal "Need help?" label sits on its own line (was a <br> after it) ... */
-main .section.dark .default-content-wrapper > p > strong:first-child {
-  display: block;
-}
-
-/* ... and the box keeps breathing room below that closing line (was 2 <br>) */
-main .section.dark .default-content-wrapper > p:last-child {
-  margin-bottom: 33px;
-}
 
 /* Top breathing room for the terms section that follows the teal box (was an
    empty &nbsp; paragraph at the top of the document, stripped on publish). */
@@ -1296,5 +1298,17 @@ main .section.dark a.button.secondary:focus {
 @media (width >= 992px) {
   body.has-page-nav main > .section > div {
     margin-right: 0;
+  }
+
+  /* The offer band's default-content text (the "If you qualify…" heading and the
+     "Need help?" line) is constrained to Bootstrap's col-md-10 (83.33%) in the
+     source, leaving ~1/6 empty on the right — this is what makes the heading wrap
+     after "trial". The voucher columns row itself is NOT capped (it stays wider,
+     ~col-md-11), so only the default-content wrappers get the cap, not the
+     columns-wrapper. Scoped to .section.dark so other sections keep full width. */
+  main .section.dark > .default-content-wrapper {
+    max-width: 83.333%;
+    margin-left: 0;
+    margin-right: auto;
   }
 }
