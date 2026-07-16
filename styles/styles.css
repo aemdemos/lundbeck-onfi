@@ -943,6 +943,27 @@ main .section:not([data-background-color]):has(+ .section[data-background-color]
   padding-bottom: var(--section-padding-vertical);
 }
 
+/* Resource-card sections (LGS/ONFI/Community): the source band is asymmetric —
+   ~22px above the heading, ~15px below the last download link. Our download link's
+   .button-wrapper carries the global 45px trailing margin, which on top of the 22px
+   band padding produced a ~67px bottom gap. Zero the wrapper's bottom margin inside
+   these cards and set the band's bottom inset to 15px (keep the 22px top). */
+main .section.resource-cards {
+  padding-block: 22px 15px;
+}
+
+main .section.resource-cards .columns .button-wrapper {
+  margin-bottom: 0;
+}
+
+/* The white ONFI resource-card section has no background color, so it misses the
+   [data-background-color] heading-margin collapse above — its h2's own ~22px top
+   margin stacked on the 22px band padding, doubling the top gap. Collapse it so the
+   band padding alone controls the top spacing, matching the colored cards' 22px. */
+main .section.resource-cards > div:first-child > :first-child {
+  margin-top: 0;
+}
+
 /* Display heading — the source's reusable ".headline-2" treatment: Avenir Light
    at the responsive display size (22px mobile → 28px desktop, bumped in the ≥768
    media query), centered on mobile and left-aligned from tablet up. Teal by
@@ -1008,6 +1029,27 @@ main :is(h1, h2, h3, h4, h5, h6):has(> .headline-5) {
 
 main :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
   text-align: center;
+}
+
+/* HCP "PRIMARY ENDPOINT" tab label — the source renders it as a teal pill badge
+   (`.nav-tabs > li.active > a`): white 16px Avenir Roman on the teal brand color,
+   10px/15px padding, square corners. Authored via [[accent]…] on a heading; the
+   span is styled as an inline-block badge and the wrapping heading left-aligns it
+   (the source tab sits flush-left above the results card). */
+main :is(h1, h2, h3, h4, h5, h6) > .accent {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: var(--brand-teal);
+  font-family: var(--heading-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--background-color);
+  text-transform: none;
+}
+
+main :is(h1, h2, h3, h4, h5, h6):has(> .accent) {
+  text-align: left;
 }
 
 /* section metadata - light */

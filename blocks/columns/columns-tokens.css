@@ -421,3 +421,19 @@ main .section.resource-cards .columns > div > .width-16.columns-img-col img {
     margin-right: 0;
   }
 }
+
+/* HCP "REDUCTIONS…" results chart (the source's animated #graph1). The source
+   reserves a fixed 672×354 area for the chart; hold that footprint so the layout
+   doesn't shift when the real animation/asset loads. The image is capped to the
+   box width and left-aligned like the source. Mobile: the box shrinks to the
+   column width (chart is responsive there). */
+main .columns.graph1 > div > div img {
+  width: 100%;
+  height: auto;
+}
+
+@media (width >= 768px) {
+  main .columns.graph1 > div > div {
+    max-width: 672px;
+  }
+}
