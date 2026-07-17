@@ -347,6 +347,25 @@ div.bg-green-light {
   color: var(--text-color);
 }
 
+/* Citation <sup> markers sit outside the color span (the bracket parser can't
+   wrap the trailing <sup>), so they'd inherit the heading's default teal. Match
+   the sup to the preceding color span so "…mlTT)¹ ²" reads in one color, per source. */
+.color-green + sup {
+  color: var(--brand-green);
+}
+
+.color-green-light + sup {
+  color: var(--brand-green-light);
+}
+
+.color-grey + sup {
+  color: var(--text-color);
+}
+
+.color-black + sup {
+  color: #000;
+}
+
 /* HCP sections (authored `style: hcp-body`): source body copy is 16px, refs 13px.
    HCP body-list bullets are dark (#222 on the source), not the site's default
    teal — override the token on this scope. */
