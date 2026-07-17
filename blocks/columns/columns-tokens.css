@@ -153,6 +153,7 @@ main .section.dark .columns > div > .width-42 h4 {
 main .section.dark .columns > div > .width-42 a.button.accent:has(.cta-primary) {
   width: 70%;
   min-width: 170px;
+  justify-self: center;
 }
 
 /* Offer card list is bulletless in the source (plain indented lines, no teal
