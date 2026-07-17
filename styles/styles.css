@@ -1135,12 +1135,26 @@ main .section.dark .columns > div {
 main .section.dark .columns a.button.accent {
   line-height: 16px;
   color: var(--brand-teal);
+
+  /* Mobile: CTA fills its column (source behavior). */
+  display: block;
+  width: 100%;
+}
+
+/* Desktop: CTA shrinks to its label but never below the source's 296px floor. */
+@media (width >= 768px) {
+  main .section.dark .columns a.button.accent {
+    display: inline-block;
+    width: auto;
+    min-width: 296px;
+  }
 }
 
 main .section.dark .columns a.button.accent:hover,
 main .section.dark .columns a.button.accent:focus {
   color: var(--brand-teal);
 }
+
 
 /* Center dark-section content on mobile. */
 @media (width < 768px) {
