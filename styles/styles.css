@@ -1167,7 +1167,7 @@ main .section.dark {
   /* Source teal band is asymmetric: 22px top inset, a tight ~10px bottom (the
      band ends just below the trailing "Need help?" line rather than adding a
      full matching bottom inset). */
-  padding: 22px 0 10px;
+  padding: 22px 0 30px;
 
   /* source runs the free-trial card body copy one step down from the global
      18px (footnote then resolves to ~13px via its 0.83em rule) */
