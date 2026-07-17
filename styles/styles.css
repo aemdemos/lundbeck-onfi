@@ -320,18 +320,12 @@ div.bg-green-light {
 }
 
 /* text-size utility — matches the source's ".txt-size-14" (e.g. the LGS "Signs"
-   video-intro lead). The source renders it at 16px on desktop, stepping down to
-   14px on mobile. Composed on inline text via brackets: [[txt-size-14]…]. */
+   video-intro lead). Source renders at 16px on desktop, 14px on mobile. Usable
+   inline via brackets ([[txt-size-14]…]) or as a section style (see the section
+   variant after the .hcp-body rules, which it must follow to override them). */
 .txt-size-14 {
   font-size: 16px;
   line-height: 1.43;
-}
-
-@media (width < 768px) {
-  .txt-size-14 {
-    font-size: 14px;
-    line-height: 20px;
-  }
 }
 
 /* the source's lighter green (#7fa73a) — distinct from .color-green (#729533).
@@ -375,6 +369,18 @@ main .section.hcp-body ol li {
 /* inline body links stay regular weight (source), not the global bold link */
 main .section.hcp-body p a:any-link {
   font-weight: 400;
+}
+
+/* `txt-size-14`: 16px desktop → 14px mobile. Used inline (bracket span, base rule
+   above) or as a section style that sizes the section's copy (e.g. HCP "Medical
+   Information Inquiries"). The section variant sits after .hcp-body p so it wins
+   on equal specificity; desktop stays 16px via the base .hcp-body p rule. */
+@media (width < 768px) {
+  .txt-size-14,
+  main .section.txt-size-14 p {
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
 
 /* Safety Profile heading: source shows 33px gap to next section */
@@ -1309,8 +1315,8 @@ main .section.dark a.button.secondary:focus {
   color: var(--button-on-dark-secondary-hover-color);
 }
 
-/* mobile (≤767px) */
-@media (width <= 767px) {
+/* mobile (<768px) */
+@media (width < 768px) {
   /* page-title h1 centered on mobile — clear the global h1 max-width so the box
      spans the wrapper; otherwise the narrower left-pinned box makes the centered
      text look off-center */
@@ -1474,21 +1480,12 @@ main .section.dark a.button.secondary:focus {
     max-width: 970px;
     margin-right: 16.5%;
   }
-}
 
-/* desktop (≥1200px): source content container 1100px */
-@media (width >= 1200px) {
-  main > .section > div {
-    max-width: var(--max-width-site);
-  }
-}
-
-/* On page-nav pages the fixed sidebar already offsets content from the left (via
-   the section padding-left in page-nav.css), so the boilerplate's 16.5% right
-   margin above just double-offsets and shrinks the usable content width. Zero it
-   so content fills the space beside the sidebar and matches the source's content
-   row width (this is a global content-layout concern, not a page-nav-block one). */
-@media (width >= 992px) {
+  /* On page-nav pages the fixed sidebar already offsets content from the left (via
+     the section padding-left in page-nav.css), so the boilerplate's 16.5% right
+     margin above just double-offsets and shrinks the usable content width. Zero it
+     so content fills the space beside the sidebar and matches the source's content
+     row width (this is a global content-layout concern, not a page-nav-block one). */
   body.has-page-nav main > .section > div {
     margin-right: 0;
   }
@@ -1503,5 +1500,12 @@ main .section.dark a.button.secondary:focus {
     max-width: 83.333%;
     margin-left: 0;
     margin-right: auto;
+  }
+}
+
+/* desktop (≥1200px): source content container 1100px */
+@media (width >= 1200px) {
+  main > .section > div {
+    max-width: var(--max-width-site);
   }
 }
