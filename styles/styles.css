@@ -320,11 +320,18 @@ div.bg-green-light {
 }
 
 /* text-size utility — matches the source's ".txt-size-14" (e.g. the LGS "Signs"
-   video-intro lead, which the source renders at 14px while sibling body copy
-   stays 18px). Composed on inline text via brackets: [[txt-size-14]…]. */
+   video-intro lead). The source renders it at 16px on desktop, stepping down to
+   14px on mobile. Composed on inline text via brackets: [[txt-size-14]…]. */
 .txt-size-14 {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 1.43;
+}
+
+@media (width < 768px) {
+  .txt-size-14 {
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
 
 /* the source's lighter green (#7fa73a) — distinct from .color-green (#729533).
