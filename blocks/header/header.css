@@ -282,6 +282,7 @@ header ul.nav-main-list {
 
 header nav.nav-open ul.nav-main-list {
   display: flex;
+  z-index: 2;
 }
 
 header .nav-main-list > li {

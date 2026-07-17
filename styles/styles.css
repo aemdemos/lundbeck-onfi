@@ -1163,6 +1163,14 @@ main .section.dark a.button.secondary:focus {
     --headline-5-font-size: 26px;
     --headline-6-font-size: 16px;
   }
+  
+  .hide-desktop {
+    display: none;
+  }
+
+  .hide-mobile {
+    display: revert;
+  }
 
   main > .section > div {
     max-width: var(--max-width-tablet);
