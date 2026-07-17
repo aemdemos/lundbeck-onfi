@@ -94,6 +94,7 @@ main .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) 
      but the authored .width-16 cell (~150px) makes `img { width: 100% }` overflow
      it to 150px. Cap it to the source's 100px on desktop only; mobile keeps the
      larger centered icon (the ≥768px scope leaves the < 768px size untouched). */
+
   /* The icon is a block image, so push it to the right of its cell (toward the
      copy) with `margin-left: auto` — `text-align` on the cell has no effect on a
      block child. */
