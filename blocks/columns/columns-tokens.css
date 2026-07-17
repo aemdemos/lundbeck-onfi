@@ -51,6 +51,7 @@ main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > d
    variants keep their own sizing. */
 main .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) picture img {
   width: 100%;
+  max-width: 788px;
 }
 
 /* Offer-card band (Savings "14-day free trial", a green .dark columns row):
