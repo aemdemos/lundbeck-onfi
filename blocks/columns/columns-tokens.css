@@ -44,6 +44,14 @@ main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > d
   margin-bottom: 20px;
 }
 
+/* Inline diagram images (a <picture> sharing a columns cell with text, not a
+   standalone .columns-img-col) span the full column, like the source's
+   .img-responsive. Standalone image columns and icon/thumbnail/stats variants
+   keep their own sizing. */
+main .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) > picture img {
+  width: 100%;
+}
+
 /* Offer-card band (Savings "14-day free trial", a green .dark columns row):
    the source lays out col-md-5 text + col-md-6 image with the standard 30px
    Bootstrap gutter between them (~1/12 empty on the right). Replace the auto
