@@ -62,12 +62,45 @@ export async function createModal(contentNodes) {
   };
 }
 
-export async function openModal(fragmentUrl) {
+export async function openModal(fragmentUrl, targetUrl) {
   const path = fragmentUrl.startsWith('http')
     ? new URL(fragmentUrl, window.location).pathname
     : fragmentUrl;
 
   const fragment = await loadFragment(path);
-  const { showModal } = await createModal(fragment.childNodes);
+  const { block, showModal } = await createModal(fragment.childNodes);
+  // interstitial: wire the Ok/Cancel actions to the outgoing link
+  if (targetUrl) {
+    block.classList.add('exit');
+    const dialog = block.querySelector('dialog');
+    const actionWrappers = [];
+    block.querySelectorAll('.modal-content a').forEach((a) => {
+      const label = (a.title || a.textContent).trim().toLowerCase();
+    //  a.classList.remove('primary', 'secondary', 'accent');
+      if (label === 'ok') {
+        a.classList.add('ok');
+        a.href = targetUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.addEventListener('click', () => dialog.close());
+        actionWrappers.push(a.closest('.button-wrapper') || a);
+      } else if (label === 'cancel') {
+        a.classList.add('cancel');
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          dialog.close();
+        });
+        actionWrappers.push(a.closest('.button-wrapper') || a);
+      }
+    });
+
+    // group Ok/Cancel into a centered action row
+    if (actionWrappers.length) {
+      const actions = document.createElement('div');
+      actions.className = 'modal-actions';
+      actionWrappers[0].before(actions);
+      actions.append(...actionWrappers);
+    }
+  }
   showModal();
 }

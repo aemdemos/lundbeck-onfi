@@ -202,13 +202,16 @@
   --button-icon-opacity-hover: 0.5;
   --button-icon-url: url("/icons/arrow-right.svg");
 
-  /* primary — green filled CTA (.btn-green on source) */
-  --button-primary-background: var(--brand-green);
-  --button-primary-hover-background: var(--brand-green-dark);
+  /* primary — teal filled CTA (.btn-green on source) */
+  --button-primary-background: var(--brand-primary);
+  --button-primary-hover-background: var(--fact-cyan);
   --button-primary-color: var(--background-color);
-  --button-primary-border-color: var(--brand-green);
-  --button-primary-hover-border-color: var(--brand-green-dark);
+  --button-primary-border-color: var(--brand-primary);
+  --button-primary-hover-border-color: var(--brand-primary);
   --button-primary-hover-color: var(--background-color);
+  --button-primary-font-family: "Avenir LT W01_65 Medium", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+  --button-primary-font-size: 22px;
+  --button-primary-padding: 14px 18px;
 
   /* secondary — teal outline / ghost */
   --button-secondary-background: transparent;
@@ -231,7 +234,7 @@
   --button-accent-hover-color: var(--brand-green);
   --button-accent-font-family: "Avenir LT W01_65 Medium", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --button-accent-font-size: 22px;
-  --button-accent-padding: 16px 20px;
+  --button-accent-padding: 14px 18px;
 
   /* disabled (native button elements) */
   --button-disabled-background: var(--light-color);
@@ -310,6 +313,17 @@ div.bg-green-light {
 
 .color-green {
   color: var(--brand-green);
+}
+
+.bg-teal-light {
+  background-color: #e3f9fd;
+  color: #008c9a;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.bg-grey {
+  background-color: #f2f2f2;
 }
 
 /* text-size utility — matches the source's ".txt-size-24" (e.g. the LGS "Start
@@ -628,6 +642,10 @@ button {
   background-color: var(--button-primary-background);
   border-color: var(--button-primary-border-color);
   color: var(--button-primary-color);
+  font-family: var(--button-primary-font-family);
+  font-size: var(--button-primary-font-size);
+  border-radius: 10px;
+  padding: var(--button-primary-padding);
 }
 
 a.button.primary:hover,
@@ -785,26 +803,6 @@ main .section.dark .columns a.button.accent:has(.cta-primary):focus {
   color: #fff;
 }
 
-/* arrow icon on link buttons */
-a.button::after {
-  content: "";
-  display: inline-block;
-  width: var(--button-icon-width);
-  height: var(--button-icon-height);
-  margin-left: var(--button-icon-gap);
-  vertical-align: middle;
-  background-color: currentcolor;
-  mask-image: var(--button-icon-url);
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  transition: var(--button-transition);
-}
-
-a.button:hover::after,
-a.button:focus::after {
-  opacity: var(--button-icon-opacity-hover);
-}
 
 /* explicit authored icon (e.g. :search:) replaces the default arrow and uses
    flex gap so spacing sits between icon and text on whichever side it's authored */

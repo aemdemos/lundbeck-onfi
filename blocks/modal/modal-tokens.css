@@ -1,13 +1,168 @@
 /* modal design tokens */
 :root { /* @boilerplate */
-  --modal-backdrop-background: rgb(19 19 19 / 75%); /* @boilerplate */
+  --modal-backdrop-background: rgb(19 19 19 / 50%); /* @boilerplate */
   --modal-width-mobile: calc(100vw - 48px); /* @boilerplate */
-  --modal-width-desktop: calc(100vw - 64px); /* @boilerplate */
+  --modal-width-desktop: 900px; /* @boilerplate */
   --modal-max-width: 900px; /* @boilerplate */
   --modal-content-padding: var(--spacing-m); /* @boilerplate */
   --modal-content-padding-desktop: var(--spacing-l); /* @boilerplate */
-  --modal-content-margin-top: 44px; /* @boilerplate */
+  --modal-content-margin-top:0;
   --modal-close-button-size: 44px; /* @boilerplate */
   --modal-close-icon-size: var(--icon-size); /* @boilerplate */
   --modal-close-icon-thickness: 2px; /* @boilerplate */
+
+  /* exit interstitial ("Leaving www.Sabril.net") */
+  --modal-exit-width: 600px;
+  --modal-exit-max-width: calc(100vw - 30px);
+  --modal-exit-radius: 25px;
+  --modal-exit-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+  --modal-exit-heading-color: var(--brand-primary);
+  --modal-exit-heading-size: 22px;
+  --modal-exit-body-size: 20px;
+  --modal-exit-close-background: white;
+  --modal-exit-button-ok-background: var(--brand-yellow);
+  --modal-exit-button-cancel-background: var(--brand-primary);
+  --modal-exit-button-radius: 8px;
+  --modal-exit-button-padding: 6px 74px;
+  --modal-exit-button-gap: 12px;
+  --modal-exit-button-row-margin-top: 15px;
+  --modal-exit-button-font-size: 16px;
+  --modal-exit-close-width: 24px;
+  --modal-exit-close-height: 24px;
+  --modal-exit-close-font-size: 14px;
+  --modal-exit-content-padding: 55px 1px 25px;
+  --modal-exit-heading-padding-right: 55px;
+  --modal-exit-heading-margin-bottom: 30px;
+  --modal-exit-offset-top: 15px;
+  --modal-exit-bottom-gap: 40px;
+}
+
+.modal.exit .modal-content {
+  background-color: var(--accent-footnote-bg);
+  border-radius: 12px;
+
+  .icon.icon-icon-civ img {
+    height: 16px;
+    width: auto;
+  }
+}
+
+.modal.exit a.button.primary, .modal.exit a.button.accent {
+  font-size: var(--modal-exit-button-font-size);
+}
+
+/* exit interstitial — mobile overrides (matches source below tablet:
+   full-width dialog, smaller close button, same content padding) */
+@media (width < 768px) {
+  :root {
+    --modal-exit-width: calc(100vw - 20px);
+    --modal-exit-max-width: calc(100vw - 30px);
+    --modal-exit-heading-padding-right: 20px;
+    --modal-exit-heading-margin-bottom: 20px;
+    --modal-exit-bottom-gap: 20px;
+    --modal-exit-body-size: 14px;
+  }
+}
+
+/* exit interstitial variant */
+.modal.exit dialog {
+  width: var(--modal-exit-width);
+  max-width: var(--modal-exit-max-width);
+  max-height: calc(100dvh - var(--modal-exit-offset-top) - var(--modal-exit-bottom-gap));
+  margin-top: var(--modal-exit-offset-top);
+  margin-bottom: auto;
+  border: none;
+  border-radius: var(--modal-exit-radius);
+  box-shadow: var(--modal-exit-shadow);
+  overflow: visible;
+}
+
+.modal.exit dialog .modal-content {
+  max-height: calc(100dvh - var(--modal-exit-offset-top) - var(--modal-exit-bottom-gap));
+  padding: var(--modal-exit-content-padding);
+  font-size: 13.2px;
+  color: #008c99;
+  text-align: center;
+}
+
+.modal.exit dialog .section > .default-content-wrapper {
+  padding: 0;
+}
+
+.modal.exit dialog h2 {
+  margin: 0 0 var(--modal-exit-heading-margin-bottom);
+  padding-right: var(--modal-exit-heading-padding-right);
+  color: var(--modal-exit-heading-color);
+  font-size: var(--modal-exit-heading-size);
+  background: white;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  font-family: var(--body-font-family);
+}
+
+.modal.exit dialog p {
+  font-size: var(--modal-exit-body-size);
+  line-height: var(--body-line-height);
+  margin: 0 20px 20px;
+}
+
+.modal.exit .close-button {
+  width: var(--modal-exit-close-width);
+  height: var(--modal-exit-close-height);
+  border-radius: var(--modal-exit-radius);
+  background-color: var(--modal-exit-close-background);
+  color: var(--text-color);
+  font-size: var(--modal-exit-close-font-size);
+  font-weight: var(--font-weight-bold);
+  transition: none;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.modal.exit .close-button .icon.icon-close {
+  width: var(--modal-exit-close-font-size);
+  height: var(--modal-exit-close-font-size);
+}
+
+.modal.exit .close-button .icon.icon-close::before,
+.modal.exit .close-button .icon.icon-close::after {
+  width: var(--modal-exit-close-font-size);
+  height: 4px;
+  border-radius: 4px;
+}
+
+.modal.exit dialog .modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--modal-exit-button-gap);
+  margin-top: var(--modal-exit-button-row-margin-top);
+}
+
+.modal.exit dialog .button-wrapper {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+@media (width >=768px) {
+  .modal.exit dialog .modal-content {
+    font-size: 20px;
+  }
+
+  .modal.exit dialog h2 {
+    font-size: 32px;
+  }
+  
+
+  .modal.exit a.button.primary, .modal.exit a.button.accent {
+  min-width: 170px;
+  }
+}
+
+@media (width >= 992px) {
+  .modal.exit dialog {
+    width: var(--modal-width-desktop);
+    max-width: var(--modal-width-desktop);
+  }
 }
