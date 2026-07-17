@@ -46,9 +46,10 @@ main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > d
 
 /* Inline diagram images (a <picture> sharing a columns cell with text, not a
    standalone .columns-img-col) span the full column, like the source's
-   .img-responsive. Standalone image columns and icon/thumbnail/stats variants
-   keep their own sizing. */
-main .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) > picture img {
+   .img-responsive. The picture may be a direct child of the cell or wrapped in
+   a <p> (EDS import wraps it). Standalone image columns and icon/thumbnail/stats
+   variants keep their own sizing. */
+main .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) picture img {
   width: 100%;
 }
 
