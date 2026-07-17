@@ -353,7 +353,13 @@ div.bg-green-light {
   color: var(--text-color);
 }
 
-/* HCP sections (authored `style: hcp-body`): source body copy is 16px, refs 13px */
+/* HCP sections (authored `style: hcp-body`): source body copy is 16px, refs 13px.
+   HCP body-list bullets are dark (#222 on the source), not the site's default
+   teal — override the token on this scope. */
+main .section.hcp-body {
+  --list-bullet-color: #222;
+}
+
 main .section.hcp-body p,
 main .section.hcp-body ul li {
   font-size: 16px;
@@ -819,6 +825,13 @@ main ul:not(.icon-bullets, :has(> li > .icon, > li > :is(strong, em, a) > .icon)
   position: absolute;
   left: 0;
   color: var(--list-bullet-color);
+}
+
+/* Green-bullet sections (authored `style: green-bullets`): the source renders some
+   body lists with a green bullet instead of the default teal (e.g. Savings "To the
+   Pharmacist"). Opt in via section metadata rather than guessing by position. */
+main .section.green-bullets {
+  --list-bullet-color: var(--brand-green-light);
 }
 
 /* icon bullet lists — :has() prevents FOUC before JS adds .icon-bullets */
