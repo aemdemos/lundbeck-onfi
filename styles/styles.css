@@ -319,6 +319,14 @@ div.bg-green-light {
   font-size: 24px;
 }
 
+/* text-size utility — matches the source's ".txt-size-14" (e.g. the LGS "Signs"
+   video-intro lead, which the source renders at 14px while sibling body copy
+   stays 18px). Composed on inline text via brackets: [[txt-size-14]…]. */
+.txt-size-14 {
+  font-size: 14px;
+  line-height: 20px;
+}
+
 /* the source's lighter green (#7fa73a) — distinct from .color-green (#729533).
    Used on the ".onfi-quote" pull-quote heading (e.g. "WHAT YOU SHOULD KNOW").
    Composed with a typography class via brackets: [[onfi-quote,color-green-light]…]. */
@@ -855,6 +863,18 @@ main > .section[data-background-color="#e8efdc"] :is(h1, h2, h3, h4, h5, h6) {
   color: var(--brand-green);
 }
 
+/* Match the source's taller title band on this light-green section: 27px above
+   the heading (22px section padding + 5px wrapper padding) and 20px below (vs
+   the global 0.5em heading margin). Padding on the wrapper avoids margin
+   collapse; scoped to the section's heading so global headings are unaffected. */
+main > .section[data-background-color="#e8efdc"] > .default-content-wrapper:first-child {
+  padding-top: 5px;
+}
+
+main > .section[data-background-color="#e8efdc"] .default-content-wrapper > :is(h1, h2, h3, h4, h5, h6) {
+  margin-bottom: 20px;
+}
+
 main > .section.divider > div:last-child {
   border-bottom: var(--section-divider-width) solid var(--section-divider-color);
   padding-bottom: var(--section-padding);
@@ -863,6 +883,14 @@ main > .section.divider > div:last-child {
 main > .section > div {
   max-width: 100%;
   margin: auto;
+  padding-inline: 15px;
+}
+
+/* The light-blue (#deedf2) band (e.g. LGS "Sign #2") insets its content an extra
+   15px each side vs the global 15px — both the body copy and the colored cards
+   sit ~30px off the viewport edge in the source. Keyed off the section
+   background so it applies wherever this band appears, not per page. */
+main > .section[data-background-color="#deedf2"] > div {
   padding-inline: 30px;
 }
 
@@ -1136,9 +1164,10 @@ main .section.dark .columns a.button.accent {
   line-height: 16px;
   color: var(--brand-teal);
 
-  /* Mobile: CTA fills its column (source behavior). */
+  /* Mobile: CTA fills its column (source behavior) at the source's 18px label. */
   display: block;
   width: 100%;
+  font-size: 18px;
 }
 
 /* Desktop: CTA shrinks to its label but never below the source's 296px floor. */
@@ -1147,7 +1176,15 @@ main .section.dark .columns a.button.accent {
     display: inline-block;
     width: auto;
     min-width: 296px;
+    font-size: var(--button-accent-font-size);
   }
+}
+
+/* Promo-card lead heading ("Start the conversation"): the source renders this
+   first line at 20px Avenir Roman (the body line below stays 18px). Scoped to the
+   first paragraph of the dark promo card's text cell. */
+main .section.dark .columns > div > .width-83 > p:first-child {
+  font-size: 20px;
 }
 
 main .section.dark .columns a.button.accent:hover,

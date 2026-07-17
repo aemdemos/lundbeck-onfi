@@ -22,10 +22,11 @@
      up, where the cards become narrow fixed-width columns and use the full width. */
   --columns-fact-text-padding-inline: 32px;
 
-  /* Source constrains the grid so each of the 3 cards lands at ~297px:
-     3 × 297 + 2 × 8px column gaps = 907px. Capping the grid keeps the cards
-     from stretching full content width, which changed how the text wrapped. */
-  --columns-fact-max-width: 907px;
+  /* Source constrains the grid so each of the 3 cards lands at ~268px (measured
+     at Full HD): 3 × 268 + 2 × 8px column gaps = 820px. Capping the grid keeps
+     the cards from stretching full content width, which changed how the text
+     wrapped. */
+  --columns-fact-max-width: 820px;
 }
 
 /* =====================================================================
@@ -181,18 +182,42 @@ main .section.dark .columns > div > .width-50.columns-img-col img {
 }
 
 /* Seizure video-card description (LGS "Sign #1"): the source renders these
-   captions in Avenir Roman 16px (not the site body Avenir Light 18px). Scoped to
-   the cell that holds the auto-embedded video so no other page copy is affected. */
+   captions in Avenir Roman 16px (not the site body Avenir Light 18px), centered.
+   Scoped to the cell that holds the auto-embedded video so no other page copy is
+   affected. */
 main .columns > div > div:has(.embed) p {
   font-family: var(--heading-font-family);
   font-size: 16px;
   line-height: 1.43;
+  text-align: center;
 }
 
-/* Breathing room below the seizure video before its description, matching the
-   source's ~10px gap (the embed block has no bottom margin of its own). */
+/* Seizure video cards: the source insets each card ~50px from the viewport edge
+   (video ~290px in a 390 viewport) rather than spanning the full content column,
+   and centers the card's heading + caption. Add the extra ~35px inset over the
+   section's 15px padding. Mobile only; the ≥768 rules lay the cards out in a row. */
+@media (width < 768px) {
+  main .columns:has(.embed) > div > div:has(.embed) {
+    margin-inline: 35px;
+    text-align: center;
+  }
+
+  /* Mobile caption is 14px (source steps it down from the 16px desktop size). */
+  main .columns > div > div:has(.embed) p {
+    font-size: 14px;
+  }
+
+  /* Tighten the gap between one video card's caption and the next card's heading
+     to match the source (~20px vs our ~34px): trim the caption's bottom margin. */
+  main .columns:has(.embed) > div > div:has(.embed) p {
+    margin-bottom: 10px;
+  }
+}
+
+/* Tight gap below the seizure video before its description, matching the source
+   (video sits flush above the caption). */
 main .columns > div > div .embed {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 /* Facts About LGS stat grid — 9 stat cards that reflow 3 → 2 → 1 columns like the
@@ -210,9 +235,35 @@ main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
   gap: 0;
   max-width: none;
 
-  /* negate the section inner's 15px side padding to reach the viewport edges */
+  /* negate the section wrapper's 15px side padding to reach the viewport edges */
   width: calc(100% + 30px);
   margin-inline: -15px;
+}
+
+/* Colored stat/fact grids inside a light-blue (#deedf2) band stay inset within
+   the content padding (source keeps Sign #2 "developmental delays" cards ~15px
+   off each edge), unlike the full-bleed grid in the light-green Facts band.
+   Keyed off the section background so it applies wherever this band pairs with a
+   colored grid, not per page. */
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
+  width: 100%;
+  margin-inline: 0;
+}
+
+/* Source gives these inset cards taller cells than the full-bleed Facts strips
+   (~88px vs ~76px); bump the mobile vertical padding to match. Scoped to the
+   #deedf2 band so the Facts grid keeps its tighter strips. */
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal-dark,
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green-light {
+  padding-block: 24px;
+}
+
+/* Source insets the copy 32px from the stripe edges (vs the Facts grid), so the
+   copy sits optically centered; matches the source's 2-line wrapping. Scoped to
+   the #deedf2 cards only. */
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
+  padding-inline: 32px;
 }
 
 /* dissolve the authored row wrappers so their 9 cells become direct grid items */
