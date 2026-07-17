@@ -22,10 +22,11 @@
      up, where the cards become narrow fixed-width columns and use the full width. */
   --columns-fact-text-padding-inline: 32px;
 
-  /* Source constrains the grid so each of the 3 cards lands at ~297px:
-     3 × 297 + 2 × 8px column gaps = 907px. Capping the grid keeps the cards
-     from stretching full content width, which changed how the text wrapped. */
-  --columns-fact-max-width: 907px;
+  /* Source constrains the grid so each of the 3 cards lands at ~268px (measured
+     at Full HD): 3 × 268 + 2 × 8px column gaps = 820px. Capping the grid keeps
+     the cards from stretching full content width, which changed how the text
+     wrapped. */
+  --columns-fact-max-width: 820px;
 }
 
 /* =====================================================================
@@ -39,32 +40,185 @@
    general `.img-responsive` image spacing rather than a per-section override.
    Scoped away from the promo (dark), thumbnail, stats-callout and reversed
    variants, which manage their own image placement. */
-main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > div > .columns-img-col img {
+main .section:not(.dark) .columns:not(.thumbnail, .stats-callout, .reversed) > div > .columns-img-col:not(.width-16) img {
   margin-inline: auto;
   margin-bottom: 20px;
 }
 
-/* Promo-card image (icon + text + CTA inside a green .dark section, e.g. LGS
-   "Start the conversation", about-onfi "Thinking about adding ONFI?"): the
-   source renders the icon at a fixed 100px, not stretched to the column width. */
-main .section.dark .columns .columns-img-col img {
-  width: 100px;
-  height: auto;
+/* Inline diagram images (a <picture> sharing a columns cell with text, not a
+   standalone .columns-img-col) span the full column, like the source's
+   .img-responsive. The picture may be a direct child of the cell or wrapped in
+   a <p> (EDS import wraps it). Standalone image columns and icon/thumbnail/stats
+   variants keep their own sizing. */
+main .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) picture img {
+  width: 100%;
+  max-width: 788px;
+}
+
+/* Offer-card band (Savings "14-day free trial", a green .dark columns row):
+   the source lays out col-md-5 text + col-md-6 image with the standard 30px
+   Bootstrap gutter between them (~1/12 empty on the right). Replace the auto
+   side-margins on the width-* cells (which resolve to an uneven ~27px each side)
+   with a fixed 30px inter-column gap, left-justified, so the text column keeps a
+   consistent gutter from the voucher image like the source. Desktop only —
+   mobile keeps the stacked full-width layout. */
+@media (width >= 768px) {
+  main .section.dark .columns > div {
+    gap: 30px;
+    justify-content: flex-start;
+  }
+
+  /* Offer card vertical positioning vs the "If you qualify…" heading. The source
+     does NOT push the whole row down uniformly: the TEXT column starts ~62px
+     below the heading, while the voucher IMAGE starts high (~11px below the
+     heading, i.e. ~51px above the text column's h4). Reproduce by pushing only
+     the text cell down and pulling the image cell up, rather than a uniform top
+     margin on the whole columns block. Scoped to the offer band, desktop only. */
+  main .section.dark .columns > div > .width-42 {
+    margin-top: 34px;
+  }
+
+  main .section.dark .columns > div > .width-50.columns-img-col {
+    margin-top: -3px;
+  }
+
+  /* the shared width-* cells carry auto side-margins (`--div-width-margin`),
+     which here resolve to ~27px each side and open an uneven gap between the two
+     columns; zero them so the fixed 30px gap above controls the gutter. */
+  main .section.dark .columns > div > div[class*="width-"] {
+    margin-inline: 0;
+  }
+
+  /* Promo-card icon (LGS "Start the conversation", about-onfi "Thinking about
+     adding ONFI?"): the source renders this circular icon at 100px on desktop,
+     but the authored .width-16 cell (~150px) makes `img { width: 100% }` overflow
+     it to 150px. Cap it to the source's 100px on desktop only; mobile keeps the
+     larger centered icon (the ≥768px scope leaves the < 768px size untouched). */
+
+  /* The icon is a block image, so push it to the right of its cell (toward the
+     copy) with `margin-left: auto` — `text-align` on the cell has no effect on a
+     block child. */
+  main .section.dark .columns > div > .width-16.columns-img-col img {
+    width: 100px;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  /* Top-align the promo icon with the heading like the source (desktop): the
+     shared width-* cell carries `--div-width-margin: auto`, whose vertical part
+     centers the icon ~23px below the heading top. Zero the block margin so the
+     icon sits flush with the top of the card. */
+  main .section.dark .columns > div > .width-16.columns-img-col {
+    align-self: flex-start;
+    margin-block: 0;
+  }
+}
+
+/* Offer/voucher card body copy: the source renders this card's dense supporting
+   text a step smaller than the site body. Mobile-first: 14px/20px on phones, then
+   16px/1.43 from 768px up (the source scales this card's type down on mobile).
+   Scoped to the offer card's text column (the width-42 cell paired with the
+   width-50 voucher image in a dark band) so simpler promo cards (e.g. the LGS
+   "Start the conversation" card, which keeps 18px body) are unaffected. The
+   `sup`-wrapped footnote gets the smaller fine-print size. */
+main .section.dark .columns > div > .width-42 p,
+main .section.dark .columns > div > .width-42 li {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+main .section.dark .columns > div > .width-42 sup {
+  font-size: 13px;
+  line-height: 1.43;
+  top: 0;
+  vertical-align: baseline;
+}
+
+/* Offer-card heading sizes step down on mobile like the source (h3 28→25px,
+   h4 20→18px); the ≥768px block below restores the desktop sizes. Scoped to the
+   dark offer band's own headings. */
+main .section.dark > .default-content-wrapper > h3 {
+  font-size: 25px;
+}
+
+main .section.dark .columns > div > .width-42 h4 {
+  font-size: 18px;
+}
+
+/* Primary CTA in the offer card matches the source's `.tab-content a.btn`
+   (width: 70% of the text column) with the global `.btn` 170px min-width floor,
+   so the yellow "Get yours now" button spans most of the column rather than
+   hugging its label — at ALL widths (the source keeps this sizing on mobile too,
+   where it renders ~231px). Scoped to the offer band's cta-primary button. */
+main .section.dark .columns > div > .width-42 a.button.accent:has(.cta-primary) {
+  width: 70%;
+  min-width: 170px;
+  justify-self: center;
+}
+
+/* Offer card list is bulletless in the source (plain indented lines, no teal
+   dot). Reset the global body-list bullet + its 1.25em indent for this card's
+   list so the items sit flush like the source. Scoped to the offer text cell. */
+main .section.dark .columns > div > .width-42 ul > li {
+  padding-left: 0;
+}
+
+main .section.dark .columns > div > .width-42 ul > li::before {
+  content: none;
+}
+
+/* Offer card vertical rhythm: the source runs a tight ~10-11px gap between every
+   block (h4, button, paragraphs, list) rather than the site's 23px paragraph
+   rhythm. The global list carries the 23px --paragraph-margin-bottom; trim it to
+   match the source's 11px so the enrollment list doesn't open an oversized gap
+   before the "Once enrolled" paragraph. Scoped to the offer text cell. */
+main .section.dark .columns > div > .width-42 ul {
+  margin-bottom: 11px;
+}
+
+/* Offer voucher image fills its column (source `.tab-content img { width: 100% }`).
+   Scoped to the width-50 image cell of the dark offer band so it stretches to the
+   full column width rather than sitting at its intrinsic size. */
+main .section.dark .columns > div > .width-50.columns-img-col img {
+  width: 100%;
 }
 
 /* Seizure video-card description (LGS "Sign #1"): the source renders these
-   captions in Avenir Roman 16px (not the site body Avenir Light 18px). Scoped to
-   the cell that holds the auto-embedded video so no other page copy is affected. */
+   captions in Avenir Roman 16px (not the site body Avenir Light 18px), left-
+   aligned on desktop. Scoped to the cell that holds the auto-embedded video so no
+   other page copy is affected. (Mobile centers them — see the < 768 block.) */
 main .columns > div > div:has(.embed) p {
   font-family: var(--heading-font-family);
   font-size: 16px;
   line-height: 1.43;
 }
 
-/* Breathing room below the seizure video before its description, matching the
-   source's ~10px gap (the embed block has no bottom margin of its own). */
+/* Seizure video cards: the source insets each card ~50px from the viewport edge
+   (video ~290px in a 390 viewport) rather than spanning the full content column,
+   and centers the card's heading + caption. Add the extra ~35px inset over the
+   section's 15px padding. Mobile only; the ≥768 rules lay the cards out in a row. */
+@media (width < 768px) {
+  main .columns:has(.embed) > div > div:has(.embed) {
+    margin-inline: 35px;
+    text-align: center;
+  }
+
+  /* Mobile caption is 14px (source steps it down from the 16px desktop size). */
+  main .columns > div > div:has(.embed) p {
+    font-size: 14px;
+  }
+
+  /* Tighten the gap between one video card's caption and the next card's heading
+     to match the source (~20px vs our ~34px): trim the caption's bottom margin. */
+  main .columns:has(.embed) > div > div:has(.embed) p {
+    margin-bottom: 10px;
+  }
+}
+
+/* Tight gap below the seizure video before its description, matching the source
+   (video sits flush above the caption). */
 main .columns > div > div .embed {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 /* Facts About LGS stat grid — 9 stat cards that reflow 3 → 2 → 1 columns like the
@@ -82,9 +236,35 @@ main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
   gap: 0;
   max-width: none;
 
-  /* negate the section inner's 15px side padding to reach the viewport edges */
+  /* negate the section wrapper's 15px side padding to reach the viewport edges */
   width: calc(100% + 30px);
   margin-inline: -15px;
+}
+
+/* Colored stat/fact grids inside a light-blue (#deedf2) band stay inset within
+   the content padding (source keeps Sign #2 "developmental delays" cards ~15px
+   off each edge), unlike the full-bleed grid in the light-green Facts band.
+   Keyed off the section background so it applies wherever this band pairs with a
+   colored grid, not per page. */
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
+  width: 100%;
+  margin-inline: 0;
+}
+
+/* Source gives these inset cards taller cells than the full-bleed Facts strips
+   (~88px vs ~76px); bump the mobile vertical padding to match. Scoped to the
+   #deedf2 band so the Facts grid keeps its tighter strips. */
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal,
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-teal-dark,
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div.bg-green-light {
+  padding-block: 24px;
+}
+
+/* Source insets the copy 32px from the stripe edges (vs the Facts grid), so the
+   copy sits optically centered; matches the source's 2-line wrapping. Scoped to
+   the #deedf2 cards only. */
+main > .section[data-background-color="#deedf2"] .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) > div > div p {
+  padding-inline: 32px;
 }
 
 /* dissolve the authored row wrappers so their 9 cells become direct grid items */
@@ -141,12 +321,57 @@ main .columns.thumbnail h3 {
 }
 
 @media (width >= 768px) {
+  /* Restore the offer card's desktop typography — the mobile-first base scales it
+     down (body 14→16px, h3 25→28px, h4 18→20px) to match the source, which uses
+     larger type on desktop. Placed here (after the base rules) so these win at
+     desktop despite equal specificity. */
+  main .section.dark .columns > div > .width-42 p,
+  main .section.dark .columns > div > .width-42 li {
+    font-size: 16px;
+    line-height: 1.43;
+  }
+
+  main .section.dark > .default-content-wrapper > h3 {
+    font-size: 28px;
+  }
+
+  main .section.dark .columns > div > .width-42 h4 {
+    font-size: 20px;
+  }
+
+  /* Resource-card thumbnails (LGS "Doctor Discussion Guide", ONFI "Ask for ONFI",
+     Community foundations): the source top-aligns the small image with the card
+     heading and pushes it to the RIGHT of its narrow width-16 cell (toward the
+     copy). The shared width-* cell's `--div-width-margin: auto` otherwise centers
+     it vertically (~130px down) and the image's own auto side-margins center it
+     horizontally. Zero the cell's block margin + top-align it, and push the image
+     right with `margin-left: auto`. Desktop only (mobile stacks the image on top,
+     centered). Same pattern as the dark-band promo icon above. */
+  main .columns > div > .width-16.columns-img-col {
+    align-self: flex-start;
+    margin-block: 22px 0;
+  }
+
+  main .columns > div > .width-16.columns-img-col img {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
   /* Top-align the seizure video cards (row layout only) so every video sits at
      the same vertical level; cards with shorter descriptions would otherwise
      center and float their videos to a different height than their neighbors.
-     Below 768 the cards stack full-width, so this must not apply there. */
+     Below 768 the cards stack full-width, so this must not apply there. The
+     source sizes each card at ~268px with a tight ~10px gutter and left-aligns
+     the row, rather than stretching the cards to fill the content column. */
   main .columns:has(.embed) > div {
     align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  main .columns:has(.embed) > div > div:has(.embed) {
+    flex: 0 0 268px;
+    max-width: 268px;
   }
 
   /* fact grid — tablet (768–991): 2 columns with fixed-height cards (source
@@ -217,5 +442,69 @@ main .columns.thumbnail h3 {
 @media (width >= 992px) {
   main .columns:has(.bg-teal, .bg-teal-dark, .bg-green-light) {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* Resource-card sections (LGS and Epilepsy, ONFI, Community support) — authored
+   via section metadata `style: resource-cards`. The source renders these card
+   bodies in Avenir 55 Roman (heavier than the site's default 35 Light body font),
+   card headings at 26px, and the download links at 20px. Scoped to the section
+   style so the offer card (which stays Light) and other columns are untouched.
+   Authors add/remove the treatment per section via section metadata. */
+main .section.resource-cards .columns p {
+  font-family: var(--heading-font-family); /* Avenir 55 Roman */
+}
+
+main .section.resource-cards .columns h3 {
+  font-size: 26px;
+  line-height: 28.6px;
+}
+
+main .section.resource-cards .columns a {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+/* Mobile: the source centers the resource-card thumbnail in its stacked cell and
+   gives it ~25px of breathing room above (image margin-top: 25px, bottom 0).
+   Ours was left-aligned and flush to the top. Center the image and add the top
+   gap. The desktop `@media (width >= 768px)` block below re-aligns it to the top
+   right of the cell (per the source's row layout). */
+main .section.resource-cards .columns > div > .width-16.columns-img-col {
+  margin-top: 25px;
+}
+
+main .section.resource-cards .columns > div > .width-16.columns-img-col img {
+  margin-inline: auto;
+}
+
+/* Desktop: restore the top-right alignment for resource-card thumbnails. These
+   selectors match the mobile ones above (higher specificity than the generic
+   .width-16 rules in the first media block), so they must be re-stated here or
+   the mobile centering would leak to desktop. */
+@media (width >= 768px) {
+  main .section.resource-cards .columns > div > .width-16.columns-img-col {
+    margin-top: 22px;
+  }
+
+  main .section.resource-cards .columns > div > .width-16.columns-img-col img {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+/* HCP "REDUCTIONS…" results chart (the source's animated #graph1). The source
+   reserves a fixed 672×354 area for the chart; hold that footprint so the layout
+   doesn't shift when the real animation/asset loads. The image is capped to the
+   box width and left-aligned like the source. Mobile: the box shrinks to the
+   column width (chart is responsive there). */
+main .columns.graph1 > div > div img {
+  width: 100%;
+  height: auto;
+}
+
+@media (width >= 768px) {
+  main .columns.graph1 > div > div {
+    max-width: 672px;
   }
 }

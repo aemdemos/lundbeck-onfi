@@ -225,10 +225,10 @@
      yellow lightens to #ffdc45 — text stays teal, no color change. */
   --button-accent-background: var(--brand-yellow);
   --button-accent-hover-background: var(--brand-yellow-light);
-  --button-accent-color: var(--brand-teal);
+  --button-accent-color: var(--brand-green);
   --button-accent-border-color: var(--brand-yellow);
   --button-accent-hover-border-color: var(--brand-yellow-light);
-  --button-accent-hover-color: var(--brand-teal);
+  --button-accent-hover-color: var(--brand-green);
   --button-accent-font-family: "Avenir LT W01_65 Medium", "nunito sans", avenir-fallback, "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
   --button-accent-font-size: 22px;
   --button-accent-padding: 16px 20px;
@@ -319,6 +319,15 @@ div.bg-green-light {
   font-size: 24px;
 }
 
+/* text-size utility — matches the source's ".txt-size-14" (e.g. the LGS "Signs"
+   video-intro lead). Source renders at 16px on desktop, 14px on mobile. Usable
+   inline via brackets ([[txt-size-14]…]) or as a section style (see the section
+   variant after the .hcp-body rules, which it must follow to override them). */
+.txt-size-14 {
+  font-size: 16px;
+  line-height: 1.43;
+}
+
 /* the source's lighter green (#7fa73a) — distinct from .color-green (#729533).
    Used on the ".onfi-quote" pull-quote heading (e.g. "WHAT YOU SHOULD KNOW").
    Composed with a typography class via brackets: [[onfi-quote,color-green-light]…]. */
@@ -336,6 +345,72 @@ div.bg-green-light {
    ("ONFI safety results", "Key enrollment criteria"). Composed via [[color-grey]…]. */
 .color-grey {
   color: var(--text-color);
+}
+
+/* Citation <sup> markers sit outside the color span (the bracket parser can't
+   wrap the trailing <sup>), so they'd inherit the heading's default teal. Match
+   the sup to the preceding color span so "…mlTT)¹ ²" reads in one color, per source. */
+.color-green + sup {
+  color: var(--brand-green);
+}
+
+.color-green-light + sup {
+  color: var(--brand-green-light);
+}
+
+.color-grey + sup {
+  color: var(--text-color);
+}
+
+.color-black + sup {
+  color: #000;
+}
+
+/* HCP sections (authored `style: hcp-body`): source body copy is 16px, refs 13px.
+   HCP body-list bullets are dark (#222 on the source), not the site's default
+   teal — override the token on this scope. */
+main .section.hcp-body {
+  --list-bullet-color: #222;
+}
+
+main .section.hcp-body p {
+  font-size: 16px;
+  line-height: 1.43;
+}
+
+/* HCP list items render in Avenir Roman on the source (body copy stays Light) */
+main .section.hcp-body ul li {
+  font-family: var(--heading-font-family);
+  font-size: 16px;
+  line-height: 1.43;
+}
+
+main .section.hcp-body ol li {
+  font-family: var(--heading-font-family);
+  font-size: 13px;
+  line-height: 1.43;
+}
+
+/* inline body links stay regular weight (source), not the global bold link */
+main .section.hcp-body p a:any-link {
+  font-weight: 400;
+}
+
+/* `txt-size-14`: 16px desktop → 14px mobile. Used inline (bracket span, base rule
+   above) or as a section style that sizes the section's copy (e.g. HCP "Medical
+   Information Inquiries"). The section variant sits after .hcp-body p so it wins
+   on equal specificity; desktop stays 16px via the base .hcp-body p rule. */
+@media (width < 768px) {
+  .txt-size-14,
+  main .section.txt-size-14 p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+/* Safety Profile heading: source shows 33px gap to next section */
+main .section.section-spaced {
+  margin-bottom: 33px;
 }
 
 /* Facts About LGS type scale — source renders each fact cell at 22px/200 with the
@@ -573,8 +648,8 @@ button:disabled:hover {
   cursor: unset;
 }
 
-/* responsive visibility utilities (authorable via [hide-mobile] / [hide-desktop] bracket spans) */
-
+/* responsive visibility utilities (authorable via [hide-mobile] / [hide-desktop] bracket spans).
+   Mobile-first base hides the desktop-only element; the ≥768px block swaps them. */
 .hide-mobile {
   display: none;
 }
@@ -655,8 +730,12 @@ button.secondary:focus {
   cursor: pointer;
 }
 
-/* accent — yellow high-impact CTA. Source shape: rounded, Avenir Medium 22px,
-   teal text on yellow. */
+/* accent — yellow CTA on yellow. Two source variants share this base:
+   (1) the DEFAULT resource/community button (source `.btn-primary.btn-sm`):
+       rounded 10px, sentence-case, Avenir Medium; GREEN text on light card
+       backgrounds (flips to teal inside .dark bands — see below).
+   (2) the high-impact PRIMARY CTA (source `.btn-primary`, e.g. "Get yours now"):
+       square-ish 4px, UPPERCASE, teal — opted into via the [[cta-primary]] span. */
 a.button.accent {
   padding: var(--button-accent-padding);
   border-radius: 10px;
@@ -680,6 +759,30 @@ a.button.accent:focus {
   color: var(--button-accent-hover-color);
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Primary high-impact CTA variant (source `.btn-primary`): square-ish 4px corners,
+   20px label in sentence case (the source markup carries `text-transform: uppercase`
+   but overrides it back with a `.txt-normalcase` inner span, so it reads sentence
+   case). Opted into by wrapping the link text in the [[cta-primary]] span in the
+   document, so it stays author-controlled and reusable site-wide. */
+a.button.accent:has(.cta-primary),
+a.button.accent:has(.cta-primary):hover,
+a.button.accent:has(.cta-primary):focus {
+  border-radius: 4px;
+  border-width: 1px;
+  padding: 15px;
+  font-size: 20px;
+}
+
+/* Primary CTA hover: the source flips the label to WHITE (the default accent /
+   dark-band promo button keeps its teal text on hover — this variant is distinct).
+   Scoped to .cta-primary so the LGS "Download the guide" hover is unaffected. The
+   `.section.dark .columns` prefix matches the specificity of the dark-band teal
+   hover rule so this white override wins. */
+main .section.dark .columns a.button.accent:has(.cta-primary):hover,
+main .section.dark .columns a.button.accent:has(.cta-primary):focus {
+  color: #fff;
 }
 
 /* arrow icon on link buttons */
@@ -755,6 +858,13 @@ main ul:not(.icon-bullets, :has(> li > .icon, > li > :is(strong, em, a) > .icon)
   color: var(--list-bullet-color);
 }
 
+/* Green-bullet sections (authored `style: green-bullets`): the source renders some
+   body lists with a green bullet instead of the default teal (e.g. Savings "To the
+   Pharmacist"). Opt in via section metadata rather than guessing by position. */
+main .section.green-bullets {
+  --list-bullet-color: var(--brand-green-light);
+}
+
 /* icon bullet lists — :has() prevents FOUC before JS adds .icon-bullets */
 main ul:has(> li > .icon, > li > :is(strong, em, a) > .icon) {
   list-style: none;
@@ -804,6 +914,18 @@ main > .section[data-background-color="#e8efdc"] :is(h1, h2, h3, h4, h5, h6) {
   color: var(--brand-green);
 }
 
+/* Match the source's taller title band on this light-green section: 27px above
+   the heading (22px section padding + 5px wrapper padding) and 20px below (vs
+   the global 0.5em heading margin). Padding on the wrapper avoids margin
+   collapse; scoped to the section's heading so global headings are unaffected. */
+main > .section[data-background-color="#e8efdc"] > .default-content-wrapper:first-child {
+  padding-top: 5px;
+}
+
+main > .section[data-background-color="#e8efdc"] .default-content-wrapper > :is(h1, h2, h3, h4, h5, h6) {
+  margin-bottom: 20px;
+}
+
 main > .section.divider > div:last-child {
   border-bottom: var(--section-divider-width) solid var(--section-divider-color);
   padding-bottom: var(--section-padding);
@@ -812,6 +934,14 @@ main > .section.divider > div:last-child {
 main > .section > div {
   max-width: 100%;
   margin: auto;
+  padding-inline: 15px;
+}
+
+/* The light-blue (#deedf2) band (e.g. LGS "Sign #2") insets its content an extra
+   15px each side vs the global 15px — both the body copy and the colored cards
+   sit ~30px off the viewport edge in the source. Keyed off the section
+   background so it applies wherever this band appears, not per page. */
+main > .section[data-background-color="#deedf2"] > div {
   padding-inline: 30px;
 }
 
@@ -915,6 +1045,27 @@ main .section:not([data-background-color]):has(+ .section[data-background-color]
   padding-bottom: var(--section-padding-vertical);
 }
 
+/* Resource-card sections (LGS/ONFI/Community): the source band is asymmetric —
+   ~22px above the heading, ~15px below the last download link. Our download link's
+   .button-wrapper carries the global 45px trailing margin, which on top of the 22px
+   band padding produced a ~67px bottom gap. Zero the wrapper's bottom margin inside
+   these cards and set the band's bottom inset to 15px (keep the 22px top). */
+main .section.resource-cards {
+  padding-block: 22px 15px;
+}
+
+main .section.resource-cards .columns .button-wrapper {
+  margin-bottom: 0;
+}
+
+/* The white ONFI resource-card section has no background color, so it misses the
+   [data-background-color] heading-margin collapse above — its h2's own ~22px top
+   margin stacked on the 22px band padding, doubling the top gap. Collapse it so the
+   band padding alone controls the top spacing, matching the colored cards' 22px. */
+main .section.resource-cards > div:first-child > :first-child {
+  margin-top: 0;
+}
+
 /* Display heading — the source's reusable ".headline-2" treatment: Avenir Light
    at the responsive display size (22px mobile → 28px desktop, bumped in the ≥768
    media query), centered on mobile and left-aligned from tablet up. Teal by
@@ -982,6 +1133,23 @@ main :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
   text-align: center;
 }
 
+/* HCP "PRIMARY ENDPOINT" tab label — the source renders it as a teal pill badge
+   (`.nav-tabs > li.active > a`): white 16px Avenir Roman on the teal brand color,
+   10px/15px padding, square corners. Authored via [[accent]…] on a heading; the
+   span is styled as an inline-block badge. Alignment is controlled by the authored
+   section/heading class (the source centers it via `[[accent,center]]`). */
+main :is(h1, h2, h3, h4, h5, h6) > .accent {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: var(--brand-teal);
+  font-family: var(--heading-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--background-color);
+  text-transform: none;
+}
+
 /* section metadata - light */
 main .section.light,
 main .section.highlight {
@@ -995,11 +1163,22 @@ main .section.dark {
   background-color: var(--brand-teal);
   color: var(--background-color);
   margin: 0;
-  padding: 22px 0;
+
+  /* Source teal band is asymmetric: 22px top inset, a tight ~10px bottom (the
+     band ends just below the trailing "Need help?" line rather than adding a
+     full matching bottom inset). */
+  padding: 22px 0 30px;
 
   /* source runs the free-trial card body copy one step down from the global
      18px (footnote then resolves to ~13px via its 0.83em rule) */
   font-size: 16px;
+}
+
+/* Collapse the trailing content block's own bottom margin inside the dark band
+   so the section's tight 10px bottom padding alone controls the gap below the
+   last line ("Need help?"), matching the source. */
+main .section.dark > .default-content-wrapper:last-child > :last-child {
+  margin-bottom: 0;
 }
 
 /* Promo-card text (columns block inside a dark section, e.g. LGS "Start the
@@ -1013,17 +1192,57 @@ main .section.dark .columns p {
   margin-bottom: 10px;
 }
 
+/* Offer band's default-content copy (the "Need help?" / "Get answers…" line, which
+   lives in the section's default-content-wrapper, not the columns cell): the source
+   scales it down on mobile like the rest of the offer card — 14px/20px on phones,
+   16px/1.43 from 768px up (see the desktop override below). */
+main .section.dark > .default-content-wrapper p {
+  font-size: 14px;
+  line-height: 20px;
+}
+
 /* Promo-card row: source uses a tight ~15px gutter between the icon and text
    columns (not the default 24px columns gap). */
 main .section.dark .columns > div {
   gap: 15px;
 }
 
-/* Promo-card accent button: source line-height is 16px (button height ~50px);
-   the global 1.25 line-height made ours read too tall/thick. */
+/* Promo-card accent button on a dark band (LGS "Download the guide", Savings
+   "Get yours now"): source line-height 16px (button height ~50px; the global 1.25
+   read too tall) and TEAL text (the default accent is green for light-card
+   resource buttons; the source flips to teal on the colored promo bands). */
 main .section.dark .columns a.button.accent {
   line-height: 16px;
+  color: var(--brand-teal);
+
+  /* Mobile: CTA fills its column (source behavior) at the source's 18px label. */
+  display: block;
+  width: 100%;
+  font-size: 18px;
 }
+
+/* Desktop: CTA shrinks to its label but never below the source's 296px floor. */
+@media (width >= 768px) {
+  main .section.dark .columns a.button.accent {
+    display: inline-block;
+    width: auto;
+    min-width: 296px;
+    font-size: var(--button-accent-font-size);
+  }
+}
+
+/* Promo-card lead heading ("Start the conversation"): the source renders this
+   first line at 20px Avenir Roman (the body line below stays 18px). Scoped to the
+   first paragraph of the dark promo card's text cell. */
+main .section.dark .columns > div > .width-83 > p:first-child {
+  font-size: 20px;
+}
+
+main .section.dark .columns a.button.accent:hover,
+main .section.dark .columns a.button.accent:focus {
+  color: var(--brand-teal);
+}
+
 
 /* Center dark-section content on mobile. */
 @media (width < 768px) {
@@ -1032,11 +1251,12 @@ main .section.dark .columns a.button.accent {
     text-align: center;
   }
 
-  /* The promo icon is a block image (unaffected by text-align); center it so it
-     sits above the centered copy like the source's stacked mobile layout. The
-     source also renders it larger on mobile (~190px) than the 100px desktop cap. */
+  /* Dark-section card images are block images (unaffected by text-align); center
+     them so they sit above the centered copy like the source's stacked mobile
+     layout, with the source's trailing gap. The image fills its column naturally
+     (capped at its intrinsic size), so a small icon stays icon-sized while a
+     larger card image spans the column — no per-image width hardcode. */
   main .section.dark .columns .columns-img-col img {
-    width: 190px;
     margin-block: 10px 20px;
     margin-inline: auto;
   }
@@ -1065,22 +1285,24 @@ main .section.dark .button-wrapper {
   margin-bottom: 15px;
 }
 
+/* Offer card: the source leaves a larger 26px gap between the "Access…" title and
+   the primary CTA (vs the 15px above). Scoped to the offer band's cta-primary
+   button-wrapper so the LGS "Download the guide" promo (no title directly above
+   its button) keeps the tighter 15px. */
+main .section.dark .button-wrapper:has(a.button.accent .cta-primary) {
+  margin-top: 26px;
+}
+
 /* Spacing that was previously authored with trailing <br> tags in the document
    (stripped by Document Authoring on publish), now reproduced structurally:
-   - the page title sits well above the teal box (was 3 <br> after the title) */
+   - the page title sits above the teal box. Combined with the 40px plain→colored
+     padding-bottom and the band's 22px top padding, this lands the title→box gap
+     at ~113px and title→offer-heading at ~135px, matching the source at both
+     mobile and ≥1920px desktop. */
 main > .section:has(+ .section.dark) > .default-content-wrapper > h1 {
-  margin-bottom: 111px;
+  margin-bottom: 73px;
 }
 
-/* - the teal "Need help?" label sits on its own line (was a <br> after it) ... */
-main .section.dark .default-content-wrapper > p > strong:first-child {
-  display: block;
-}
-
-/* ... and the box keeps breathing room below that closing line (was 2 <br>) */
-main .section.dark .default-content-wrapper > p:last-child {
-  margin-bottom: 33px;
-}
 
 /* Top breathing room for the terms section that follows the teal box (was an
    empty &nbsp; paragraph at the top of the document, stripped on publish). */
@@ -1118,8 +1340,8 @@ main .section.dark a.button.secondary:focus {
   color: var(--button-on-dark-secondary-hover-color);
 }
 
-/* mobile (≤767px) */
-@media (width <= 767px) {
+/* mobile (<768px) */
+@media (width < 768px) {
   /* page-title h1 centered on mobile — clear the global h1 max-width so the box
      spans the wrapper; otherwise the narrower left-pinned box makes the centered
      text look off-center */
@@ -1140,6 +1362,23 @@ main .section.dark a.button.secondary:focus {
 
 /* tablet (≥768px): Bootstrap-3 container 750px */
 @media (width >= 768px) {
+  /* responsive visibility swap: on desktop hide the mobile-only element and
+     reveal the desktop-only one (mobile-first base hides .hide-mobile above). */
+  .hide-desktop {
+    display: none;
+  }
+
+  .hide-mobile {
+    display: revert;
+  }
+
+  /* Offer band's "Need help?" default-content copy scales back up to 16px on
+     desktop (mobile-first base is 14px above). */
+  main .section.dark > .default-content-wrapper p {
+    font-size: 16px;
+    line-height: 1.43;
+  }
+
  /* desktop bar = the nav rows' real content height (textbar 46 + eyebrow 62 +
      main-list 42 + progress 8 = 158). 159 over-reserved by ~1px, and the
      transparent header let that strip show white — the seam under the sticky
@@ -1175,9 +1414,35 @@ main .section.dark a.button.secondary:focus {
     text-align: left;
   }
 
+  /* centered section keeps display headings centered on desktop */
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .headline-2),
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .onfi-quote),
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .headline-5),
+  main .section.center :is(h1, h2, h3, h4, h5, h6):has(> .headline-6) {
+    text-align: center;
+  }
+
+  /* …but the page-title H1 stays left, full width (2-line wrap like source) */
+  main .section.center h1:has(> .headline-2) {
+    max-width: none;
+    text-align: left;
+  }
+
   /* page-title h1 steps up to the source's desktop size */
   main .section > .default-content-wrapper > h1 {
     font-size: 36px;
+  }
+
+  /* .headline-2 h1: size lives on the span; inherit the h1's 36px */
+  main h1 > .headline-2 {
+    font-size: inherit;
+  }
+
+  /* HCP endpoint: title + graph share the graph's 672px column (732 = 672 + 30px×2 gutter) */
+  main .section.endpoint > .default-content-wrapper:first-child,
+  main .section.endpoint > .columns-wrapper:has(.graph1) {
+    max-width: 732px;
+    margin-inline: 0;
   }
 
   /* narrow-heading section-style variant — constrains the intro heading width
@@ -1213,6 +1478,10 @@ main .section.dark a.button.secondary:focus {
     width: 48.5%;
   }
 
+  .width-42 {
+    width: 40.5%;
+  }
+
   .width-33 {
     width: 31.5%;
   }
@@ -1245,6 +1514,27 @@ main .section.dark a.button.secondary:focus {
   main > .section > div {
     max-width: 970px;
     margin-right: 16.5%;
+  }
+
+  /* On page-nav pages the fixed sidebar already offsets content from the left (via
+     the section padding-left in page-nav.css), so the boilerplate's 16.5% right
+     margin above just double-offsets and shrinks the usable content width. Zero it
+     so content fills the space beside the sidebar and matches the source's content
+     row width (this is a global content-layout concern, not a page-nav-block one). */
+  body.has-page-nav main > .section > div {
+    margin-right: 0;
+  }
+
+  /* The offer band's default-content text (the "If you qualify…" heading and the
+     "Need help?" line) is constrained to Bootstrap's col-md-10 (83.33%) in the
+     source, leaving ~1/6 empty on the right — this is what makes the heading wrap
+     after "trial". The voucher columns row itself is NOT capped (it stays wider,
+     ~col-md-11), so only the default-content wrappers get the cap, not the
+     columns-wrapper. Scoped to .section.dark so other sections keep full width. */
+  main .section.dark > .default-content-wrapper {
+    max-width: 83.333%;
+    margin-left: 0;
+    margin-right: auto;
   }
 }
 
