@@ -354,8 +354,14 @@ main .section.hcp-body {
   --list-bullet-color: #222;
 }
 
-main .section.hcp-body p,
+main .section.hcp-body p {
+  font-size: 16px;
+  line-height: 1.43;
+}
+
+/* HCP list items render in Avenir Roman on the source (body copy stays Light) */
 main .section.hcp-body ul li {
+  font-family: var(--heading-font-family);
   font-size: 16px;
   line-height: 1.43;
 }
