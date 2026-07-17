@@ -648,8 +648,8 @@ button:disabled:hover {
   cursor: unset;
 }
 
-/* responsive visibility utilities (authorable via [hide-mobile] / [hide-desktop] bracket spans) */
-
+/* responsive visibility utilities (authorable via [hide-mobile] / [hide-desktop] bracket spans).
+   Mobile-first base hides the desktop-only element; the ≥768px block swaps them. */
 .hide-mobile {
   display: none;
 }
@@ -1362,6 +1362,16 @@ main .section.dark a.button.secondary:focus {
 
 /* tablet (≥768px): Bootstrap-3 container 750px */
 @media (width >= 768px) {
+  /* responsive visibility swap: on desktop hide the mobile-only element and
+     reveal the desktop-only one (mobile-first base hides .hide-mobile above). */
+  .hide-desktop {
+    display: none;
+  }
+
+  .hide-mobile {
+    display: revert;
+  }
+
   /* Offer band's "Need help?" default-content copy scales back up to 16px on
      desktop (mobile-first base is 14px above). */
   main .section.dark > .default-content-wrapper p {
