@@ -1,0 +1,42 @@
+/* Baseline, reusable appearance — a plain inline search form. The header
+   overrides position/size/colors to render this as its dropdown (see
+   header.css); this is the look when the block is authored in a page body. */
+.search-onfi-form {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.search-onfi-input {
+  flex: 1;
+  height: 40px;
+  padding: 1px 8px;
+  border: 1px solid var(--brand-primary);
+  outline: none;
+  background: #fff;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+}
+
+.search-onfi-input:focus,
+.search-onfi-input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.search-onfi-submit {
+  flex-shrink: 0;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  background-color: var(--brand-secondary);
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.search-onfi-submit:hover {
+  background-color: var(--brand-secondary-dark);
+}

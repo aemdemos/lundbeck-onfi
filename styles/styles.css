@@ -85,6 +85,8 @@
   --section-divider-width: 1px;
   --section-divider-color: var(--border-color);
   --section-padding: 24px;
+  --flex-group-gap: 24px;
+  --border-width-s: 1px solid #ccc;
 
   /* fonts — Avenir LT W01 (Monotype webfonts on source); see NEEDS REVIEW note.
      The licensed Avenir name is kept first so it activates automatically once a
@@ -281,89 +283,49 @@ html {
   --link-color: var(--brand-secondary);
 }
 
-/* Facts About LGS colors — LGS stat-grid cell backgrounds + emphasis text.
-   Cell background classes apply via [classname] cell code; the white cell text
-   is inherited by the paragraphs, then emphasis words override via [[classname]]. */
-div.bg-teal {
+.bg-teal {
   background-color: var(--brand-teal);
   color: var(--background-color);
 }
 
-div.bg-teal-dark {
+.bg-teal-dark {
   background-color: var(--fact-teal-dark);
   color: var(--background-color);
 }
 
-div.bg-green-light {
+.bg-green-light {
   background-color: var(--fact-green);
   color: var(--background-color);
 }
 
-.color-cyan {
+.color-cyan, .color-cyan a:any-link {
   color: var(--fact-cyan);
 }
 
-.color-green-bright {
+.color-green-bright, .color-green-bright a:any-link {
   color: var(--fact-green-bright);
 }
 
-.color-teal-deep {
+.color-teal-deep, .color-teal-deep a:any-link {
   color: var(--fact-teal-deep);
 }
 
-.color-green {
+.color-green, .color-green a:any-link {
   color: var(--brand-green);
 }
 
-.bg-teal-light {
-  background-color: #e3f9fd;
-  color: #008c9a;
-    margin: 20px 0;
-    text-align: center;
-}
-
-.bg-grey {
-  background-color: #f2f2f2;
-}
-
-/* text-size utility — matches the source's ".txt-size-24" (e.g. the LGS "Start
-   the conversation" promo lead, which is 24px while the line below stays 18px).
-   Composed on inline text via brackets: [[txt-size-24]Start the conversation]. */
-.txt-size-24 {
-  font-size: 24px;
-}
-
-/* text-size utility — matches the source's ".txt-size-14" (e.g. the LGS "Signs"
-   video-intro lead). Source renders at 16px on desktop, 14px on mobile. Usable
-   inline via brackets ([[txt-size-14]…]) or as a section style (see the section
-   variant after the .hcp-body rules, which it must follow to override them). */
-.txt-size-14 {
-  font-size: 16px;
-  line-height: 1.43;
-}
-
-/* the source's lighter green (#7fa73a) — distinct from .color-green (#729533).
-   Used on the ".onfi-quote" pull-quote heading (e.g. "WHAT YOU SHOULD KNOW").
-   Composed with a typography class via brackets: [[onfi-quote,color-green-light]…]. */
-.color-green-light {
+.color-green-light, .color-green-ligh a:any-link {
   color: var(--brand-green-light);
 }
 
-/* black heading color — the source's ".txt-black" (#000), used on the HCP page
-   ("Increased efficacy with increased dosage"). Composed via [[color-black]…]. */
 .color-black {
   color: #000;
 }
 
-/* grey heading color — the source's default #333 on non-teal HCP headings
-   ("ONFI safety results", "Key enrollment criteria"). Composed via [[color-grey]…]. */
 .color-grey {
   color: var(--text-color);
 }
 
-/* Citation <sup> markers sit outside the color span (the bracket parser can't
-   wrap the trailing <sup>), so they'd inherit the heading's default teal. Match
-   the sup to the preceding color span so "…mlTT)¹ ²" reads in one color, per source. */
 .color-green + sup {
   color: var(--brand-green);
 }
@@ -380,9 +342,26 @@ div.bg-green-light {
   color: #000;
 }
 
-/* HCP sections (authored `style: hcp-body`): source body copy is 16px, refs 13px.
-   HCP body-list bullets are dark (#222 on the source), not the site's default
-   teal — override the token on this scope. */
+.bg-teal-light {
+  background-color: #e3f9fd;
+  color: #008c9a;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.bg-grey {
+  background-color: #f2f2f2;
+}
+
+.txt-size-24 {
+  font-size: 24px;
+}
+
+.txt-size-14 {
+  font-size: 16px;
+  line-height: 1.43;
+}
+
 main .section.hcp-body {
   --list-bullet-color: #222;
 }
@@ -935,6 +914,20 @@ main > .section > div {
   padding-inline: 15px;
 }
 
+/* flex sections — a run of adjacent style=flex sections is wrapped by JS in a
+.flex-group; the group is its own independent flex context (no crossover with
+other groups). Section-level only: equal-width columns regardless of block type.
+Stacks below 900px, side-by-side at >=900px. */
+main .flex-group {
+display: flex;
+flex-direction: column;
+gap: var(--flex-group-gap);
+}
+
+main .flex-group > .section.flex {
+margin: 0;
+}
+
 /* The light-blue (#deedf2) band (e.g. LGS "Sign #2") insets its content an extra
    15px each side vs the global 15px — both the body copy and the colored cards
    sit ~30px off the viewport edge in the source. Keyed off the section
@@ -1219,16 +1212,6 @@ main .section.dark .columns a.button.accent {
   font-size: 18px;
 }
 
-/* Desktop: CTA shrinks to its label but never below the source's 296px floor. */
-@media (width >= 768px) {
-  main .section.dark .columns a.button.accent {
-    display: inline-block;
-    width: auto;
-    min-width: 296px;
-    font-size: var(--button-accent-font-size);
-  }
-}
-
 /* Promo-card lead heading ("Start the conversation"): the source renders this
    first line at 20px Avenir Roman (the body line below stays 18px). Scoped to the
    first paragraph of the dark promo card's text cell. */
@@ -1239,25 +1222,6 @@ main .section.dark .columns > div > .width-83 > p:first-child {
 main .section.dark .columns a.button.accent:hover,
 main .section.dark .columns a.button.accent:focus {
   color: var(--brand-teal);
-}
-
-
-/* Center dark-section content on mobile. */
-@media (width < 768px) {
-  main .section.dark,
-  main .section.dark :is(h1, h2, h3, h4, h5, h6, p) {
-    text-align: center;
-  }
-
-  /* Dark-section card images are block images (unaffected by text-align); center
-     them so they sit above the centered copy like the source's stacked mobile
-     layout, with the source's trailing gap. The image fills its column naturally
-     (capped at its intrinsic size), so a small icon stays icon-sized while a
-     larger card image spans the column — no per-image width hardcode. */
-  main .section.dark .columns .columns-img-col img {
-    margin-block: 10px 20px;
-    margin-inline: auto;
-  }
 }
 
 main .section.dark h1,
@@ -1338,11 +1302,22 @@ main .section.dark a.button.secondary:focus {
   color: var(--button-on-dark-secondary-hover-color);
 }
 
-/* mobile (<768px) */
 @media (width < 768px) {
-  /* page-title h1 centered on mobile — clear the global h1 max-width so the box
-     spans the wrapper; otherwise the narrower left-pinned box makes the centered
-     text look off-center */
+  main .section.dark,
+  main .section.dark :is(h1, h2, h3, h4, h5, h6, p) {
+    text-align: center;
+  }
+
+  /* Dark-section card images are block images (unaffected by text-align); center
+     them so they sit above the centered copy like the source's stacked mobile
+     layout, with the source's trailing gap. The image fills its column naturally
+     (capped at its intrinsic size), so a small icon stays icon-sized while a
+     larger card image spans the column — no per-image width hardcode. */
+  main .section.dark .columns .columns-img-col img {
+    margin-block: 10px 20px;
+    margin-inline: auto;
+  }
+
   main .section > .default-content-wrapper > h1 {
     max-width: none;
     text-align: center;
@@ -1368,6 +1343,17 @@ main .section.dark a.button.secondary:focus {
 
   .hide-mobile {
     display: revert;
+  }
+
+  main .section-dark {
+    padding: 0;
+  }
+  
+  main .section.dark .columns a.button.accent {
+    display: inline-block;
+    width: auto;
+    min-width: 296px;
+    font-size: var(--button-accent-font-size);
   }
 
   /* Offer band's "Need help?" default-content copy scales back up to 16px on
@@ -1489,7 +1475,7 @@ main .section.dark a.button.secondary:focus {
   }
 
   .width-16 {
-    width: 15%;
+    width: 10%;
   }
 
   .columns > div:has(> div[class^="width-"],> div[class*=" width-"]) {
@@ -1533,6 +1519,16 @@ main .section.dark a.button.secondary:focus {
     max-width: 83.333%;
     margin-left: 0;
     margin-right: auto;
+  }
+
+  main .flex-group {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  main .flex-group > .section.flex {
+    flex: 1 1 0;
+    min-width: 0;
   }
 }
 

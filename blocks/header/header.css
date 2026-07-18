@@ -132,7 +132,7 @@ header .nav-brand-controls .nav-search-toggle .icon {
 }
 
 /* search form opens to the LEFT of the icon, on the same horizontal line */
-header .nav-brand-controls .nav-search-form {
+header .nav-brand-controls .search-onfi-form {
   position: absolute;
   top: 50%;
   right: 100%;
@@ -145,7 +145,7 @@ header .nav-brand-controls .nav-search-form {
   transform: translateY(-50%);
 }
 
-header .nav-brand-controls .nav-search-input {
+header .nav-brand-controls .search-onfi-input {
   width: var(--header-mobile-search-input-width);
 }
 
@@ -378,8 +378,10 @@ header .nav-search.nav-search-open .nav-search-toggle::after {
 }
 
 /* search form drops below the nav as a right-aligned brand-teal panel, with a
-   small gap below the icon's teal column (matches source) */
-header .nav-search-form {
+   small gap below the icon's teal column (matches source). The form itself is
+   the search-onfi block (blocks/search-onfi/) — these rules override its
+   default in-page appearance to render it as the header's dropdown. */
+header .search-onfi-form {
   display: none;
   position: absolute;
   top: var(--header-search-form-top);
@@ -391,11 +393,11 @@ header .nav-search-form {
   background-color: var(--header-main-bg);
 }
 
-header .nav-search.nav-search-open .nav-search-form {
+header .nav-search.nav-search-open .search-onfi-form {
   display: flex;
 }
 
-header .nav-search-input {
+header .search-onfi-input {
   width: var(--header-search-input-width);
   height: var(--header-search-input-height);
   margin-right: var(--header-search-input-gap);
@@ -406,14 +408,14 @@ header .nav-search-input {
   font-size: var(--header-search-input-font-size);
 }
 
-header .nav-search-input:focus,
-header .nav-search-input:focus-visible {
+header .search-onfi-input:focus,
+header .search-onfi-input:focus-visible {
   border: 1px solid var(--header-search-input-border-color);
   outline: none;
   box-shadow: none;
 }
 
-header .nav-search-submit {
+header .search-onfi-submit {
   flex-shrink: 0;
   width: var(--header-search-submit-size);
   height: var(--header-search-submit-size);

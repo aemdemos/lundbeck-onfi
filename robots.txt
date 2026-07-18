@@ -1,0 +1,11 @@
+## aemdemos/lundbeck-onfi - robots.txt
+User-agent: *
+Disallow: /drafts/
+Disallow: /tools/
+Disallow: /sidekick/
+Disallow: /fragments/
+Disallow: /**/fragments/
+Disallow: /nav
+Disallow: /footer
+
+Sitemap: https://www.onfi.com/sitemap.xml
