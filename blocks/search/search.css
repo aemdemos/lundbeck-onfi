@@ -94,6 +94,20 @@ mark {
   }
 }
 
+.search .search-results.no-results {
+li {
+  color: var(--brand-primary);
+  font-size: var(--body-font-size-m);
+  font-family: var(--bold-font-family);
+  margin-bottom: 100px;
+}
+
+li::marker {
+  font-size: 0;
+}
+}
+
+
 .search .search-box, .search .search-results {
   padding: 36px 24px;
 }
