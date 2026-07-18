@@ -156,7 +156,7 @@ function autolinkModals(doc) {
     // external links show a "leaving site" interstitial before navigating away,
     // except same-site links, exempt hosts, and links inside the interstitial itself
     if (origin.closest('.modal')) return;
-    let gated = false;
+    let gated;
     try {
       const { hostname } = new URL(origin.href, window.location);
       const isSameSite = hostname === window.location.hostname;
@@ -666,7 +666,7 @@ function applySplitBoundaryPass(el) {
     const next = children.at(i + 2);
 
     const isPrevText = prev.nodeType === Node.TEXT_NODE;
-    // eslint-disable-next-line secure-coding/detect-object-injection
+     
     const isMidInline = mid.nodeType === Node.ELEMENT_NODE && SPLIT_INLINE_TAGS.has(mid.nodeName);
     const isNextText = next.nodeType === Node.TEXT_NODE;
 
@@ -707,9 +707,9 @@ function applySplitBoundaryPass(el) {
       }
     } else if (!isPrevText && mid.nodeType === Node.TEXT_NODE && !isNextText && next.children.length === 0) {
       // Pattern B: <inline>prefix[[</inline> "classes" <inline>]content]</inline>
-      // eslint-disable-next-line secure-coding/detect-object-injection
+       
       const isPrevInline = prev.nodeType === Node.ELEMENT_NODE && SPLIT_INLINE_TAGS.has(prev.nodeName);
-      // eslint-disable-next-line secure-coding/detect-object-injection
+       
       const isNextInline = next.nodeType === Node.ELEMENT_NODE && SPLIT_INLINE_TAGS.has(next.nodeName);
       const openerText = prev.textContent;
       const closerText = next.textContent;
@@ -834,7 +834,7 @@ function hoistAlignmentAcrossInlines(el) {
     // If the bracket expression is fully contained in this node, replaceTextNode handles it
     if (/^\[\[[^\]]+\][^\]]*\]/.test(tail)) continue; // eslint-disable-line no-continue
 
-    // eslint-disable-next-line sonarjs/slow-regex
+     
     const classMatch = tail.match(/^\[\[([a-zA-Z0-9_,-]+)\]/);
     if (!classMatch) continue; // eslint-disable-line no-continue
 
