@@ -1,5 +1,4 @@
 import {
-  createOptimizedPicture,
   decorateIcons,
 } from '../../scripts/aem.js';
 
@@ -7,7 +6,7 @@ const searchParams = new URLSearchParams(window.location.search);
 
 function findNextHeading(el) {
   let preceedingEl = el.parentElement.previousElement || el.parentElement.parentElement;
-  let h = 'H2';
+  let h = 'H3';
   while (preceedingEl) {
     const lastHeading = [...preceedingEl.querySelectorAll('h1, h2, h3, h4, h5, h6')].pop();
     if (lastHeading) {
@@ -84,32 +83,27 @@ export async function fetchData(source) {
 
 function renderResult(result, searchTerms, titleTag) {
   const li = document.createElement('li');
-  const a = document.createElement('a');
-  a.href = result.path;
-  if (result.image) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'search-result-image';
-    const pic = createOptimizedPicture(result.image, '', false, [{ width: '375' }]);
-    wrapper.append(pic);
-    a.append(wrapper);
-  }
   if (result.title) {
     const title = document.createElement(titleTag);
     title.className = 'search-result-title';
-    const link = document.createElement('a');
-    link.href = result.path;
-    link.textContent = result.title;
-    highlightTextElements(searchTerms, [link]);
-    title.append(link);
-    a.append(title);
+    title.textContent = result.title;
+    highlightTextElements(searchTerms, [title]);
+    li.append(title);
+
+    const url = document.createElement('p');
+    url.className = 'search-result-url';
+    const urlLink = document.createElement('a');
+    urlLink.href = result.path;
+    urlLink.textContent = `${window.location.origin}${result.path}`;
+    url.append(urlLink);
+    li.append(url);
   }
   if (result.description) {
     const description = document.createElement('p');
     description.textContent = result.description;
     highlightTextElements(searchTerms, [description]);
-    a.append(description);
+    li.append(description);
   }
-  li.append(a);
   return li;
 }
 
@@ -142,7 +136,7 @@ async function renderResults(block, config, filteredData, searchTerms) {
   } else {
     const noResultsMessage = document.createElement('li');
     searchResults.classList.add('no-results');
-    noResultsMessage.textContent = 'No results found.';
+    noResultsMessage.textContent = 'Sorry, but nothing matched your search criteria. Please try again with different keywords.';
     searchResults.append(noResultsMessage);
   }
 }
@@ -208,7 +202,7 @@ async function handleSearch(e, block, config) {
 }
 
 function searchResultsContainer(block) {
-  const results = document.createElement('ul');
+  const results = document.createElement('ol');
   results.className = 'search-results';
   results.dataset.h = findNextHeading(block);
   return results;
@@ -240,9 +234,25 @@ function searchIcon() {
 function searchBox(block, config) {
   const box = document.createElement('div');
   box.classList.add('search-box');
+
+  const input = searchInput(block, config);
+  const text = document.createElement('p');
+  text.className = 'search-txt';
+  input.addEventListener('input', () => {
+    text.textContent = '';
+    if (input.value) {
+      text.append('You searched for: ');
+      const span = document.createElement('span');
+      span.className = 'bold';
+      span.textContent = input.value;
+      text.append(span);
+    }
+  });
+
   box.append(
     searchIcon(),
-    searchInput(block, config),
+    input,
+    text,
   );
 
   return box;

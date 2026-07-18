@@ -1,4 +1,6 @@
-import { getMetadata } from '../../scripts/aem.js';
+import {
+  buildBlock, decorateBlock, getMetadata, loadBlock,
+} from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 const MOBILE_QUERY = '(max-width: 767px)';
@@ -8,8 +10,9 @@ function isMobile() {
 }
 
 /**
- * Builds an inline expandable site-search form. The search icon comes from the
- * nav fragment (authored as :search:); clicking it toggles the form.
+ * Builds an inline expandable site-search toggle. The search icon comes from the
+ * nav fragment (authored as :search:); clicking it toggles open and lazily loads
+ * the search-onfi block.
  * @param {Element} icon The decorated search icon span from the fragment
  * @returns {HTMLElement} the search wrapper
  */
@@ -24,31 +27,29 @@ function buildSearch(icon) {
   toggle.setAttribute('aria-expanded', 'false');
   if (icon) toggle.append(icon);
 
-  const form = document.createElement('form');
-  form.className = 'nav-search-form';
-  form.action = '/search';
-  form.method = 'GET';
-
-  const input = document.createElement('input');
-  input.className = 'nav-search-input';
-  input.type = 'text';
-  input.name = 'q';
-  input.setAttribute('aria-label', 'Search');
-
-  const submit = document.createElement('button');
-  submit.className = 'nav-search-submit';
-  submit.type = 'submit';
-  submit.textContent = 'GO';
-
-  form.append(input, submit);
+  let searchBlockPromise = null;
+  const ensureSearchBlock = () => {
+    if (!searchBlockPromise) {
+      const block = buildBlock('search-onfi', '');
+      search.append(block);
+      decorateBlock(block);
+      searchBlockPromise = loadBlock(block);
+    }
+    return searchBlockPromise;
+  };
 
   toggle.addEventListener('click', () => {
     const open = search.classList.toggle('nav-search-open');
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if (open) input.focus();
+    if (open) {
+      ensureSearchBlock().then((block) => {
+        const input = block.querySelector('input');
+        if (input) input.focus();
+      });
+    }
   });
 
-  search.append(toggle, form);
+  search.append(toggle);
   return search;
 }
 
