@@ -33,7 +33,7 @@ function updateParentOffset(full) {
   const parentCenter = parentRect.left + (parentRect.width / 2);
   // clientWidth (not innerWidth) — excludes the scrollbar, matching the space
   // the peek's 100% and .isi-full's % margins use; avoids a ~½-scrollbar shift.
-  const clientWidth = document.documentElement.clientWidth;
+  const { clientWidth } = document.documentElement;
   const contentCenter = clientWidth / 2;
   full.style.setProperty('--isi-parent-offset', `${parentCenter - contentCenter}px`);
   // Publish the scrollbar-excluded document width so the full-bleed band can size
