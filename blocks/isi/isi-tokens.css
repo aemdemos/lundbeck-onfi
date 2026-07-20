@@ -67,6 +67,11 @@
   --isi-body-heading-margin: 22px 0 0;
   --isi-body-heading-line-height: 17.6px;
   --isi-body-heading-font-weight: 700;
+
+  /* h3 font-size, decoupled from body copy: matches --isi-body-font-size on
+     desktop, but the source keeps headings at 16px on mobile while body copy
+     drops to 14px. Consumed by `.isi-body h3` in isi.css. */
+  --isi-body-heading-font-size: 16px;
   --isi-body-bold-font-weight: 700;
   --isi-link-color: #729533; /* green (default) */
   --isi-link-color-alt: #008c99; /* teal (opt-in via [[isi-link-teal]…]) */
@@ -93,6 +98,22 @@
 @media (width <= 768px) {
   :root {
     --isi-title-font-size: 16.8px;
+
+    /* Mobile body copy is one step smaller than desktop (source onfi.com at
+       375px: 14px/20px vs desktop 16px/22.857px). */
+    --isi-body-font-size: 14px;
+    --isi-body-line-height: 20px;
+
+    /* Tighten inter-paragraph spacing to the source's 14px mobile gap (desktop
+       token's 20px top margin otherwise dominates the collapsed gap). */
+    --isi-body-paragraph-margin: 14px 0 14px;
+
+    /* Source groups top-level ISI statements with a 10px gap on mobile (20px on
+       desktop). */
+    --isi-list-top-gap: 10px;
+
+    /* Source h3 lead-in shrinks from 22px to 12px on mobile. */
+    --isi-body-heading-margin: 12px 0 0;
   }
 }
 

@@ -91,7 +91,7 @@
 .isi-body h3 {
   color: var(--isi-body-color);
   font-family: var(--bold-font-family);
-  font-size: var(--isi-body-font-size);
+  font-size: var(--isi-body-heading-font-size);
   font-weight: var(--isi-body-heading-font-weight);
   line-height: var(--isi-body-heading-line-height);
   margin: var(--isi-body-heading-margin);
