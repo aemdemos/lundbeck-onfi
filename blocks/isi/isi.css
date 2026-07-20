@@ -214,9 +214,9 @@
    (set by isi.js) corrects for an off-centre parent — page-nav sidebar or a
    fragment-embedded ISI — and is 0 (no-op) when the parent is centred. */
 .isi-full {
-  width: min(100%, var(--max-width-outer));
-  margin-left: calc(50% - min(50%, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
-  margin-right: calc(50% - min(50%, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
+  width: min(var(--isi-viewport-width, 100%), var(--max-width-outer));
+  margin-left: calc(50% - min(var(--isi-viewport-width, 100%) / 2, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
+  margin-right: calc(50% - min(var(--isi-viewport-width, 100%) / 2, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
   background: var(--isi-peek-bg);
 }
 
@@ -232,8 +232,8 @@
 /* Header spans the full body-width bar; its title/toggle stay aligned to the
    centred content column via a responsive side inset. */
 .isi-full .isi-header {
-  padding-left: max(15px, calc((min(100%, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
-  padding-right: max(15px, calc((min(100%, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-left: max(15px, calc((min(var(--isi-viewport-width, 100%), var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-right: max(15px, calc((min(var(--isi-viewport-width, 100%), var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
 }
 
 /* Body copy stays contained to the centered content column. */
