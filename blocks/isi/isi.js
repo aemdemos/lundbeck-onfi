@@ -33,8 +33,14 @@ function updateParentOffset(full) {
   const parentCenter = parentRect.left + (parentRect.width / 2);
   // clientWidth (not innerWidth) — excludes the scrollbar, matching the space
   // the peek's 100% and .isi-full's % margins use; avoids a ~½-scrollbar shift.
-  const contentCenter = document.documentElement.clientWidth / 2;
+  const { clientWidth } = document.documentElement;
+  const contentCenter = clientWidth / 2;
   full.style.setProperty('--isi-parent-offset', `${parentCenter - contentCenter}px`);
+  // Publish the scrollbar-excluded document width so the full-bleed band can size
+  // to the body box regardless of how narrow its parent is (e.g. when the ISI is
+  // embedded via the fragment block inside a max-width default-content column on
+  // the homepage). Using clientWidth (not 100vw) keeps the band scrollbar-safe.
+  full.style.setProperty('--isi-viewport-width', `${clientWidth}px`);
 }
 
 /**

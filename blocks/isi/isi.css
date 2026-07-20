@@ -214,9 +214,9 @@
    (set by isi.js) corrects for an off-centre parent — page-nav sidebar or a
    fragment-embedded ISI — and is 0 (no-op) when the parent is centred. */
 .isi-full {
-  width: min(100vw, var(--max-width-outer));
-  margin-left: calc(50% - min(50vw, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
-  margin-right: calc(50% - min(50vw, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
+  width: min(var(--isi-viewport-width, 100%), var(--max-width-outer));
+  margin-left: calc(50% - min(var(--isi-viewport-width, 100%) / 2, var(--max-width-outer) / 2) - var(--isi-parent-offset, 0px));
+  margin-right: calc(50% - min(var(--isi-viewport-width, 100%) / 2, var(--max-width-outer) / 2) + var(--isi-parent-offset, 0px));
   background: var(--isi-peek-bg);
 }
 
@@ -232,8 +232,8 @@
 /* Header spans the full body-width bar; its title/toggle stay aligned to the
    centred content column via a responsive side inset. */
 .isi-full .isi-header {
-  padding-left: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
-  padding-right: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-left: max(15px, calc((min(var(--isi-viewport-width, 100%), var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-right: max(15px, calc((min(var(--isi-viewport-width, 100%), var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
 }
 
 /* Body copy stays contained to the centered content column. */
@@ -277,8 +277,8 @@
    (same responsive inset as the full copy); on mobile it's full-bleed */
 .isi-peek .isi-header,
 .isi-peek .isi-body {
-  padding-left: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
-  padding-right: max(15px, calc((min(100vw, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-left: max(15px, calc((min(100%, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
+  padding-right: max(15px, calc((min(100%, var(--max-width-outer)) - var(--isi-content-max-width)) / 2));
 }
 
 /* ── Mobile: hide the MORE/LESS label, keep just the +/− glyph ──
@@ -291,5 +291,11 @@
 @media (width <= 768px) {
   .isi-header .isi-toggle-label {
     display: none;
+  }
+
+  /* With the label hidden the floated toggle collapses to just the icon badge
+     and top-aligns in the taller header bar; center it vertically instead. */
+  .isi-header .isi-toggle {
+    margin-top: calc((var(--isi-header-height) - var(--isi-toggle-icon-size)) / 2);
   }
 }
