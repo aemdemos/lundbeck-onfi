@@ -142,6 +142,16 @@
   color: var(--isi-body-color);
 }
 
+/* Pin the list indent to --isi-list-indent (16px, source). The global
+   `main ul:not(...) > li` rule in styles.css (0,1,3) bumps li padding-left to
+   1.25em/20px and outranks the `.isi-body li` rule above (0,1,1); the extra
+   `.isi-full`/`.isi-peek` prefix raises specificity (0,2,2) so the source value
+   wins for both top-level and nested items. */
+.isi-full .isi-body li,
+.isi-peek .isi-body li {
+  padding-left: var(--isi-list-indent);
+}
+
 /* Top-level statements get extra separation (source); nested sub-points stay
    tight (only their padding). */
 .isi-body > ul > li {
@@ -173,9 +183,12 @@
   content: none;
 }
 
+/* Nested lists carry NO extra left padding: the source indents sub-points
+   purely by the parent li's own padding, so the nested ul adds 0 (adding the
+   indent here too would double the step and push sub-items too far right). */
 .isi-body li > ul {
   margin-top: var(--isi-list-item-gap);
-  padding-left: var(--isi-list-indent);
+  padding-left: 0;
 }
 
 /* ── WARNING box + indented safety statement. ──
