@@ -102,6 +102,14 @@
   text-decoration: none;
 }
 
+/* Hover underlines every ISI link while keeping its own resting colour (source:
+   teal links stay teal, green links stay green — only the underline appears).
+   Scoped to .isi-body a so it outranks the resting `text-decoration: none`
+   above; applies to all ISI links generically rather than per-link. */
+.isi-body a:hover {
+  text-decoration: underline;
+}
+
 /* Links default to --isi-link-color. To render an individual link in the
    alternate colour instead, authors wrap it with the span bracket syntax in
    the document: [[isi-link-teal]link text]. The <strong> case covers links
