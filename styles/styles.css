@@ -57,10 +57,12 @@
   --accent-bg: #cce8eb;
   --card-bg-light: #cce8eb;
 
-  /* accent-section footnote fine print (eligibility text under the hero) */
+  /* accent-section footnote fine print (eligibility text under the hero).
+     Mobile-first: base is the mobile size; the ≥768px query below steps it up
+     to the desktop size, matching the source's hand-off at 768px. */
   --accent-footnote-bg: #e3f9fd;
-  --accent-footnote-font-size: 16px;
-  --accent-footnote-line-height: 22.86px;
+  --accent-footnote-font-size: 14px;
+  --accent-footnote-line-height: 20px;
   --accent-footnote-color: #000;
   --accent-footnote-margin: 20px 0 23px;
 
@@ -357,9 +359,10 @@ html {
   font-size: 24px;
 }
 
+/* mobile-first base; steps up to 16px at ≥768px (see the tablet media query) */
 .txt-size-14 {
-  font-size: 16px;
-  line-height: 1.43;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 main .section.hcp-body {
@@ -369,6 +372,14 @@ main .section.hcp-body {
 main .section.hcp-body p {
   font-size: 16px;
   line-height: 1.43;
+}
+
+/* `txt-size-14` as a section style sizes the section's copy (e.g. HCP "Medical
+   Information Inquiries"). Sits after .hcp-body p so it wins on equal
+   specificity. Mobile-first base; steps up to 16px at ≥768px. */
+main .section.txt-size-14 p {
+  font-size: 14px;
+  line-height: 20px;
 }
 
 /* HCP list items render in Avenir Roman on the source (body copy stays Light) */
@@ -389,17 +400,6 @@ main .section.hcp-body p a:any-link {
   font-weight: 400;
 }
 
-/* `txt-size-14`: 16px desktop → 14px mobile. Used inline (bracket span, base rule
-   above) or as a section style that sizes the section's copy (e.g. HCP "Medical
-   Information Inquiries"). The section variant sits after .hcp-body p so it wins
-   on equal specificity; desktop stays 16px via the base .hcp-body p rule. */
-@media (width < 768px) {
-  .txt-size-14,
-  main .section.txt-size-14 p {
-    font-size: 14px;
-    line-height: 20px;
-  }
-}
 
 /* Safety Profile heading: source shows 33px gap to next section */
 main .section.section-spaced {
@@ -997,16 +997,16 @@ main .section.accent p {
   text-align: left;
 }
 
-/* the inline "here" link in the footnote — green, 700-weight, no underline,
-   stays in the Light cut (source `.txt-black a`). Overrides the `<strong>`
-   Heavy styling so the link matches the surrounding fine print weight. */
+/* the inline "here" link in the footnote — stays in the Light cut at 700 weight
+   (source `.txt-black a`), overriding the `<strong>` Heavy styling so the link
+   matches the surrounding fine print. Colour, resting text-decoration and the
+   hover (darker green + underline) all come from the global `a:any-link` /
+   `a:hover` rules above — no per-section override, so hover behaves site-wide. */
 main .section.accent p a:any-link,
 main .section.accent p a strong {
   font-family: var(--light-font-family);
   font-size: inherit;
   font-weight: 700;
-  color: var(--link-color);
-  text-decoration: none;
 }
 
 main .section.accent img {
@@ -1363,6 +1363,14 @@ main .section.dark a.button.secondary:focus {
     line-height: 1.43;
   }
 
+  /* txt-size-14 steps up to 16px on desktop (mobile-first base is 14px above),
+     both as an inline span and as a section style. */
+  .txt-size-14,
+  main .section.txt-size-14 p {
+    font-size: 16px;
+    line-height: 1.43;
+  }
+
  /* desktop bar = the nav rows' real content height (textbar 46 + eyebrow 62 +
      main-list 42 + progress 8 = 158). 159 over-reserved by ~1px, and the
      transparent header let that strip show white — the seam under the sticky
@@ -1375,6 +1383,10 @@ main .section.dark a.button.secondary:focus {
     --fact-line-height: 28px;
     --fact-emphasis-font-size: 30px;
     --fact-emphasis-line-height: 32px;
+
+    /* accent footnote steps up from the mobile base to the desktop size */
+    --accent-footnote-font-size: 16px;
+    --accent-footnote-line-height: 22.86px;
 
     /* display heading (.headline-2) scales up to 28px/1.2em and left-aligns from
        tablet up (22px/centered on mobile) */
