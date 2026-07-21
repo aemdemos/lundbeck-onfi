@@ -997,16 +997,16 @@ main .section.accent p {
   text-align: left;
 }
 
-/* the inline "here" link in the footnote — green, 700-weight, no underline,
-   stays in the Light cut (source `.txt-black a`). Overrides the `<strong>`
-   Heavy styling so the link matches the surrounding fine print weight. */
+/* the inline "here" link in the footnote — stays in the Light cut at 700 weight
+   (source `.txt-black a`), overriding the `<strong>` Heavy styling so the link
+   matches the surrounding fine print. Colour, resting text-decoration and the
+   hover (darker green + underline) all come from the global `a:any-link` /
+   `a:hover` rules above — no per-section override, so hover behaves site-wide. */
 main .section.accent p a:any-link,
 main .section.accent p a strong {
   font-family: var(--light-font-family);
   font-size: inherit;
   font-weight: 700;
-  color: var(--link-color);
-  text-decoration: none;
 }
 
 main .section.accent img {
