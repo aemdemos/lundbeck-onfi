@@ -1155,6 +1155,7 @@ async function loadThemeSpreadSheetConfig() {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+  preloadCriticalFonts();
   decorateTemplateAndTheme();
   const shouldLoadFontsEarly = window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded');
   if (shouldLoadFontsEarly) {
