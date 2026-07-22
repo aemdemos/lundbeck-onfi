@@ -657,6 +657,7 @@ main > .section.hero-home .hero.home > div {
   main > .section.hero-home {
     background: none; /* drop the mobile solid-teal gradient */
     min-height: var(--hero-home-min-height); /* source band = 447.375px */
+    height: var(--hero-home-min-height);
   }
 
   /* Put the band's bottom breathing room INSIDE the content wrapper (not the
@@ -665,6 +666,9 @@ main > .section.hero-home .hero.home > div {
      bottom:4% — anchoring to the band bottom exactly like the source
      .banner-Text (bottom:4% of the full-width .banner band). */
   main > .section.hero-home > div:not(.bg-image) {
+    position: static;
+    height: 100%;
+    box-sizing: border-box;
     padding-bottom: var(--hero-home-section-pad-bottom);
   }
 
@@ -700,6 +704,7 @@ main > .section.hero-home .hero.home > div {
     max-width: var(--max-width-tablet);
     margin: 0 auto;
     padding: 0 15px;
+    min-height: 100%;
   }
 
   .hero.home .hero-home-panel {
