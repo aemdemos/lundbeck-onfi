@@ -150,7 +150,11 @@ async function loadFonts() {
  * therefore the box it renders at — becomes a network-timing coin flip.
  * Preloading these two hints the browser to fetch them at high priority
  * immediately, in parallel with fonts.css, so that choice is made
- * consistently instead of fluctuating from run to run. */
+ * consistently instead of fluctuating from run to run.
+ *
+ * Kept in sync manually with styles/fonts.css (no build step to derive this
+ * automatically) — each entry below is cross-referenced by a comment on its
+ * @font-face rule there. Rename/replace one of those two files? Update both. */
 const CRITICAL_FONTS = [
   '/fonts/avenir-lt-w01-55-roman.woff2',
   '/fonts/nunitosans-latin.woff2',

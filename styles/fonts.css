@@ -42,6 +42,9 @@
   src: url('/fonts/avenir-lt-w01-35-light-oblique.woff2') format('woff2');
 }
 
+/* Preloaded in scripts.js (CRITICAL_FONTS) — used by --heading-font-family,
+ * so headings render on first paint instead of racing the fallback. Rename
+ * this file? Update CRITICAL_FONTS in scripts/scripts.js too. */
 @font-face {
   font-family: "Avenir LT W01_55 Roman";
   font-style: normal;
@@ -78,6 +81,10 @@
 
 /* Nunito Sans — open-licensed (SIL OFL) humanist sans whose cap/x-height tracks
  * Avenir; deeper fallback now that the real Avenir cuts are self-hosted above. */
+
+/* Preloaded in scripts.js (CRITICAL_FONTS) — this is the universal 2nd
+ * fallback in every font stack (heading/body/bold/light). Rename this
+ * file? Update CRITICAL_FONTS in scripts/scripts.js too. */
 @font-face {
   font-family: "nunito sans";
   font-style: normal;
