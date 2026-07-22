@@ -25,7 +25,7 @@
   font-family: "Avenir LT W01_35 Light";
   font-style: normal;
   font-weight: normal;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/avenir-lt-w01-35-light.woff2') format('woff2');
 }
 
@@ -57,7 +57,7 @@
   font-family: "Avenir LT W01_85 Heavy";
   font-style: normal;
   font-weight: normal;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/avenir-lt-w01-85-heavy.woff2') format('woff2');
 }
 
