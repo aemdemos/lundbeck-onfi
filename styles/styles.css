@@ -1350,6 +1350,18 @@ main .section.dark a.button.secondary:focus {
     max-width: none;
     text-align: center;
   }
+
+  /* Sitemap: the source centers the whole link listing once the mobile header
+     (hamburger) takes over. */
+  main .section.sitemap > .default-content-wrapper {
+    text-align: center;
+  }
+
+  /* Sitemap: the source gives the title more breathing room below the mobile
+     header than on desktop. */
+  main .section.sitemap > .default-content-wrapper > h1 {
+    margin-top: 66px;
+  }
 }
 
 /* wider mobile (≥472px): the header textbar intro wraps to 2 lines instead of 3,
