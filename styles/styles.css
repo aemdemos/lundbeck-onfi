@@ -470,11 +470,25 @@ main .section > .default-content-wrapper > h1 {
   font-size: 22px;
 }
 
-/* The authored title is wrapped in <strong>; the source shows it light, not in
-   the Heavy bold cut, so keep the heading font here. */
-main .section > .default-content-wrapper > h1 strong {
-  font-family: var(--heading-font-family);
+/* Sitemap: section-heading links use the source's muted teal at medium weight. */
+main .section.sitemap h4 a:any-link {
+  color: #0dacbb;
   font-weight: var(--heading-font-weight);
+}
+
+/* Sitemap: the page title uses the source's 32px size and spacing. */
+main .section.sitemap > .default-content-wrapper > h1 {
+  margin-top: 35px;
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+/* Sitemap: the trailing utility-link group (Lundbeck…Terms of Use) sits apart
+   from the last section with a larger gap above and looser line spacing between
+   its own links, matching the source. */
+main .section.sitemap > .default-content-wrapper > p:last-of-type {
+  margin-top: 41px;
+  line-height: 31px;
 }
 
 h2 {
@@ -1519,6 +1533,13 @@ main .section.dark a.button.secondary:focus {
      row width (this is a global content-layout concern, not a page-nav-block one). */
   body.has-page-nav main > .section > div {
     margin-right: 0;
+  }
+
+  /* Sitemap has no page-nav sidebar, so drop the boilerplate's 16.5% right offset
+     and center the content block; the narrow link column then left-aligns within
+     it, matching the source's content row. */
+  main > .section.sitemap > div {
+    margin-right: auto;
   }
 
   /* The offer band's default-content text (the "If you qualify…" heading and the
