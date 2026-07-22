@@ -94,10 +94,6 @@ export default function decorate(block) {
   const rows = [...block.children];
   if (rows.length < 2) return;
 
-  // Keep the section's pre-decoration footprint so lazy ISI transformation
-  // does not pull following content upward and trigger CLS.
-  const initialHeight = block.offsetHeight;
-
   const peekCell = rows[0].firstElementChild || rows[0];
   const fullCell = rows[1].firstElementChild || rows[1];
 
@@ -111,9 +107,6 @@ export default function decorate(block) {
   /* Replace the block's contents with just the full copy */
   block.textContent = '';
   block.append(full);
-  if (initialHeight > 0) {
-    block.style.minHeight = `${initialHeight}px`;
-  }
 
   /* ── Fixed peek banner (Row 1) ─────────────────────────────── */
   const peek = document.createElement('aside');
