@@ -657,6 +657,7 @@ main > .section.hero-home .hero.home > div {
   main > .section.hero-home {
     background: none; /* drop the mobile solid-teal gradient */
     min-height: var(--hero-home-min-height); /* source band = 447.375px */
+    height: var(--hero-home-min-height); /* keep the savings overlay anchor stable */
   }
 
   /* Put the band's bottom breathing room INSIDE the content wrapper (not the
