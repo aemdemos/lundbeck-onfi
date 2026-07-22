@@ -125,7 +125,6 @@ function decorateHomePanel(block) {
   const rows = [...block.children];
   const firstRow = rows[0];
   if (!firstRow) return;
-  const section = block.closest('.section');
   const firstRowCells = [...firstRow.children];
   const cell = firstRowCells[0];
   if (!cell) return;
@@ -187,24 +186,7 @@ function decorateHomePanel(block) {
   // (single-column), resolved above. On desktop it overlays the right side of
   // the photo; on mobile it stacks below the panel in the teal band. Tag it so
   // the CSS can position it independently of the left panel.
-  if (savingsCell) {
-    savingsCell.classList.add('hero-home-savings');
-
-    // Apply desktop geometry immediately so the element does not jump from
-    // in-flow to absolute while stylesheets are still settling.
-    if (window.matchMedia('(width >= 768px)').matches) {
-      if (section) {
-        section.style.minHeight = '447.38px';
-        section.style.height = '447.38px';
-      }
-      savingsCell.style.position = 'absolute';
-      savingsCell.style.right = '5%';
-      savingsCell.style.bottom = '4%';
-      savingsCell.style.width = '460px';
-      savingsCell.style.minHeight = '170px';
-      savingsCell.style.boxSizing = 'border-box';
-    }
-  }
+  if (savingsCell) savingsCell.classList.add('hero-home-savings');
 }
 
 /**
