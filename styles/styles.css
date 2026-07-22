@@ -544,12 +544,13 @@ sub {
   vertical-align: baseline;
 }
 
-/* bold inline text — real Avenir cuts are separate single-weight families that
-   can't synthesize bold, so <strong>/<b> render via the named Heavy cut. */
+/* bold inline text — <strong>/<b> render via the named Avenir Heavy cut. Keep
+   font-weight: bold so the numeric weight matches the source (700) and the
+   fallback fonts activate their true bold cut. */
 strong,
 b {
   font-family: var(--bold-font-family);
-  font-weight: normal;
+  font-weight: bold;
 }
 
 code,
