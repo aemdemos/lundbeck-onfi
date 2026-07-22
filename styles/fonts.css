@@ -17,8 +17,13 @@
  *
  * Each face is declared at normal weight under its own family name (the source
  * selects cuts by family name, not by numeric font-weight). Nunito Sans + the
- * size-adjusted local fallbacks remain only as a deeper fallback for the brief
- * window before the Avenir woff2 loads (font-display: swap). */
+ * size-adjusted local fallbacks remain only as a deeper fallback. Every face
+ * (including Nunito Sans) uses font-display: optional — font-display governs
+ * each matched face independently, so a swap face further down the stack would
+ * still cause a layout shift even if the primary Avenir cut is optional. Using
+ * optional everywhere means the browser commits to one font (system fallback
+ * or Avenir, whichever is ready within the ~100ms block period) with zero
+ * later swap, eliminating font-driven CLS entirely. */
 
 /* ── Real Avenir LT W01 cuts (self-hosted, licensed) ───────────────────────── */
 @font-face {
@@ -33,7 +38,7 @@
   font-family: "Avenir LT W01_35 Light";
   font-style: italic;
   font-weight: normal;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/avenir-lt-w01-35-light-oblique.woff2') format('woff2');
 }
 
@@ -41,7 +46,7 @@
   font-family: "Avenir LT W01_55 Roman";
   font-style: normal;
   font-weight: normal;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/avenir-lt-w01-55-roman.woff2') format('woff2');
 }
 
@@ -49,7 +54,7 @@
   font-family: "Avenir LT W01_65 Medium";
   font-style: normal;
   font-weight: normal;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/avenir-lt-w01-65-medium.woff2') format('woff2');
 }
 
@@ -65,7 +70,7 @@
   font-family: "Avenir LT W01_95 Black";
   font-style: normal;
   font-weight: normal;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/avenir-lt-w01-95-black.woff2') format('woff2');
 }
 
@@ -77,7 +82,7 @@
   font-family: "nunito sans";
   font-style: normal;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/nunitosans-latin.woff2') format('woff2');
 }
 
