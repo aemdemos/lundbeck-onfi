@@ -161,11 +161,9 @@ function decorateHomePanel(block) {
     const logoImg = panelPicture.tagName === 'IMG' ? panelPicture : panelPicture.querySelector('img');
     if (logoImg) {
       logoImg.setAttribute('loading', 'eager');
-      if (!logoImg.hasAttribute('width') || !logoImg.hasAttribute('height')) {
-        const logoWidth = logoImg.naturalWidth || 262;
-        const logoHeight = logoImg.naturalHeight || 140;
-        logoImg.setAttribute('width', logoWidth);
-        logoImg.setAttribute('height', logoHeight);
+      if (!logoImg.hasAttribute('width') && logoImg.naturalWidth) {
+        logoImg.setAttribute('width', logoImg.naturalWidth);
+        logoImg.setAttribute('height', logoImg.naturalHeight);
       }
     }
   }
