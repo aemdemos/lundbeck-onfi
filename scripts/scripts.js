@@ -1128,14 +1128,6 @@ async function loadThemeSpreadSheetConfig() {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  const shouldLoadFontsEarly = window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded');
-  if (shouldLoadFontsEarly) {
-    await loadFonts();
-    if (document.fonts?.ready) {
-      // Bound the wait so we reduce layout shift risk without stalling LCP.
-      await Promise.race([document.fonts.ready, new Promise((resolve) => { window.setTimeout(resolve, 200); })]);
-    }
-  }
   // loadThemeSpreadSheetConfig(); uncomment if using theme spreadsheets
   if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     doc.body.dataset.breadcrumbs = true;
@@ -1147,7 +1139,10 @@ async function loadEager(doc) {
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
-  /* Fonts are already loaded early above when needed to avoid first-paint reflow. */
+  /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
+  if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
+    loadFonts();
+  }
 }
 
 /**
