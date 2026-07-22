@@ -655,6 +655,7 @@ main > .section.hero-home .hero.home > div {
 @media (width >= 768px) {
   /* ── Onfi home hero — photo appears, panel floats left ── */
   main > .section.hero-home {
+    position: relative;
     background: none; /* drop the mobile solid-teal gradient */
     min-height: var(--hero-home-min-height); /* source band = 447.375px */
     height: var(--hero-home-min-height); /* keep the savings overlay anchor stable */
@@ -666,6 +667,7 @@ main > .section.hero-home .hero.home > div {
      bottom:4% — anchoring to the band bottom exactly like the source
      .banner-Text (bottom:4% of the full-width .banner band). */
   main > .section.hero-home > div:not(.bg-image) {
+    position: static;
     padding-bottom: var(--hero-home-section-pad-bottom);
   }
 
