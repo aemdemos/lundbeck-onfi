@@ -188,4 +188,5 @@
   );
   --hero-home-savings-padding: 6.8px;
   --hero-home-savings-radius: 13.6px;
+   --hero-home-savings-min-height: 170px;
 }

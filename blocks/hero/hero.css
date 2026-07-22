@@ -729,6 +729,7 @@ main > .section.hero-home .hero.home > div {
     bottom: var(--hero-home-savings-bottom);
     top: auto;
     width: var(--hero-home-savings-width);
+    min-height: var(--hero-home-savings-min-height);
     padding: var(--hero-home-savings-padding);
     background: var(--hero-home-savings-bg);
     border-radius: var(--hero-home-savings-radius);
