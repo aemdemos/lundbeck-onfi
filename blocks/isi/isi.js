@@ -25,18 +25,22 @@ const FULL_ID = 'isi-full';
  */
 function updateParentOffset(full) {
   const parentRect = full.parentElement.getBoundingClientRect();
-  const { clientWidth } = document.documentElement;
-  full.style.setProperty('--isi-viewport-width', `${clientWidth}px`);
   // Detached fragment copy (before fragment.js attaches it) reads 0; skip.
   if (parentRect.width === 0) {
-    return false;
+    full.style.removeProperty('--isi-parent-offset');
+    return;
   }
   const parentCenter = parentRect.left + (parentRect.width / 2);
   // clientWidth (not innerWidth) — excludes the scrollbar, matching the space
   // the peek's 100% and .isi-full's % margins use; avoids a ~½-scrollbar shift.
+  const { clientWidth } = document.documentElement;
   const contentCenter = clientWidth / 2;
   full.style.setProperty('--isi-parent-offset', `${parentCenter - contentCenter}px`);
-  return true;
+  // Publish the scrollbar-excluded document width so the full-bleed band can size
+  // to the body box regardless of how narrow its parent is (e.g. when the ISI is
+  // embedded via the fragment block inside a max-width default-content column on
+  // the homepage). Using clientWidth (not 100vw) keeps the band scrollbar-safe.
+  full.style.setProperty('--isi-viewport-width', `${clientWidth}px`);
 }
 
 /**
@@ -103,8 +107,6 @@ export default function decorate(block) {
   /* Replace the block's contents with just the full copy */
   block.textContent = '';
   block.append(full);
-  // Stamp initial geometry as soon as the full copy exists in-flow.
-  let offsetReady = updateParentOffset(full);
 
   /* ── Fixed peek banner (Row 1) ─────────────────────────────── */
   const peek = document.createElement('aside');
@@ -157,34 +159,24 @@ export default function decorate(block) {
      that already self-heal the peek hand-off once the fragment is attached
      and images above it settle — self-heals the offset the same way. */
   let ticking = false;
-  let ro;
-  const updateVisibility = () => {
+  const updateLayout = () => {
     ticking = false;
     const inflowTop = full.getBoundingClientRect().top;
     // The peek's docked top edge (bottom:0 → top = viewport height − strip).
     const peekTop = window.innerHeight - peek.offsetHeight;
     // Hand off once the in-flow ISI has risen to (or above) the docked strip.
     peek.style.visibility = inflowTop <= peekTop ? 'hidden' : 'visible';
-  };
-  const updateGeometry = () => {
-    offsetReady = updateParentOffset(full) || offsetReady;
-    if (offsetReady && ro) {
-      ro.disconnect();
-      ro = null;
-    }
+    updateParentOffset(full);
   };
   const onScroll = () => {
     if (!ticking) {
       ticking = true;
-      requestAnimationFrame(updateVisibility);
+      requestAnimationFrame(updateLayout);
     }
   };
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => {
-    updateGeometry();
-    onScroll();
-  }, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
 
   /* Set the initial state, and re-run once layout settles so the peek shows on
      load without needing a scroll. The ISI is decorated in the lazy phase —
@@ -194,21 +186,11 @@ export default function decorate(block) {
      reflow (each image that loads pushes the ISI down, or the fragment itself
      gets attached), so both the peek and the page-nav offset settle correctly
      as soon as the page reaches its true layout. */
-  updateGeometry();
-  updateVisibility();
-  requestAnimationFrame(() => {
-    updateGeometry();
-    updateVisibility();
-  });
-  window.addEventListener('load', () => {
-    updateGeometry();
-    updateVisibility();
-  });
+  updateLayout();
+  requestAnimationFrame(updateLayout);
+  window.addEventListener('load', updateLayout);
   if (typeof ResizeObserver !== 'undefined') {
-    ro = new ResizeObserver(() => {
-      updateGeometry();
-      onScroll();
-    });
+    const ro = new ResizeObserver(() => onScroll());
     ro.observe(document.body);
   }
 }
