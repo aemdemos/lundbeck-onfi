@@ -141,6 +141,38 @@ async function loadFonts() {
   if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
 }
 
+/* The two faces every font stack falls back to first (heading/body text uses
+ * Roman, and "nunito sans" is the universal second fallback in every stack).
+ * font-display: optional only avoids a *swap* once the browser has decided
+ * whether to use the face — but with fonts.css discovered late (as a JS-
+ * injected stylesheet), the font *request* itself can start late enough to
+ * miss the ~100ms decision window, so the fallback/web-font choice — and
+ * therefore the box it renders at — becomes a network-timing coin flip.
+ * Preloading these two hints the browser to fetch them at high priority
+ * immediately, in parallel with fonts.css, so that choice is made
+ * consistently instead of fluctuating from run to run.
+ *
+ * Kept in sync manually with styles/fonts.css (no build step to derive this
+ * automatically) — each entry below is cross-referenced by a comment on its
+ * @font-face rule there. Rename/replace one of those two files? Update both. */
+const CRITICAL_FONTS = [
+  '/fonts/avenir-lt-w01-55-roman.woff2',
+  '/fonts/nunitosans-latin.woff2',
+];
+
+function preloadCriticalFonts() {
+  CRITICAL_FONTS.forEach((href) => {
+    if (document.querySelector(`link[rel="preload"][href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'font';
+    link.type = 'font/woff2';
+    link.crossOrigin = 'anonymous';
+    link.href = href;
+    document.head.appendChild(link);
+  });
+}
+
 function autolinkModals(doc) {
   doc.addEventListener('click', async (e) => {
     const origin = e.target.closest('a');
@@ -1127,7 +1159,12 @@ async function loadThemeSpreadSheetConfig() {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+  preloadCriticalFonts();
   decorateTemplateAndTheme();
+  const shouldLoadFontsEarly = window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded');
+  if (shouldLoadFontsEarly) {
+    await loadFonts();
+  }
   // loadThemeSpreadSheetConfig(); uncomment if using theme spreadsheets
   if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     doc.body.dataset.breadcrumbs = true;
@@ -1139,8 +1176,8 @@ async function loadEager(doc) {
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
-  /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
-  if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
+  /* Mobile-first: lazy-load fonts only when we did not already load them above. */
+  if (!shouldLoadFontsEarly) {
     loadFonts();
   }
 }
