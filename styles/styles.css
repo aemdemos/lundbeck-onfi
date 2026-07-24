@@ -1354,17 +1354,29 @@ main .section.dark a.button.secondary:focus {
     margin-inline: auto;
   }
 
-  /* Icon promo card (e.g. About "Thinking about adding ONFI?"): match the source's
-     stacked mobile rhythm — icon, ~20px gap, 18px heading, 18px copy, then the CTA.
-     Our stacked layout otherwise stacked the image's 20px trailing margin ON TOP of
-     the row's 15px flex gutter (35px, too loose). Collapse the row gutter and the
-     image paragraph margin, and let the image's own 20px bottom margin be the single
-     icon-to-heading gap. Scoped to the icon card (width-16 column) so the offer card
-     (width-42/50) keeps its own spacing. */
+  /* Icon promo card (e.g. About "Thinking about adding ONFI?"): reproduce the
+     source's stacked mobile band exactly. The source band is 383px tall: 60px from
+     the band top to the icon, icon (96), ~20px to the 18px heading, 18px copy, the
+     CTA, then 50px to the band bottom. Scoped to the icon card via its unique
+     .width-16 column so the Savings offer card (width-42/50) keeps its own spacing.
+
+     Band padding: 40px top + the icon's 20px top margin below = 60px above the icon;
+     50px bottom (with the button-wrapper's bottom margin zeroed so the padding alone
+     sets the trailing gap). */
+  main .section.dark:has(.columns .width-16) {
+    padding-block: 40px 50px;
+  }
+
+  main .section.dark .columns > div > .width-16.columns-img-col img {
+    margin-block: 20px;
+  }
+
   main .section.dark .columns > div > .width-16.columns-img-col p {
     margin-bottom: 0;
   }
 
+  /* Collapse the row's flex gutter so the icon's own 20px bottom margin is the sole
+     icon-to-heading gap (otherwise the gutter stacks on top of it). */
   main .section.dark .columns > div:has(> .width-16) {
     gap: 0;
   }
@@ -1375,10 +1387,11 @@ main .section.dark a.button.secondary:focus {
     font-size: 18px;
   }
 
-  /* Source uses a tight 10px gap between the card copy and its CTA (vs the 15px
-     default dark-band button-wrapper margin). Scoped to the icon card. */
+  /* Source uses a tight 10px gap between the card copy and its CTA; the 50px band
+     padding-bottom above sets the trailing gap, so zero the wrapper's bottom margin. */
   main .section.dark .columns > div:has(> .width-16) .button-wrapper {
     margin-top: 10px;
+    margin-bottom: 0;
   }
 
   main .section > .default-content-wrapper > h1 {
