@@ -712,8 +712,11 @@ function applySplitBoundaryPass(el) {
     if (isPrevText && isMidInline && isNextText) {
       // tooltip branch: [[tooltip]<a href="#" title="...">text</a>]
       // The <a> is replaced entirely — not wrapped — with a <span data-tooltip="...">.
-      const isTooltipAnchor = mid.nodeName === 'A'
-        && mid.getAttribute('href') === '#'
+      // Authors use a placeholder href of "#" or "/" (the term isn't a real link);
+      // both are accepted. The [[tooltip] marker below still gates this branch, so
+      // ordinary links are unaffected.
+      const tooltipHref = mid.nodeName === 'A' ? mid.getAttribute('href') : null;
+      const isTooltipAnchor = (tooltipHref === '#' || tooltipHref === '/')
         && mid.getAttribute('title');
       const tooltipCloseMatch = isTooltipAnchor && TOOLTIP_OPEN_RE.test(prev.nodeValue)
         ? next.nodeValue.match(/^\s*\]/) : null;
