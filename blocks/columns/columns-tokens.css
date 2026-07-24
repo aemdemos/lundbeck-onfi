@@ -25,8 +25,12 @@
 }
 
 @media (width < 768px) {
+  /* Source renders each seizure video card at col-xs-9 — 75% of the content width,
+     centered — across all mobile widths (not a fixed side margin, which grows the
+     card too wide as the viewport approaches 768px). */
   main .columns:has(.embed) > div > div:has(.embed) {
-    margin-inline: 35px;
+    width: 75%;
+    margin-inline: auto;
     text-align: center;
   }
 
