@@ -312,7 +312,7 @@ main .columns.thumbnail h3 {
     font-size: 16px;
     line-height: 1.43;
   }
-  
+
   /* Offer-card band (Savings "14-day free trial", a green .dark columns row):
    the source lays out col-md-5 text + col-md-6 image with the standard 30px
    Bootstrap gutter between them (~1/12 empty on the right). Replace the auto
@@ -448,6 +448,7 @@ main .columns.thumbnail h3 {
   main .columns.graph1 > div > div {
     max-width: 672px;
   }
+  
     /* Resource/community-card image column (desktop): the source uses a col-md-2
      (~150px) image column and renders the thumbnail/icon at its NATURAL size,
      top-aligned with the card heading. Our shared .width-16 column is only 10%
