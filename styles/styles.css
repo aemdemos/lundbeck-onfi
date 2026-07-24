@@ -682,7 +682,8 @@ button:disabled:hover {
 /* tooltip — authorable via [[tooltip]<a href="#" title="...">text</a>] bracket syntax */
 .tooltip {
   cursor: pointer;
-  font-weight: 700;
+  font-weight: normal;
+  font-synthesis-weight: none;
   color: rgb(114 149 51);
   border-bottom: 1px dashed rgb(114 149 51);
   position: relative;
@@ -939,7 +940,7 @@ main > .section.divider > div:last-child {
 main > .section > div {
   max-width: 100%;
   margin: auto;
-  padding-inline: 15px;
+  padding-inline: 30px;
 }
 
 /* flex sections — a run of adjacent style=flex sections is wrapped by JS in a
@@ -961,7 +962,7 @@ margin: 0;
    sit ~30px off the viewport edge in the source. Keyed off the section
    background so it applies wherever this band appears, not per page. */
 main > .section[data-background-color="#deedf2"] > div {
-  padding-inline: 30px;
+  padding-inline: 15px;
 }
 
 main > .section:first-of-type {
@@ -1220,6 +1221,10 @@ main .section.dark > .default-content-wrapper p {
   line-height: 20px;
 }
 
+main .section.dark > .default-content-wrapper a {
+  text-decoration: none;
+}
+
 /* Promo-card row: source uses a tight ~15px gutter between the icon and text
    columns (not the default 24px columns gap). */
 main .section.dark .columns > div {
@@ -1334,6 +1339,7 @@ main .section.dark a.button.secondary:focus {
   main .section.dark,
   main .section.dark :is(h1, h2, h3, h4, h5, h6, p) {
     text-align: center;
+    padding-inline: 15px;
   }
 
   /* Dark-section card images are block images (unaffected by text-align); center
@@ -1362,6 +1368,17 @@ main .section.dark a.button.secondary:focus {
   main .section.sitemap > .default-content-wrapper > h1 {
     margin-top: 66px;
   }
+
+  /* HCP "PRIMARY ENDPOINT" pill badge: the source shrinks it on mobile (11px /
+     10px 6px) vs the 16px / 10px 15px desktop size in the base rule above. Mobile
+     only so desktop keeps the larger badge. */
+  main :is(h1, h2, h3, h4, h5, h6) > .accent {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+
+  .center-mobile { text-align: center; }
+
 }
 
 /* wider mobile (≥472px): the header textbar intro wraps to 2 lines instead of 3,
