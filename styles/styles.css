@@ -1425,6 +1425,20 @@ main .section.dark a.button.secondary:focus {
   }
 
   .center-mobile { text-align: center; }
+  .left-mobile { text-align: left; }
+  .right-mobile { text-align: right; }
+
+  /* A display heading (one wrapping a .headline-2 span) inside a centered section
+     is centered by the .section.center rules (specificity 0,3,2). The plain
+     utilities (0,1,0) can't override that, so an author-applied *-mobile class had
+     no effect on those titles (e.g. HCP "ONFI Demonstrated…"). Match the section
+     rule's specificity and place it later so the author's mobile alignment wins. */
+  main :is(h1, h2, h3, h4, h5, h6).center-mobile { text-align: center; }
+  main :is(h1, h2, h3, h4, h5, h6).left-mobile { text-align: left; }
+  main :is(h1, h2, h3, h4, h5, h6).right-mobile { text-align: right; }
+  main .section.center :is(h1, h2, h3, h4, h5, h6).center-mobile { text-align: center; }
+  main .section.center :is(h1, h2, h3, h4, h5, h6).left-mobile { text-align: left; }
+  main .section.center :is(h1, h2, h3, h4, h5, h6).right-mobile { text-align: right; }
 
   .left-mobile { text-align: left; }
 
