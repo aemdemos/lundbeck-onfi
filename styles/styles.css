@@ -1367,24 +1367,29 @@ main .section.dark a.button.secondary:focus {
     padding-block: 40px 50px;
   }
 
+  /* 20px top keeps 60px above the icon (40px band padding + 20px); 10px bottom gives
+     the source's ~10px icon-to-heading gap. */
   main .section.dark .columns > div > .width-16.columns-img-col img {
-    margin-block: 20px;
+    margin-block: 20px 10px;
   }
 
   main .section.dark .columns > div > .width-16.columns-img-col p {
     margin-bottom: 0;
   }
 
-  /* Collapse the row's flex gutter so the icon's own 20px bottom margin is the sole
+  /* Collapse the row's flex gutter so the icon's own bottom margin is the sole
      icon-to-heading gap (otherwise the gutter stacks on top of it). */
   main .section.dark .columns > div:has(> .width-16) {
     gap: 0;
   }
 
-  /* Icon card heading matches the source's 18px (the width-83 first-child rule
-     elsewhere sizes the LGS promo card's lead line to 20px; this card is 18px). */
+  /* Icon card heading: source is 18px, with a 30px gap down to the "Learn more" line
+     (source composes it from the heading's 10px bottom padding + 10px margin + the
+     copy's 10px top padding; reproduced here as a single 30px bottom margin). The
+     width-83 first-child rule elsewhere sizes the LGS promo card's lead line to 20px. */
   main .section.dark .columns > div:has(> .width-16) > .width-83 > p:first-child {
     font-size: 18px;
+    margin-bottom: 30px;
   }
 
   /* Source uses a tight 10px gap between the card copy and its CTA; the 50px band
