@@ -1426,6 +1426,10 @@ main .section.dark a.button.secondary:focus {
 
   .center-mobile { text-align: center; }
 
+  .left-mobile { text-align: left; }
+
+  .right-mobile { text-align: right; }
+
   /* Section title the source shrinks on mobile (25px vs the 34px h2 desktop size),
      e.g. Savings "ONFI® (clobazam)". Author opts in per heading with the [[title-sm]]
      bracket class, hoisted onto the heading by scripts.js so the whole title
