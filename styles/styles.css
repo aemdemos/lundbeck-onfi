@@ -1354,6 +1354,23 @@ main .section.dark a.button.secondary:focus {
     margin-inline: auto;
   }
 
+  /* Icon promo card (e.g. About "Thinking about adding ONFI?"): the source stacks
+     the icon flush above the heading (no gap). Our stacked mobile layout otherwise
+     adds the image's 20px trailing margin + the row's 15px flex gutter. Zero both
+     for the icon card only (width-16 column), so the offer card (width-42/50) keeps
+     its spacing. Matches the source's ~0px icon-to-text gap. */
+  main .section.dark .columns > div > .width-16.columns-img-col img {
+    margin-bottom: 0;
+  }
+
+  main .section.dark .columns > div > .width-16.columns-img-col p {
+    margin-bottom: 0;
+  }
+
+  main .section.dark .columns > div:has(> .width-16) {
+    gap: 0;
+  }
+
   main .section > .default-content-wrapper > h1 {
     max-width: none;
     text-align: center;
