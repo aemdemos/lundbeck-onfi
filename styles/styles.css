@@ -1354,21 +1354,31 @@ main .section.dark a.button.secondary:focus {
     margin-inline: auto;
   }
 
-  /* Icon promo card (e.g. About "Thinking about adding ONFI?"): the source stacks
-     the icon flush above the heading (no gap). Our stacked mobile layout otherwise
-     adds the image's 20px trailing margin + the row's 15px flex gutter. Zero both
-     for the icon card only (width-16 column), so the offer card (width-42/50) keeps
-     its spacing. Matches the source's ~0px icon-to-text gap. */
-  main .section.dark .columns > div > .width-16.columns-img-col img {
-    margin-bottom: 0;
-  }
-
+  /* Icon promo card (e.g. About "Thinking about adding ONFI?"): match the source's
+     stacked mobile rhythm — icon, ~20px gap, 18px heading, 18px copy, then the CTA.
+     Our stacked layout otherwise stacked the image's 20px trailing margin ON TOP of
+     the row's 15px flex gutter (35px, too loose). Collapse the row gutter and the
+     image paragraph margin, and let the image's own 20px bottom margin be the single
+     icon-to-heading gap. Scoped to the icon card (width-16 column) so the offer card
+     (width-42/50) keeps its own spacing. */
   main .section.dark .columns > div > .width-16.columns-img-col p {
     margin-bottom: 0;
   }
 
   main .section.dark .columns > div:has(> .width-16) {
     gap: 0;
+  }
+
+  /* Icon card heading matches the source's 18px (the width-83 first-child rule
+     elsewhere sizes the LGS promo card's lead line to 20px; this card is 18px). */
+  main .section.dark .columns > div:has(> .width-16) > .width-83 > p:first-child {
+    font-size: 18px;
+  }
+
+  /* Source uses a tight 10px gap between the card copy and its CTA (vs the 15px
+     default dark-band button-wrapper margin). Scoped to the icon card. */
+  main .section.dark .columns > div:has(> .width-16) .button-wrapper {
+    margin-top: 10px;
   }
 
   main .section > .default-content-wrapper > h1 {
