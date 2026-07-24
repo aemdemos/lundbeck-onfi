@@ -1383,12 +1383,14 @@ main .section.dark a.button.secondary:focus {
 
   /* Section title the source shrinks on mobile (25px vs the 34px h2 desktop size),
      e.g. Savings "ONFI® (clobazam)". Author opts in per heading with the [[title-sm]]
-     bracket class; keyed on the heading so the whole title (text, ®, icon) scales.
-     Not icon-keyed — the About page carries the same CIV icon but keeps 34px, so
-     only headings the author tags shrink. Mobile only; desktop keeps 34px. */
-  main :is(h1, h2, h3, h4, h5, h6):has(> .title-sm) {
+     bracket class, hoisted onto the heading by scripts.js so the whole title
+     (text, ®, icon) scales and centers. Not icon-keyed — the About page carries the
+     same CIV icon but keeps 34px, so only headings the author tags shrink. Mobile
+     only; desktop keeps 34px. */
+  main :is(h1, h2, h3, h4, h5, h6).title-sm {
     font-size: 25px;
     line-height: 27.5px;
+    text-align: center;
   }
 
 }
