@@ -367,6 +367,7 @@ html {
 
 main .section.hcp-body {
   --list-bullet-color: #222;
+  padding-inline: 15px;
 }
 
 main .section.hcp-body p {
@@ -940,7 +941,7 @@ main > .section.divider > div:last-child {
 main > .section > div {
   max-width: 100%;
   margin: auto;
-  padding-inline: 30px;
+  padding-inline: 15px;
 }
 
 /* flex sections — a run of adjacent style=flex sections is wrapped by JS in a
@@ -962,7 +963,7 @@ margin: 0;
    sit ~30px off the viewport edge in the source. Keyed off the section
    background so it applies wherever this band appears, not per page. */
 main > .section[data-background-color="#deedf2"] > div {
-  padding-inline: 15px;
+  padding-inline: 30px;
 }
 
 main > .section:first-of-type {
