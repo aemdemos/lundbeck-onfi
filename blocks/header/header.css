@@ -194,6 +194,7 @@ header .nav-hamburger-bar:nth-child(3) { top: calc((var(--header-mobile-bar-heig
 /* open: lighter-teal overlay fills the button (matches source) */
 header nav.nav-open .nav-hamburger {
   background: var(--header-mobile-menu-open-bg);
+  border-radius: var(--header-mobile-menu-open-radius);
 }
 
 /* morph to a smaller white X when open (bars narrow from 45px to 31px and
@@ -255,7 +256,7 @@ header .nav-eyebrow-links a {
   max-width: var(--header-mobile-eyebrow-link-max-width);
   padding: var(--header-mobile-eyebrow-link-padding);
   color: var(--header-link-color);
-  font-family: var(--header-font-family);
+  font-family: var(--header-mobile-font-family);
   font-size: var(--header-mobile-eyebrow-link-font-size);
   font-weight: var(--header-eyebrow-link-font-weight);
   line-height: var(--header-eyebrow-link-line-height);
@@ -306,7 +307,7 @@ header .nav-main-list a {
   width: 100%;
   padding: var(--header-mobile-link-padding);
   color: var(--header-mobile-link-color);
-  font-family: var(--header-font-family);
+  font-family: var(--header-mobile-font-family);
   font-size: var(--header-mobile-link-font-size);
   font-weight: var(--header-mobile-link-font-weight);
   line-height: var(--header-main-link-line-height);
@@ -528,6 +529,7 @@ header .search-onfi-submit {
 
   header .nav-eyebrow-links a {
     padding: 0 var(--header-tablet-eyebrow-padding-x);
+    font-family: var(--header-font-family);
     font-size: var(--header-eyebrow-link-font-size);
     text-decoration: none;
   }
@@ -562,6 +564,7 @@ header .search-onfi-submit {
     width: auto;
     padding: 0;
     color: var(--header-link-color);
+    font-family: var(--header-font-family);
     font-size: var(--header-tablet-link-font-size);
     font-weight: var(--header-main-link-font-weight);
     text-align: left;
