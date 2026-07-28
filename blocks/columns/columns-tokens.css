@@ -25,14 +25,19 @@
 }
 
 @media (width < 768px) {
+  /* Source renders each seizure video card at col-xs-9 — 75% of the content width,
+     centered — across all mobile widths (not a fixed side margin, which grows the
+     card too wide as the viewport approaches 768px). */
   main .columns:has(.embed) > div > div:has(.embed) {
-    margin-inline: 35px;
+    width: 75%;
+    margin-inline: auto;
     text-align: center;
   }
 
-  /* Mobile caption is 14px (source steps it down from the 16px desktop size). */
+  /* Mobile caption is 14px/20px (source steps it down from the 16px desktop size). */
   main .columns > div > div:has(.embed) p {
     font-size: 14px;
+    line-height: 20px;
   }
 
   /* Tighten the gap between one video card's caption and the next card's heading
@@ -40,6 +45,24 @@
   main .columns:has(.embed) > div > div:has(.embed) p {
     margin-bottom: 10px;
   }
+
+  main .section .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) picture img {
+    width: calc(100% - 30px);
+    margin-inline: 15px;
+  }
+
+  main .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) p:has(picture) {
+    margin-bottom: 11px;
+  }
+
+  main .section.resource-cards .columns > div:not(:last-child) {
+    margin-bottom: 40px;
+  }
+
+  main .section.resource-cards .columns > div > .columns-img-col img {
+    margin-inline: auto;
+  }
+
 }
 
 /* =====================================================================
@@ -138,13 +161,13 @@ main .section.dark .columns > div > .width-50.columns-img-col img {
 }
 
 /* Seizure video-card description (LGS "Sign #1"): the source renders these
-   captions in Avenir Roman 16px (not the site body Avenir Light 18px), left-
-   aligned on desktop. Scoped to the cell that holds the auto-embedded video so no
-   other page copy is affected. (Mobile centers them — see the < 768 block.) */
+   captions in Avenir Roman (not the site body Avenir Light 18px). Font family
+   applies at all widths; the size is responsive — 14px mobile (see the < 768
+   block) stepping up to 16px desktop (see the ≥ 768 block). Keeping the size out
+   of this unscoped rule prevents it overriding the mobile 14px. Scoped to the
+   cell that holds the auto-embedded video so no other page copy is affected. */
 main .columns > div > div:has(.embed) p {
   font-family: var(--heading-font-family);
-  font-size: 16px;
-  line-height: 1.43;
 }
 
 /* Resource-card sections (LGS and Epilepsy, ONFI, Community support) — authored
@@ -162,7 +185,7 @@ main .section.resource-cards .columns h3 {
   line-height: 28.6px;
 }
 
-main .section.resource-cards .columns a {
+main .section.resource-cards .columns a:not(.button) {
   font-size: 20px;
   line-height: 26px;
 }
@@ -283,6 +306,13 @@ main .columns.thumbnail h3 {
 }
 
 @media (width >= 768px) {
+  /* Seizure video-card caption steps up to 16px/1.43 on desktop (mobile-first
+     base is 14px/20px above). Matches the source's responsive caption size. */
+  main .columns > div > div:has(.embed) p {
+    font-size: 16px;
+    line-height: 1.43;
+  }
+
   /* Offer-card band (Savings "14-day free trial", a green .dark columns row):
    the source lays out col-md-5 text + col-md-6 image with the standard 30px
    Bootstrap gutter between them (~1/12 empty on the right). Replace the auto
@@ -417,6 +447,16 @@ main .columns.thumbnail h3 {
 
   main .columns.graph1 > div > div {
     max-width: 672px;
+  }
+
+  main .section.resource-cards .columns > div > .columns-img-col {
+    width: 150px;
+    margin: 20px 0 0;
+  }
+
+  main .section.resource-cards .columns > div > .columns-img-col img {
+    max-width: none;
+    margin-left:auto;
   }
 }
 

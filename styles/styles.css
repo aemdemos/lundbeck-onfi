@@ -367,6 +367,8 @@ html {
 
 main .section.hcp-body {
   --list-bullet-color: #222;
+
+  padding-inline: 15px;
 }
 
 main .section.hcp-body p {
@@ -682,7 +684,8 @@ button:disabled:hover {
 /* tooltip — authorable via [[tooltip]<a href="#" title="...">text</a>] bracket syntax */
 .tooltip {
   cursor: pointer;
-  font-weight: 700;
+  font-weight: normal;
+  font-synthesis-weight: none;
   color: rgb(114 149 51);
   border-bottom: 1px dashed rgb(114 149 51);
   position: relative;
@@ -1220,6 +1223,10 @@ main .section.dark > .default-content-wrapper p {
   line-height: 20px;
 }
 
+main .section.dark > .default-content-wrapper a {
+  text-decoration: none;
+}
+
 /* Promo-card row: source uses a tight ~15px gutter between the icon and text
    columns (not the default 24px columns gap). */
 main .section.dark .columns > div {
@@ -1334,6 +1341,7 @@ main .section.dark a.button.secondary:focus {
   main .section.dark,
   main .section.dark :is(h1, h2, h3, h4, h5, h6, p) {
     text-align: center;
+    padding-inline: 15px;
   }
 
   /* Dark-section card images are block images (unaffected by text-align); center
@@ -1344,6 +1352,51 @@ main .section.dark a.button.secondary:focus {
   main .section.dark .columns .columns-img-col img {
     margin-block: 10px 20px;
     margin-inline: auto;
+  }
+
+  /* Icon promo card (e.g. About "Thinking about adding ONFI?"): reproduce the
+     source's stacked mobile band exactly. The source band is 383px tall: 60px from
+     the band top to the icon, icon (96), ~20px to the 18px heading, 18px copy, the
+     CTA, then 50px to the band bottom. Scoped to the icon card via its unique
+     .width-16 column so the Savings offer card (width-42/50) keeps its own spacing.
+
+     Band padding: 40px top + the icon's 20px top margin below = 60px above the icon;
+     50px bottom (with the button-wrapper's bottom margin zeroed so the padding alone
+     sets the trailing gap). */
+  main .section.dark:has(.columns .width-16) {
+    padding-block: 40px 50px;
+  }
+
+  /* 20px top keeps 60px above the icon (40px band padding + 20px); 10px bottom gives
+     the source's ~10px icon-to-heading gap. */
+  main .section.dark .columns > div > .width-16.columns-img-col img {
+    margin-block: 20px 10px;
+  }
+
+  main .section.dark .columns > div > .width-16.columns-img-col p {
+    margin-bottom: 0;
+  }
+
+  /* Collapse the row's flex gutter so the icon's own bottom margin is the sole
+     icon-to-heading gap (otherwise the gutter stacks on top of it). */
+  main .section.dark .columns > div:has(> .width-16) {
+    gap: 0;
+  }
+
+  /* Icon card heading: source is 18px, with a 30px gap down to the "Learn more" line
+     (source composes it from the heading's 10px bottom padding + 10px margin + the
+     copy's 10px top padding; reproduced here as a single 30px bottom margin). The
+     width-83 first-child rule elsewhere sizes the LGS promo card's lead line to 20px. */
+  main .section.dark .columns > div:has(> .width-16) > .width-83 > p:first-child {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  /* Source uses a tight 10px gap between the card copy and its CTA; the 50px band
+     padding-bottom above sets the trailing gap, so zero the wrapper's bottom margin. */
+  main .section.dark .columns > div:has(> .width-16) .button-wrapper {
+    margin-top: 10px;
+    margin-bottom: 0;
   }
 
   main .section > .default-content-wrapper > h1 {
@@ -1362,6 +1415,43 @@ main .section.dark a.button.secondary:focus {
   main .section.sitemap > .default-content-wrapper > h1 {
     margin-top: 66px;
   }
+
+  /* HCP "PRIMARY ENDPOINT" pill badge: the source shrinks it on mobile (11px /
+     10px 6px) vs the 16px / 10px 15px desktop size in the base rule above. Mobile
+     only so desktop keeps the larger badge. */
+  main :is(h1, h2, h3, h4, h5, h6) > .accent {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+
+  .center-mobile { text-align: center; }
+  .left-mobile { text-align: left; }
+  .right-mobile { text-align: right; }
+
+  /* A display heading (one wrapping a .headline-2 span) inside a centered section
+     is centered by the .section.center rules (specificity 0,3,2). The plain
+     utilities (0,1,0) can't override that, so an author-applied *-mobile class had
+     no effect on those titles (e.g. HCP "ONFI Demonstrated…"). Match the section
+     rule's specificity and place it later so the author's mobile alignment wins. */
+  main :is(h1, h2, h3, h4, h5, h6).center-mobile { text-align: center; }
+  main :is(h1, h2, h3, h4, h5, h6).left-mobile { text-align: left; }
+  main :is(h1, h2, h3, h4, h5, h6).right-mobile { text-align: right; }
+  main .section.center :is(h1, h2, h3, h4, h5, h6).center-mobile { text-align: center; }
+  main .section.center :is(h1, h2, h3, h4, h5, h6).left-mobile { text-align: left; }
+  main .section.center :is(h1, h2, h3, h4, h5, h6).right-mobile { text-align: right; }
+
+  /* Section title the source shrinks on mobile (25px vs the 34px h2 desktop size),
+     e.g. Savings "ONFI® (clobazam)". Author opts in per heading with the [[title-sm]]
+     bracket class, hoisted onto the heading by scripts.js so the whole title
+     (text, ®, icon) scales and centers. Not icon-keyed — the About page carries the
+     same CIV icon but keeps 34px, so only headings the author tags shrink. Mobile
+     only; desktop keeps 34px. */
+  main :is(h1, h2, h3, h4, h5, h6).title-sm {
+    font-size: 25px;
+    line-height: 27.5px;
+    text-align: center;
+  }
+
 }
 
 /* wider mobile (≥472px): the header textbar intro wraps to 2 lines instead of 3,

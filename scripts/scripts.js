@@ -648,7 +648,14 @@ function parseSplitClasses(raw) {
 
 const SPLIT_INLINE_TAGS = new Set(['STRONG', 'EM', 'A', 'BR']);
 
-const ALIGNMENT_CLASSES = new Set(['center', 'left', 'right']);
+// Classes hoisted onto the containing heading/paragraph instead of an inner span.
+// Alignment needs the block element for text-align; title-sm sizes the whole title
+// (text + ® + icon) and must survive spanning a <sup>/icon between [[ and ].
+const HOISTED_CLASSES = new Set([
+  'center', 'left', 'right',
+  'center-mobile', 'left-mobile', 'right-mobile',
+  'title-sm',
+]);
 
 const SPAN_TAG_SELECTOR = 'h1, h2, h3, h4, h5, h6, p, li';
 
@@ -681,12 +688,12 @@ function collectTextNodes(element, marker) {
   return nodes;
 }
 
-function splitAlignmentClasses(classes) {
+function splitHoistedClasses(classes) {
   return classes.reduce((groups, c) => {
-    if (ALIGNMENT_CLASSES.has(c)) groups.alignClasses.push(c);
+    if (HOISTED_CLASSES.has(c)) groups.hoistedClasses.push(c);
     else groups.regularClasses.push(c);
     return groups;
-  }, { alignClasses: [], regularClasses: [] });
+  }, { hoistedClasses: [], regularClasses: [] });
 }
 
 function applySplitBoundaryPass(el) {
@@ -705,8 +712,11 @@ function applySplitBoundaryPass(el) {
     if (isPrevText && isMidInline && isNextText) {
       // tooltip branch: [[tooltip]<a href="#" title="...">text</a>]
       // The <a> is replaced entirely — not wrapped — with a <span data-tooltip="...">.
-      const isTooltipAnchor = mid.nodeName === 'A'
-        && mid.getAttribute('href') === '#'
+      // Authors use a placeholder href of "#" or "/" (the term isn't a real link);
+      // both are accepted. The [[tooltip] marker below still gates this branch, so
+      // ordinary links are unaffected.
+      const tooltipHref = mid.nodeName === 'A' ? mid.getAttribute('href') : null;
+      const isTooltipAnchor = (tooltipHref === '#' || tooltipHref === '/')
         && mid.getAttribute('title');
       const tooltipCloseMatch = isTooltipAnchor && TOOLTIP_OPEN_RE.test(prev.nodeValue)
         ? next.nodeValue.match(/^\s*\]/) : null;
@@ -725,8 +735,8 @@ function applySplitBoundaryPass(el) {
         const classes = openMatch ? parseSplitClasses(openMatch[1]) : [];
         const closeMatch = openMatch && classes.length ? next.nodeValue.match(/^\s*\]/) : null;
         if (closeMatch) {
-          const { alignClasses, regularClasses } = splitAlignmentClasses(classes);
-          if (alignClasses.length) el.classList.add(...alignClasses);
+          const { hoistedClasses, regularClasses } = splitHoistedClasses(classes);
+          if (hoistedClasses.length) el.classList.add(...hoistedClasses);
           prev.nodeValue = prev.nodeValue.slice(0, -openMatch[0].length);
           next.nodeValue = next.nodeValue.slice(closeMatch[0].length);
           if (regularClasses.length) {
@@ -748,8 +758,8 @@ function applySplitBoundaryPass(el) {
       const classes = parseSplitClasses(mid.nodeValue);
       if (isPrevInline && isNextInline && openerText.endsWith('[[') && classes.length
         && closerText.startsWith(']') && closerText.endsWith(']')) {
-        const { alignClasses, regularClasses } = splitAlignmentClasses(classes);
-        if (alignClasses.length) el.classList.add(...alignClasses);
+        const { hoistedClasses, regularClasses } = splitHoistedClasses(classes);
+        if (hoistedClasses.length) el.classList.add(...hoistedClasses);
         next.textContent = closerText.slice(1, -1);
         if (regularClasses.length) {
           const insertRef = next.nextSibling;
@@ -802,8 +812,8 @@ function replaceTextNode(textNode, containingEl) {
     if (!classes.length) {
       frag.appendChild(document.createTextNode(full));
     } else {
-      const { alignClasses, regularClasses } = splitAlignmentClasses(classes);
-      if (alignClasses.length && containingEl) containingEl.classList.add(...alignClasses);
+      const { hoistedClasses, regularClasses } = splitHoistedClasses(classes);
+      if (hoistedClasses.length && containingEl) containingEl.classList.add(...hoistedClasses);
       if (regularClasses.length) {
         const span = document.createElement('span');
         span.className = regularClasses.join(' ');
@@ -851,9 +861,10 @@ function cleanAttributes(element) {
   });
 }
 
-function hoistAlignmentAcrossInlines(el) {
-  // Handles [[alignment-class]content] where content spans inline elements,
-  // causing the opening [[class] and closing ] to land in different text nodes.
+function hoistClassesAcrossInlines(el) {
+  // Handles [[hoisted-class]content] where content spans inline elements (e.g. a
+  // <sup> or icon span), so the opening [[class] and closing ] land in different
+  // text nodes.
   const textNodes = collectTextNodes(el);
 
   for (let i = 0; i < textNodes.length - 1; i += 1) {
@@ -871,9 +882,9 @@ function hoistAlignmentAcrossInlines(el) {
     if (!classMatch) continue; // eslint-disable-line no-continue
 
     const classes = parseClasses(classMatch[1]);
-    const { alignClasses } = splitAlignmentClasses(classes);
-    // Only handle pure-alignment spanning patterns; mixed (alignment + span classes) needs Range API
-    if (!alignClasses.length || classes.length !== alignClasses.length) continue; // eslint-disable-line no-continue
+    const { hoistedClasses } = splitHoistedClasses(classes);
+    // Only handle pure-hoisted spanning patterns; mixed (hoisted + span classes) needs Range API
+    if (!hoistedClasses.length || classes.length !== hoistedClasses.length) continue; // eslint-disable-line no-continue
 
     for (let j = i + 1; j < textNodes.length; j += 1) {
       const closeNode = textNodes[j];
@@ -881,7 +892,7 @@ function hoistAlignmentAcrossInlines(el) {
       const closeIdx = closeText.indexOf(']');
       if (closeIdx === -1) continue; // eslint-disable-line no-continue
 
-      el.classList.add(...alignClasses);
+      el.classList.add(...hoistedClasses);
       node.nodeValue = text.slice(0, openIdx) + tail.slice(classMatch[0].length);
       closeNode.nodeValue = closeText.slice(0, closeIdx) + closeText.slice(closeIdx + 1);
       break;
@@ -891,7 +902,7 @@ function hoistAlignmentAcrossInlines(el) {
 
 export function decorateSpanTags(element) {
   element.querySelectorAll(SPAN_TAG_SELECTOR).forEach((el) => {
-    if (el.textContent.includes('[[')) hoistAlignmentAcrossInlines(el);
+    if (el.textContent.includes('[[')) hoistClassesAcrossInlines(el);
 
     const nodes = collectTextNodes(el, '[[');
     nodes.forEach((n) => replaceTextNode(n, el));
