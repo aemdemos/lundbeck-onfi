@@ -33,6 +33,11 @@
      source (which uses real Avenir Heavy/Black/Medium faces) */
   --header-font-family: "Avenir LT W01_85 Heavy", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
 
+  /* mobile-only nav font — source uses the lighter 35 Light face on mobile
+     (vs. 85 Heavy on tablet/desktop); switched back to --header-font-family
+     at >=768px */
+  --header-mobile-font-family: "Avenir LT W01_35 Light", "nunito sans", "Avenir Next", avenir, "Segoe UI", roboto, helvetica, arial, sans-serif;
+
   /* row 0 — prescribing-context text bar. Source renders this in the heaviest
      Avenir face (95 Black), one step above the nav's 85 Heavy — that's what gives
      it its bolder look. Dedicated family so only the textbar uses Black. */
@@ -186,6 +191,7 @@
   --header-mobile-menu-label-font-weight: 500;
   --header-mobile-menu-label-gap: 1px;
   --header-mobile-menu-open-bg: #66b9c1;
+  --header-mobile-menu-open-radius: 0;
   --header-mobile-bar-width: 45px;
   --header-mobile-bar-open-width: 31px;
   --header-mobile-bar-height: 7px;
