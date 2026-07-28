@@ -46,10 +46,6 @@
     margin-bottom: 10px;
   }
 
-  main .section.dark .columns > div > .width-42 {
-    padding-inline: 15px;
-  }
-
   main .section .columns:not(.thumbnail, .stats-callout) > div > div:not(.columns-img-col) picture img {
     width: calc(100% - 30px);
     margin-inline: 15px;
