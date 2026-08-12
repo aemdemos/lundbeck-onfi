@@ -187,9 +187,9 @@ export default async function decorate(block) {
       if (brandControls && search.parentElement !== brandControls) {
         brandControls.insertBefore(search, brandControls.firstChild);
       }
-    } else if (mainList && searchItem.parentElement !== mainList) {
-      searchItem.append(search);
-      mainList.append(searchItem);
+    } else if (mainList) {
+      if (search.parentElement !== searchItem) searchItem.append(search);
+      if (searchItem.parentElement !== mainList) mainList.append(searchItem);
     }
   };
   placeSearch();
