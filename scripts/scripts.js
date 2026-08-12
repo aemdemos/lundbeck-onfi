@@ -259,6 +259,51 @@ function buildAutoBlocks(main) {
   }
 }
 
+/**
+ * Hosts considered "local" — links to these open in the same tab.
+ * Everything else (plus any PDF) opens in a new tab.
+ */
+const LOCAL_HOSTS = new Set(['localhost']);
+const LOCAL_HOST_SUFFIXES = ['.page', '.live'];
+
+/**
+ * @param {URL} url
+ * @returns {boolean} true when the URL points at a first-party/local host
+ */
+function isLocalUrl(url) {
+  const host = url.hostname.toLowerCase();
+  if (host === window.location.hostname.toLowerCase()) return true;
+  if (LOCAL_HOSTS.has(host)) return true;
+  return LOCAL_HOST_SUFFIXES.some((suffix) => host.endsWith(suffix));
+}
+
+/**
+ * Opens external links (and any PDF) in a new tab. First-party links to local
+ * hosts keep their default same-tab behavior. In-page anchors and non-http(s)
+ * schemes (mailto:, tel:, etc.) are left untouched.
+ * @param {Element} element The container element
+ */
+export function decorateExternalLinks(element) {
+  element.querySelectorAll('a[href]').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+
+    let url;
+    try {
+      url = new URL(href, window.location.href);
+    } catch {
+      return;
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
+
+    const isPdf = url.pathname.toLowerCase().endsWith('.pdf');
+    if (isLocalUrl(url) && !isPdf) return;
+
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
+  });
+}
+
 function a11yLinks(main) {
   const links = main.querySelectorAll('a');
   links.forEach((link) => {
@@ -1070,6 +1115,7 @@ export function decorateMain(main) {
   decorateBlocks(main);
   decorateNestedSections(main);
   decorateButtons(main);
+  decorateExternalLinks(main);
   a11yLinks(main);
   decorateSpanTags(main);
 }
