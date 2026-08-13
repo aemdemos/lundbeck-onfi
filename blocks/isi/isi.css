@@ -64,7 +64,7 @@
   font-size: var(--isi-toggle-icon-glyph-size);
   font-weight: var(--isi-toggle-icon-font-weight);
   font-style: normal;
-  line-height: 1;
+  padding-bottom: 3px;
 }
 
 /* ── Shared: ISI body typography ─────────────────────────────── */
