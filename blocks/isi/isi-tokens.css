@@ -50,7 +50,7 @@
      libs can decide whether to define --light-font-family globally or repoint
      this token when adapting a new site. */
   --isi-toggle-icon-size: 26px;
-  --isi-toggle-icon-glyph-size: 25px;
+  --isi-toggle-icon-glyph-size: 24px;
   --isi-toggle-icon-color: #7fa73a; /* rgb(127,167,58) green */
   --isi-toggle-icon-bg: #fff;
   --isi-toggle-icon-font-family: var(--light-font-family);
