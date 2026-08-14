@@ -33,7 +33,7 @@
      thin white rule sits under the links (added in the overrides below). */
   --footer-linkbar-background: transparent;
   --footer-linkbar-padding: 20px 0 0; /* mobile top space above the link row */
-  --footer-linkbar-inner-padding: 0 15px 23px; /* side gutters + gap down to the rule */
+  --footer-linkbar-inner-padding: 0 15px 18px; /* side gutters + gap down to the rule */
   --footer-link-text-align: center;
   --footer-link-color: var(--dark-color); /* teal */
   --footer-link-hover-color: var(--dark-color); /* unchanged on hover (only underline appears) */
@@ -44,7 +44,8 @@
   --footer-link-font-weight: 700;
   --footer-link-line-height: 16px;
   --footer-link-gap: 0; /* Onfi separates links with a pipe (p + p border-left), not a margin */
-  --footer-link-mobile-gap: 10px; /* @boilerplate */
+  --footer-link-mobile-gap: 2px; /* @boilerplate */
+  --footer-link-mobile-top-gap: 8px;
   --footer-transition: 0.2s ease; /* @boilerplate */
 
   /* ---- Onfi link extras (consumed by the overrides section) ---------- */
@@ -69,7 +70,7 @@
 
   /* ---- body section (legal + logo) ----------------------------------- */
   --footer-body-padding: 14px 15px 30px; /* desktop (top gap below the white rule) */
-  --footer-body-padding-mobile: 0 15px 160px; /* mobile: tall bottom clears the fixed mobile UI */
+  --footer-body-padding-mobile: 15px 15px 160px; /* mobile: tall bottom clears the fixed mobile UI */
 
   /* legal column (column 1) — Onfi values are MOBILE here; the overrides bump
      them on desktop (footer2 only models a single legal size). */
@@ -180,7 +181,7 @@ footer .footer .section:first-child .default-content-wrapper.default-content-wra
    source gives every mobile link the same 10px top gap, including the first.
    Doubled `.footer` class outranks footer.css's `p:first-child { margin-top: 0 }`. */
 footer .footer.footer .section:first-child p:first-child {
-  margin-top: var(--footer-link-mobile-gap);
+  margin-top: var(--footer-link-mobile-top-gap);
 }
 
 /* [LIBS GAP] feed the white divider colour to the columns `.divider` variant
