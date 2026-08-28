@@ -16,14 +16,22 @@ export default function decorate(block) {
   // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
-      const pic = col.querySelector('picture');
-      if (pic) {
-        const picWrapper = pic.closest('div');
-        if (picWrapper && picWrapper.children.length === 1) {
-          // picture is only content in column
-          picWrapper.classList.add('columns-img-col');
-        }
+      if (!col.querySelector('picture')) return;
+      // merges adjacent-image runs into art-direction pictures; other content stays put
+      col.replaceChildren(buildPictureContentFromImageCell(col));
+      if (col.children.length === 1) {
+        // picture (single or merged art-direction) is the only content in column
+        col.classList.add('columns-img-col');
       }
     });
   });
+
+  // resource-list: flag links whose icon trails the label so CSS can push it to
+  // the right edge (a text-node label makes :last-child unreliable in CSS)
+  if (block.classList.contains('resource-list')) {
+    block.querySelectorAll('a').forEach((link) => {
+      const icon = link.querySelector('.icon');
+      if (icon && link.lastChild === icon) link.classList.add('icon-trailing');
+    });
+  }
 }

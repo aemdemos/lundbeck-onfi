@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Sling - Color Palette</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="/tools/sidekick/palette/palette.js" type="module"></script>
+    <link rel="stylesheet" href="/tools/sidekick/palette/palette.css" />
+  </head>
+  <body>
+    <main>
+      <div class="intro">
+          <p>
+          Click to paste a style variable at cursor location. For multiple, comma-separate variables without spaces (ex. [[center,small-text]TEXT]).
+        </p>
+      </div>
+      <div class="filter">
+        <input autocomplete="off" 
+        placeholder="Type to filter..." 
+        id="search" type="text" 
+        class="palette-search" 
+        role="searchbox" 
+        aria-label="Search stylevariables"/>
+      </div>
+      <div id="palette">
+        <palette-element></palette-element>
+      </div>
+    </main>
+  </body>
+</html> 
